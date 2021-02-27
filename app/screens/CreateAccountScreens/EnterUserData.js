@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Button, Picker } from "react-native";
+import { StyleSheet, View, Text, Button, TextInput } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Picker } from "@react-native-picker/picker";
+import { indications } from "../../consts/consts";
+import { MainButton } from "../../components/MainButton";
+
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
@@ -33,7 +37,7 @@ export const EnterUserData = () => {
 
 	return (
 		<View style={styles.screen}>
-			<View>
+			<View style={styles.row}>
 				<Text>F. de Nacimiento</Text>
 				<Button
 					onPress={setShowDateTimePicker.bind(
@@ -51,19 +55,60 @@ export const EnterUserData = () => {
 					headerTextIOS="Elige tu fecha de nacimiento"
 				/>
 			</View>
-			<View>
-		// TODO: deprecated, search another package
-				<Picker>
-					<Picker.Item value={0} label="--Seleccionar--" />
-					{[...activityLevels.keys()].map((actLvl) => (
-						<Picker.Item
-							key={actLvl}
-							value={actLvl}
-							label={activityLevels.get(actLvl)}
-						/>
-					))}
-				</Picker>
+			<View style={styles.row}>
+				<View style={styles.labelContainer}>
+					<Text style={styles.label}>Altura*</Text>
+				</View>
+				<View style={styles.inputContainer}>
+					<TextInput />
+				</View>
 			</View>
+			<View style={styles.row}>
+				<View style={styles.labelContainer}>
+					<Text style={styles.label}>Sexo*</Text>
+				</View>
+				<View style={styles.inputContainer}>
+					<Picker>
+						<Picker.Item value={0} label="--Seleccionar--" />
+						{[...genres.keys()].map((genreKey) => (
+							<Picker.Item
+								key={genreKey}
+								value={genreKey}
+								label={genres.get(genreKey)}
+							/>
+						))}
+					</Picker>
+				</View>
+			</View>
+			<View style={styles.row}>
+				<View style={styles.labelContainer}>
+					<Text style={styles.label}>Peso Actual*</Text>
+				</View>
+				<View style={styles.inputContainer}>
+					<TextInput />
+				</View>
+			</View>
+			<View style={styles.row}>
+				<View style={styles.labelContainer}>
+					<Text style={styles.label}>Nivel de Ac. Física*</Text>
+				</View>
+				<View style={styles.inputContainer}>
+					<Picker>
+						<Picker.Item value={0} label="--Seleccionar--" />
+						{[...activityLevels.keys()].map((actLvlKey) => (
+							<Picker.Item
+								key={actLvlKey}
+								value={actLvlKey}
+								label={activityLevels.get(actLvlKey)}
+							/>
+						))}
+					</Picker>
+				</View>
+			</View>
+			<View>
+				<Text>{indications}</Text>
+			</View>
+			<MainButton>Siguiente</MainButton>
 		</View>
 	);
 };
@@ -71,6 +116,24 @@ export const EnterUserData = () => {
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
+		alignItems: "center",
 		backgroundColor: "white",
+		paddingVertical: 20,
+	},
+	row: {
+		flexDirection: "row",
+		alignItems: "center",
+		width: '80%'
+	},
+	labelContainer: {
+		flex: 1,
+		paddingRight: 20,
+	},
+	label: {
+		textAlign: "right",
+		fontSize: 18,
+	},
+	inputContainer: {
+		flex: 1,
 	},
 });
