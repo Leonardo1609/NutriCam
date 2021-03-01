@@ -13,7 +13,7 @@ export const ErrorText = (props) => {
 
 const styles = StyleSheet.create({
 	errorContainer: {
-		width: '80%'
+		width: '100%'
 	},
 	error: {
 		color: 'red',

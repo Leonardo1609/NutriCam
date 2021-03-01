@@ -39,16 +39,17 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "space-around",
 		paddingVertical: Dimensions.get("window").height > 600 ? "10%" : 0,
+		paddingHorizontal: '10%'
 	},
 	imageContainer: {
 		width: Dimensions.get("window").height < 600 ? 150 : 200,
 		height: Dimensions.get("window").height < 600 ? 150 : 200,
 	},
 	nutritionMessageContainer: {
-		width: "80%",
+		width: "100%",
 	},
 	questionContainer: {
-		width: "80%",
+		width: "100%",
 	},
 	message: {
 		fontSize: Dimensions.get("window").height < 600 ? 18 : 22,

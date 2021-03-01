@@ -32,6 +32,7 @@ export const FirstScreen = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+	paddingHorizontal: '10%'
   },
   buttonSeparation: {
     marginVertical: 20,

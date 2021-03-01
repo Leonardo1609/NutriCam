@@ -27,7 +27,7 @@ export const InputForm = ({
 
 const styles = StyleSheet.create({
 	inputGroup: {
-		width: "80%",
+		width: "100%",
 	},
 	label: {
 		fontSize: 18,

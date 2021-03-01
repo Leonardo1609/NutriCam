@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { colors } from '../consts/colors';
 
 export const MainButton = ({ style, onPress, ...rest }) => {
   let ButtonComponent = TouchableOpacity;
@@ -28,13 +29,13 @@ export const MainButton = ({ style, onPress, ...rest }) => {
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        width: '80%',
+        width: '100%',
         elevation: 3
     },
     button: {
         paddingVertical: 10,
-        backgroundColor: '#34E35A',
-        borderRadius: 5 
+        backgroundColor: colors.green,
+		borderRadius: 5
     },
     buttonText: {
         fontSize: 24,
