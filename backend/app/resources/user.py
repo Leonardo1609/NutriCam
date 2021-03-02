@@ -83,7 +83,7 @@ class UserProfile( Resource ):
     def get( self ):
         user_id = get_jwt_identity()
         user = User.get_user_by_id( user_id )
-        profile = User.get_profile_by_id( user_id )
+        profile = User.get_profile_by_user_id( user_id )
         return { 
             'user': user, 
             'profile': profile 
@@ -120,5 +120,5 @@ class ProfileInformation( Resource ):
 
     def post( self ):
         data = self.parser.parse_args()
-        information = User.get_profile_before_created_information( **data )
+        information = User.get_profile_information_before_created( **data )
         return { 'information': information }

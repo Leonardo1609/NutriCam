@@ -167,7 +167,7 @@ class User:
         return cls.user_json( *user )
 
     @classmethod
-    def get_profile_by_id( cls, user_id ):
+    def get_profile_by_user_id( cls, user_id ):
         """
         Returns the profile found according with the user_id parameter
         """
@@ -176,7 +176,16 @@ class User:
         return cls.profile_json( *profile )
 
     @classmethod
-    def get_profile_before_created_information( cls, profile_genre, profile_height, profile_actual_weight, profile_birthdate, profile_activity_level ):
+    def get_profile_id_by_user_id( cls, user_id ):
+        """
+        Returns the profile id found according with the user_id parameter
+        """
+        query = "SELECT profile_id from profile where user_id=?"
+        profile = cursor.execute( query, ( user_id, ) ).fetchone()
+        return profile[0]
+
+    @classmethod
+    def get_profile_information_before_created( cls, profile_genre, profile_height, profile_actual_weight, profile_birthdate, profile_activity_level ):
         """
         Returns all information according to the user data before his registered in the app
         """

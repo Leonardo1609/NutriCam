@@ -1,6 +1,6 @@
 from flask_restful import Api
 from .resources.user import RegisterUser, UserProfile, LoginUser, ProfileInformation
-from .resources.food import FoodSearch, FoodInformation
+from .resources.food import FoodSearch, FoodInformation, CreateFood, RegistFood
 
 api = Api( prefix='/api' )
 
@@ -10,3 +10,5 @@ api.add_resource( LoginUser, '/login' )
 api.add_resource( ProfileInformation, '/information' )
 api.add_resource( FoodSearch, '/search/<string:food_input>' )
 api.add_resource( FoodInformation, '/food/<int:food_id>' )
+api.add_resource( CreateFood, '/create-food' )
+api.add_resource( RegistFood, '/regist-food' )
