@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { colors } from '../consts/colors';
 
-export const MainButton = ({ style, onPress, ...rest }) => {
+export const MainButton = ({ containerStyle, buttonStyle, onPress, ...rest }) => {
   let ButtonComponent = TouchableOpacity;
 
   if ( Platform.Version >= 21 ) {
@@ -17,9 +17,9 @@ export const MainButton = ({ style, onPress, ...rest }) => {
   }
 
   return (
-    <View style={{ ...styles.buttonContainer, ...style }}>
+    <View style={{...styles.buttonContainer, ...containerStyle }}>
       <ButtonComponent activeOpacity={ 0.8 } onPress={ onPress }>
-          <View style={ styles.button }>
+          <View style={{ ...styles.button, ...buttonStyle }}>
             <Text style={ styles.buttonText }>{ rest.children }</Text>
           </View>
       </ButtonComponent>

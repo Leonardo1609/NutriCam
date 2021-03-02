@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PickerSelect from "react-native-picker-select";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { indications } from "../../consts/consts";
 import { colors } from "../../consts/colors";
 import { MainButton } from "../../components/MainButton";
@@ -24,7 +24,6 @@ moment.locale("es");
 const errorColor = (error) => (error ? "red" : "black");
 
 export const EnterUserData = () => {
-
 	const navigation = useNavigation();
 
 	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
@@ -35,9 +34,9 @@ export const EnterUserData = () => {
 	const [actualWeight, setActualWeight] = useState(0);
 	const [activityLevel, setActivityLevel] = useState(0);
 	const [errors, setErrors] = useState({});
-	const [formSubmit, setFormSubmit] = useState( false );
+	const [formSubmit, setFormSubmit] = useState(false);
 
-	const pickerStyle = ( error = null ) => ({
+	const pickerStyle = (error = null) => ({
 		placeholder: {
 			color: colors.grayPlaceholder,
 		},
@@ -101,16 +100,16 @@ export const EnterUserData = () => {
 			activityLevel,
 		};
 		setErrors(userDataValidation(values));
-		setFormSubmit( true );
+		setFormSubmit(true);
 	};
 
-	useEffect( () => {
-		if( Object.keys(errors).length === 0 && formSubmit ){
+	useEffect(() => {
+		if (Object.keys(errors).length === 0 && formSubmit) {
 			navigation.navigate({
-				name: 'Results'
-			})
+				name: "Results",
+			});
 		}
-	}, [ errors, formSubmit ] )
+	}, [errors, formSubmit]);
 
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -182,10 +181,10 @@ export const EnterUserData = () => {
 								style={{
 									...styles.input,
 									borderBottomColor: errorColor(
-										errors["birthdayToShow"]
+										errors["height"]
 									),
 								}}
-								value={height && height}
+								value={height ? height : ""}
 								onChangeText={handleHeight}
 								placeholderTextColor={colors.grayPlaceholder}
 								placeholder="En cm"
@@ -206,7 +205,7 @@ export const EnterUserData = () => {
 						</View>
 						<View style={styles.inputContainer}>
 							<PickerSelect
-								style={pickerStyle( errors['genre'] )}
+								style={pickerStyle(errors["genre"])}
 								placeholder={{
 									label: "--Seleccionar--",
 									value: null,
@@ -241,7 +240,7 @@ export const EnterUserData = () => {
 									),
 								}}
 								placeholderTextColor={colors.grayPlaceholder}
-								value={actualWeight && actualWeight}
+								value={actualWeight ? actualWeight : ""}
 								onChangeText={handleWeight}
 								placeholder="En kg"
 								keyboardType="numeric"
@@ -267,7 +266,7 @@ export const EnterUserData = () => {
 									label: "--Seleccionar--",
 									value: null,
 								}}
-								style={pickerStyle( errors['activityLevel'] )}
+								style={pickerStyle(errors["activityLevel"])}
 								value={activityLevel}
 								useNativeAndroidPickerStyle={false}
 								onValueChange={confirmActivityLevel}
@@ -284,9 +283,7 @@ export const EnterUserData = () => {
 				<View style={styles.indicartorContainer}>
 					<Text style={styles.indications}>{indications}</Text>
 				</View>
-				<View style={styles.buttonContainer}>
-					<MainButton onPress={submit}>Siguiente</MainButton>
-				</View>
+					<MainButton containerStyle={styles.buttonContainer} onPress={submit}>Siguiente</MainButton>
 			</View>
 		</TouchableWithoutFeedback>
 	);

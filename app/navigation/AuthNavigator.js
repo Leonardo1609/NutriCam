@@ -5,6 +5,7 @@ import { CreateAccountMainForm } from "../screens/CreateAccountScreens/CreateAcc
 import { AskForNutritionalPlan } from "../screens/CreateAccountScreens/AskForNutritionalPlan";
 import { Results } from "../screens/CreateAccountScreens/Results";
 import { EnterUserData } from "../screens/CreateAccountScreens/EnterUserData";
+import { CaloricPlanResult } from "../screens/CreateAccountScreens/CaloricPlanResult";
 import { FirstScreen } from "../screens/FirstScreen";
 import { colors } from "../consts/colors";
 
@@ -53,6 +54,13 @@ export const AuthNavigator = () => {
 						title: "Resultados",
 					}}
 					component={Results}
+				/>
+				<Stack.Screen
+					name="CaloricPlanResult"
+					options={{
+						title: "Plan Calórico",
+					}}
+					component={CaloricPlanResult}
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>

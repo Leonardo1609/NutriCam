@@ -85,7 +85,7 @@ export const CreateAccountMainForm = () => {
 				{errors["confirmPassword"] && (
 					<ErrorText>{errors.confirmPassword}</ErrorText>
 				)}
-				<MainButton style={styles.button} onPress={handleSubmit}>
+				<MainButton containerStyle={styles.buttonContainer} onPress={handleSubmit}>
 					Siguiente
 				</MainButton>
 			</View>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
 	inputContainer: {
 		marginVertical: 10,
 	},
-	button: {
+	buttonContainer: {
 		marginVertical: 40,
 	},
 	errorInput: {
