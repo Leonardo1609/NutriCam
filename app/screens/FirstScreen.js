@@ -10,14 +10,14 @@ export const FirstScreen = () => {
 			<View style={styles.logoContainer}>
 				<Image
 					style={styles.image}
-					source={{
-						uri:
-							"https://cdn.andro4all.com/files/2019/09/apps-reconocimiento-comidas.jpg",
-					}}
+					source={require("../assets/images/nutricam-logo.png")}
 				/>
 			</View>
 			<View style={styles.buttonsContainer}>
-				<MainButton containerStyle={styles.buttonSeparation}>
+				<MainButton
+					containerStyle={styles.buttonSeparation}
+					onPress={() => navigation.navigate("Login")}
+				>
 					Iniciar Sesión
 				</MainButton>
 				<MainButton
@@ -35,13 +35,14 @@ const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
 		paddingHorizontal: "10%",
+		backgroundColor: "#e3e3e3",
 	},
 	buttonSeparation: {
 		marginVertical: 20,
 	},
 	image: {
-		width: 200,
-		height: 200,
+		width: "100%",
+		height: 240,
 	},
 	logoContainer: {
 		flex: 1,

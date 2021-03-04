@@ -1,73 +1,95 @@
 import React from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Dimensions } from "react-native";
 import { MainButton } from "../../components/MainButton";
+import { useSelector } from "react-redux";
 import { BoxMessage } from "../../components/BoxMessage";
 import { useNavigation } from "@react-navigation/native";
 
 export const Results = () => {
+	const information = useSelector(
+		(state) => state.createAccountProcess.informationToShow
+	);
 	const navigation = useNavigation();
-	const diseases = [
-		{ id: 1, name: "Diabetes" },
-		{ id: 2, name: "Hipertensión" },
-		{ id: 3, name: "Enfermedad 3" },
-	];
 
 	const goToCaloricPlan = () => {
 		navigation.navigate("CaloricPlanResult");
 	};
 
 	return (
-		<View style={styles.screen}>
-			<View style={styles.section}>
-				<Text style={styles.resultsIMC}>
-					Tu IMC actual es: <Text style={styles.IMC}>20.0 kg/m2</Text>
-				</Text>
-			</View>
-			<View style={styles.section}>
-				<View>
-					<Text style={styles.subtitle}>
-						Según la Organización Mundial de la salud, tu peso se
-						clasifica en:
+		<ScrollView
+			contentContainerStyle={
+				{ flex: Dimensions.get('window').height > 600 ? 1 : null }
+			}
+		>
+			<View style={styles.screen}>
+				<View style={styles.section}>
+					<Text style={styles.resultsIMC}>
+						Tu IMC actual es:{" "}
+						<Text style={styles.IMC}>
+							{information.profileIMC} kg/m2
+						</Text>
 					</Text>
 				</View>
-				<BoxMessage>Sobrepeso</BoxMessage>
-			</View>
-			<View style={styles.section}>
-				<Text style={styles.subtitle}>Posibles riesgos de salud:</Text>
-				<ScrollView style={styles.diseasesList}>
-					{diseases.map((disease) => (
-						<Text style={styles.diseaseItem} key={disease.id}>
-							- {disease.name}
+				<View style={styles.section}>
+					<View>
+						<Text style={styles.subtitle}>
+							Según la Organización Mundial de la salud, tu peso
+							se clasifica en:
 						</Text>
-					))}
-				</ScrollView>
-			</View>
-			<View style={styles.section}>
-				<View>
-					<Text style={styles.subtitle}>Tu peso ideal es de:</Text>
-					<BoxMessage>60 kg</BoxMessage>
+					</View>
+					<BoxMessage>{information.weightLevelName}</BoxMessage>
 				</View>
+				<View style={styles.section}>
+					<Text style={styles.subtitle}>
+						Posibles riesgos de salud:
+					</Text>
+					{information.posibleDiseases.length ? (
+						<ScrollView style={styles.diseasesList}>
+							{information.posibleDiseases.map((disease) => (
+								<Text
+									style={styles.diseaseItem}
+									key={disease.disease_id}
+								>
+									- {disease.disease_name}
+								</Text>
+							))}
+						</ScrollView>
+					) : (
+						<BoxMessage>
+							No presenta posibles riesgos de salud
+						</BoxMessage>
+					)}
+				</View>
+				<View style={styles.section}>
+					<View style={styles.bo}>
+						<Text style={styles.subtitle}>
+							Tu peso ideal es de:
+						</Text>
+						<BoxMessage>
+							{information.profileIdealWeight} kg
+						</BoxMessage>
+					</View>
+				</View>
+				<MainButton
+					containerStyle={styles.section}
+					onPress={goToCaloricPlan}
+				>
+					Siguiente
+				</MainButton>
 			</View>
-			<MainButton
-				containerStyle={styles.section}
-				onPress={goToCaloricPlan}
-			>
-				Siguiente
-			</MainButton>
-		</View>
+		</ScrollView>
 	);
 };
 
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
-		// alignItems: "center",
 		paddingHorizontal: "10%",
 		backgroundColor: "white",
 		justifyContent: "center",
 	},
 	section: {
-		marginVertical: 20,
+		marginVertical: Dimensions.get("window").height > 600 ? 20 : 10,
 	},
 	resultsIMC: {
 		fontSize: 20,

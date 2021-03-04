@@ -1,3 +1,4 @@
+import math
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import date
 from ..db import cursor
@@ -40,9 +41,9 @@ class User:
     @classmethod
     def calculate_imc( cls, height, actual_weight ):
         """
-        Returns the imc according to the height and weight (in meters) of the user
+        Returns the imc, fixed to 2 decimals, according to the height and weight (in meters) of the user
         """
-        return actual_weight / ( height / 100 ) ** 2
+        return float("{:.2f}".format(actual_weight / ( height / 100 ) ** 2))
 
     @classmethod
     def calculate_age( cls, birthdate ):
@@ -59,7 +60,7 @@ class User:
         Returns the ideal weight of the user according to his genre and height (in meters)
         """
         variation = 21 if genre == 'F' else 23
-        return ( height / 100 ) ** 2 * variation
+        return math.ceil(( height / 100 ) ** 2 * variation)
 
     @classmethod
     def cals_per_day( cls, actual_weight, height, birthdate, genre, activity_level ):
@@ -72,7 +73,7 @@ class User:
         elif genre == 'F':
             GER = 655 + 9.56 * actual_weight + 1.85 * height - 4.68 * cls.calculate_age( birthdate )
         
-        return GER * cls.activity_level_factor( activity_level, genre )
+        return math.ceil(GER * cls.activity_level_factor( activity_level, genre ))
 
     @classmethod
     def activity_level_factor( cls, activity_level, genre ):

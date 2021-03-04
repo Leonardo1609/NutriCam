@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "space-around",
 		paddingVertical: Dimensions.get("window").height > 600 ? "10%" : 0,
-		paddingHorizontal: '10%'
+		paddingHorizontal: "10%",
 	},
 	imageContainer: {
 		width: Dimensions.get("window").height < 600 ? 150 : 200,

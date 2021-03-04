@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import {
 	StyleSheet,
 	View,
-	Text,
 	Keyboard,
 	TouchableWithoutFeedback,
 } from "react-native";
@@ -12,8 +11,11 @@ import { MainButton } from "../../components/MainButton";
 import { useForm } from "../../hooks/useForm";
 import { createAccountValidation } from "../../validations/createAccountValidation";
 import { useNavigation } from "@react-navigation/native";
+import { setBasicData } from "../../actions/createAccountProcessActions";
+import { useDispatch } from "react-redux";
 
 export const CreateAccountMainForm = () => {
+	const dispatch = useDispatch();
 	const navigation = useNavigation();
 
 	const initialValues = {
@@ -32,8 +34,9 @@ export const CreateAccountMainForm = () => {
 	const { username, email, password, confirmPassword } = formValues;
 
 	function submitForm() {
-		navigation.navigate('AskForNutritionalPlan');
-		reset({ ...formValues, password: '', confirmPassword: '' })
+		dispatch( setBasicData( username, email, password ) );
+		navigation.navigate("AskForNutritionalPlan");
+		reset({ ...formValues, password: "", confirmPassword: "" });
 	}
 
 	return (
@@ -85,7 +88,10 @@ export const CreateAccountMainForm = () => {
 				{errors["confirmPassword"] && (
 					<ErrorText>{errors.confirmPassword}</ErrorText>
 				)}
-				<MainButton containerStyle={styles.buttonContainer} onPress={handleSubmit}>
+				<MainButton
+					containerStyle={styles.buttonContainer}
+					onPress={handleSubmit}
+				>
 					Siguiente
 				</MainButton>
 			</View>
@@ -98,8 +104,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "white",
 		alignItems: "center",
-		justifyContent: 'center',
-		paddingHorizontal: '10%'
+		justifyContent: "center",
+		paddingHorizontal: "10%",
 	},
 	inputContainer: {
 		marginVertical: 10,

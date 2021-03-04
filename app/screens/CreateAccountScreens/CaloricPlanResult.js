@@ -3,10 +3,18 @@ import { StyleSheet, View, Text } from "react-native";
 import { BoxMessage } from "../../components/BoxMessage";
 import { MainButton } from "../../components/MainButton";
 import { useNavigation } from "@react-navigation/native";
+import { startCreateUser } from "../../actions/authActions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const CaloricPlanResult = () => {
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
+	const { dataToRegist, informationToShow } = useSelector(
+		(state) => state.createAccountProcess
+	);
+
 	const cancelRegistration = () => {
+		dispatch(startCreateUser());
 		navigation.navigate("FirstScreen");
 	};
 
@@ -18,7 +26,9 @@ export const CaloricPlanResult = () => {
 						Según tus datos, tu plan calórico diario es:
 					</Text>
 				</View>
-				<BoxMessage>2000 Cal</BoxMessage>
+				<BoxMessage>
+					{informationToShow.profileCaloricPlan} Cal
+				</BoxMessage>
 			</View>
 			<MainButton containerStyle={styles.row}>Empezar</MainButton>
 			<MainButton

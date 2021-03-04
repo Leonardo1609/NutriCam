@@ -31,7 +31,9 @@ class Food:
         WHERE food_name=? AND (creator_id=1 OR creator_id=?)
         """
         food = cursor.execute( query, ( food_name, profile_id ) ).fetchone()
-        return food
+        if food:
+            return True
+        return False
 
 
     @classmethod
@@ -65,7 +67,7 @@ class Food:
 
         cursor.commit()
 
-        return "Food created"
+        return "La comida se ha creado con éxito"
     @classmethod
     def regist_food( cls, profile_id, day_food_id, food_measure_unit_id, food_id, quantity ):
         query= """

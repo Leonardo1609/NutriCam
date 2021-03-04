@@ -6,6 +6,7 @@ import { AskForNutritionalPlan } from "../screens/CreateAccountScreens/AskForNut
 import { Results } from "../screens/CreateAccountScreens/Results";
 import { EnterUserData } from "../screens/CreateAccountScreens/EnterUserData";
 import { CaloricPlanResult } from "../screens/CreateAccountScreens/CaloricPlanResult";
+import { LoginForm } from "../screens/LoginScreen/LoginForm";
 import { FirstScreen } from "../screens/FirstScreen";
 import { colors } from "../consts/colors";
 
@@ -30,6 +31,11 @@ export const AuthNavigator = () => {
 					options={{ headerShown: false }}
 					name="FirstScreen"
 					component={FirstScreen}
+				/>
+				<Stack.Screen
+					name="Login"
+					options={{ title: "Iniciar Sesión" }}
+					component={LoginForm}
 				/>
 				<Stack.Screen
 					options={{
