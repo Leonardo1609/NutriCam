@@ -3,13 +3,21 @@ import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
 import { nutritionMessage, question } from "../../consts/consts";
 import { MainButton } from "../../components/MainButton";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { startCreateUser } from "../../actions/authActions";
 
 export const AskForNutritionalPlan = () => {
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
 
 	const acceptCreateNutritionalPlan = () => {
 		navigation.navigate("EnterUserData");
 	};
+
+	const createUserWithoutNutritionalPlan = () => {
+		dispatch(startCreateUser());
+	};
+
 	return (
 		<View style={styles.screen}>
 			<Image
@@ -27,7 +35,9 @@ export const AskForNutritionalPlan = () => {
 				</Text>
 			</View>
 			<MainButton onPress={acceptCreateNutritionalPlan}>Sí</MainButton>
-			<MainButton>Omitir</MainButton>
+			<MainButton onPress={createUserWithoutNutritionalPlan}>
+				Omitir
+			</MainButton>
 		</View>
 	);
 };

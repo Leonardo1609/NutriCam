@@ -36,8 +36,12 @@ export const getHealthyInformation = () => {
 			profile_activity_level: activityLevel,
 		};
 
-		const resp = await clientAxios.post("/information", dataToSend);
-		dispatch(showHealthyInformation(resp.data.information));
+		try {
+			const resp = await clientAxios.post("/information", dataToSend);
+			dispatch(showHealthyInformation(resp.data.information));
+		} catch (e) {
+			console.log(e.response);
+		}
 	};
 };
 

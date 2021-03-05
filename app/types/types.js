@@ -6,5 +6,7 @@ export const types = {
 	createAccount: '[Auth] Create Account',
 	login: '[Auth] Login',
 	setUserInformation: '[Auth] Set User Information',
-	logout: '[Auth] Logout'
+	logout: '[Auth] Logout',
+
+	loadingUserInfo: '[Ui] Loading User Info'
 }

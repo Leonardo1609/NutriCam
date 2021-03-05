@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { AuthNavigator } from "./navigation/AuthNavigator";
-import { Provider } from "react-redux";
+import { AppNavigator } from './navigation/AppNavigator';
+import { Provider, useSelector } from "react-redux";
 import { store } from "./store/store";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
@@ -27,7 +27,7 @@ export default function App() {
 
 	return (
 		<Provider store={store}>
-			<AuthNavigator />
+			<AppNavigator />
 		</Provider>
 	);
 }

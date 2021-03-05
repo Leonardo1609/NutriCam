@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		width: "100%",
-		height: 240,
+		resizeMode: 'contain'
 	},
 	logoContainer: {
 		flex: 1,

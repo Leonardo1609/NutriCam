@@ -2,7 +2,6 @@ import React from "react";
 import {
 	StyleSheet,
 	View,
-	Text,
 	TouchableWithoutFeedback,
 	Keyboard,
 } from "react-native";
@@ -11,11 +10,16 @@ import { useForm } from "../../hooks/useForm";
 import { loginValidation } from "../../validations/loginValidation";
 import { MainButton } from "../../components/MainButton";
 import { ErrorText } from "../../components/ErrorText";
+import { useDispatch } from 'react-redux';
+import { startLoginUser } from '../../actions/authActions';
 
 export const LoginForm = () => {
+
+	const dispatch = useDispatch();
+
 	const initialValues = {
-		email: "",
-		password: "",
+		email: "leonardo@gmail.com",
+		password: "123456",
 	};
 
 	const { formValues, errors, handleChange, handleSubmit } = useForm(
@@ -27,7 +31,7 @@ export const LoginForm = () => {
 	const { email, password } = formValues;
 
 	function loginSubmit() {
-		console.log("submit");
+		dispatch( startLoginUser( email, password ) );
 	}
 
 	return (

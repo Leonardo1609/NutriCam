@@ -33,25 +33,25 @@ export const EnterUserData = () => {
 	const dispatch = useDispatch();
 	const navigation = useNavigation();
 
-	// const [showDateTimePicker, setShowDateTimePicker] = useState(false);
-	// const [birthdayToShow, setBirthdayToShow] = useState("");
-	// const [birthdayToSave, setBirthdayToSave] = useState("");
-	// const [height, setHeight] = useState(0);
-	// const [genre, setGenre] = useState("");
-	// const [actualWeight, setActualWeight] = useState(0);
-	// const [activityLevel, setActivityLevel] = useState(0);
-	// const [errors, setErrors] = useState({});
-	// const [formSubmit, setFormSubmit] = useState(false);
-
 	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 	const [birthdayToShow, setBirthdayToShow] = useState("");
-	const [birthdayToSave, setBirthdayToSave] = useState("1998-09-16");
-	const [height, setHeight] = useState(175);
-	const [genre, setGenre] = useState("M");
-	const [actualWeight, setActualWeight] = useState(80);
-	const [activityLevel, setActivityLevel] = useState(1);
+	const [birthdayToSave, setBirthdayToSave] = useState("");
+	const [height, setHeight] = useState(0);
+	const [genre, setGenre] = useState("");
+	const [actualWeight, setActualWeight] = useState(0);
+	const [activityLevel, setActivityLevel] = useState(0);
 	const [errors, setErrors] = useState({});
 	const [formSubmit, setFormSubmit] = useState(false);
+
+	// const [showDateTimePicker, setShowDateTimePicker] = useState(false);
+	// const [birthdayToShow, setBirthdayToShow] = useState("");
+	// const [birthdayToSave, setBirthdayToSave] = useState("1998-09-16");
+	// const [height, setHeight] = useState(175);
+	// const [genre, setGenre] = useState("M");
+	// const [actualWeight, setActualWeight] = useState(80);
+	// const [activityLevel, setActivityLevel] = useState(1);
+	// const [errors, setErrors] = useState({});
+	// const [formSubmit, setFormSubmit] = useState(false);
 
 	const pickerStyle = (error = null) => ({
 		placeholder: {

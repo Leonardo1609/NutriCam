@@ -19,12 +19,18 @@ export const CreateAccountMainForm = () => {
 	const navigation = useNavigation();
 
 	const initialValues = {
-		username: "leonardo",
-		email: "leonardo@gmail.com",
-		password: "123456",
-		confirmPassword: "123456",
+		username: "",
+		email: "",
+		password: "",
+		confirmPassword: "",
 	};
 
+	// const initialValues = {
+	// 	username: "leonardo",
+	// 	email: "leonardo@gmail.com",
+	// 	password: "123456",
+	// 	confirmPassword: "123456",
+	// };
 	const { formValues, errors, handleChange, handleSubmit, reset } = useForm(
 		initialValues,
 		createAccountValidation,

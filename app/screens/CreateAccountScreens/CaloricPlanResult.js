@@ -14,8 +14,11 @@ export const CaloricPlanResult = () => {
 	);
 
 	const cancelRegistration = () => {
-		dispatch(startCreateUser());
 		navigation.navigate("FirstScreen");
+	};
+
+	const submit = () => {
+		dispatch(startCreateUser());
 	};
 
 	return (
@@ -30,7 +33,9 @@ export const CaloricPlanResult = () => {
 					{informationToShow.profileCaloricPlan} Cal
 				</BoxMessage>
 			</View>
-			<MainButton containerStyle={styles.row}>Empezar</MainButton>
+			<MainButton containerStyle={styles.row} onPress={submit}>
+				Empezar
+			</MainButton>
 			<MainButton
 				containerStyle={styles.row}
 				buttonStyle={styles.cancelButton}

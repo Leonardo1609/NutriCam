@@ -9,7 +9,6 @@ export const authReducer = (state = authState, { type, payload }) => {
 	switch (type) {
 		case types.login:
 		case types.createAccount:
-			localStorage.setItem('token', payload.token);
 			return {
 				...state,
 				authenticated: true,
@@ -20,7 +19,6 @@ export const authReducer = (state = authState, { type, payload }) => {
 				userInformation: payload
 			}
 		case types.logout: 
-			localStorage.removeItem('token');
 			return {
 				userInformation: null,
 				authenticated: false
