@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../actions/authActions";
 import { AuthNavigator } from "./AuthNavigator";
-import { HomeScreen } from "../screens/AuthenticatedScreens/HomeScreen";
+import { AuthenticatedNavigator } from "./AuthenticatedNavigator";
 import { LoadingScreen } from "../screens/LoadingScreen";
 
 export const AppNavigator = () => {
@@ -11,6 +11,7 @@ export const AppNavigator = () => {
 	const dispatch = useDispatch();
 	const { authenticated } = useSelector((state) => state.auth);
 	const { loading } = useSelector((state) => state.ui);
+
 
 	useEffect(() => {
 		const getToken = async () => {
@@ -26,7 +27,7 @@ export const AppNavigator = () => {
 
 	if (loading) return <LoadingScreen />;
 
-	if (!loading && authenticated) return <HomeScreen />;
+	if (!loading && authenticated) return <AuthenticatedNavigator />;
 
 	return <AuthNavigator />;
 };
