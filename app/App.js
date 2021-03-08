@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { AppNavigator } from './navigation/AppNavigator';
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import { store } from "./store/store";
+import { enableScreens } from "react-native-screens";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
+
+enableScreens();
 
 const loadFonts = () => {
 	return Font.loadAsync({

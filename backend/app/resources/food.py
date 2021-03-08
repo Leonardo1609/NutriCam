@@ -85,9 +85,43 @@ class RegistFood( Resource ):
     def post(self):
         data = self.parser.parse_args()
         user_id = get_jwt_identity()
-        profile_id = User.get_profile_id_by_user_id( user_id )
         try:
-            message = Food.regist_food( profile_id, **data )
-            return { 'msg': message }
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            food_register_id = Food.regist_food( profile_id, **data )
+            return { 'food_register_id': food_register_id }
         except:
             return {'msg': 'Ha ocurrido un error'}, 500
+
+
+class DeleteFoodRegist( Resource ):
+    @jwt_required()
+    def delete(self, food_register_id):
+        try:
+            message = Food.delete_food_regist( food_register_id )
+            return { 'msg': message }
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+
+class FoodRegistersPerDay( Resource ):
+    @jwt_required()
+    def get(self, day):
+        user_id = get_jwt_identity() 
+        try:
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            registers = Food.food_registers_per_day( profile_id, day )
+            return { 'foods_registered': registers }
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+class NutritionSummaryPerDay( Resource ):
+    @jwt_required()
+    def get(self, day):
+        user_id = get_jwt_identity()
+        try:
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            Food.nutrition_summary_per_day( profile_id, day )
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+

@@ -15,9 +15,10 @@ class Food:
     @classmethod
     def search_food( cls, food_input, profile_id ):
         query = f"""
-        SELECT food_id, food_name 
+        SELECT food_id, food_name
         FROM food 
-        WHERE food_name LIKE '%{ food_input }%' AND (creator_id = 1 OR creator_id={profile_id});
+        WHERE food_name LIKE '%{ food_input }%' AND (creator_id = 1 OR creator_id={profile_id})
+        ORDER BY creator_id DESC;
         """
         rows = cursor.execute( query ).fetchall()
         foods_found = [ { 'food_id': food_id, 'food_name': food_name } for food_id, food_name in rows ]
@@ -68,15 +69,59 @@ class Food:
         cursor.commit()
 
         return "La comida se ha creado con éxito"
+
     @classmethod
     def regist_food( cls, profile_id, day_food_id, food_measure_unit_id, food_id, quantity ):
         query= """
         INSERT INTO food_register 
-        ( profile_id, day_food_id, food_measure_unit_id, food_id, quantity ) 
-        VALUES (?, ?, ?, ?, ? );
+        (profile_id, day_food_id, food_measure_unit_id, food_id, quantity) 
+        VALUES (?, ?, ?, ?, ?);
         """
         cursor.execute( query, ( profile_id, day_food_id, food_measure_unit_id, food_id, quantity ) )
+
+        food_register_id = cursor.execute( "SELECT @@IDENTITY AS ID" ).fetchone()[0]
         cursor.commit()
-        return "Food Registed"
+        
+        return int(food_register_id)
+
+    @classmethod
+    def delete_food_regist( cls, food_register_id ):
+        query="""
+        DELETE FROM food_register
+        WHERE food_register_id = ?
+        """
+        cursor.execute( query, ( food_register_id, ) )
+        cursor.commit()
+
+        return "Registro eliminado"
+
+    @classmethod
+    def food_registers_per_day( cls, profile_id, food_register_day ):
+        query="""
+        SELECT fr.food_register_id, f.food_name, fr.day_food_id, (fr.quantity * fmu.food_calories) 'Calories'
+        FROM food f 
+        INNER JOIN food_measure_unit fmu ON fmu.food_id = f.food_id
+        INNER JOIN food_register fr ON fr.food_id = f.food_id
+        WHERE fr.profile_id = ? AND fr.food_register_day = ?
+        ORDER BY fr.day_food_id ASC;
+        """
+
+        rows = cursor.execute( query, ( profile_id, food_register_day ) ).fetchall()
+        registers = [ { 'food_register_id': food_register_id, 'food_name': food_name, 'day_food_id': day_food_id, 'calories': calories } for food_register_id, food_name, day_food_id, calories in rows ]
+        return registers
+
+    @classmethod
+    def nutrition_summary_per_day( cls, profile_id, food_register_day ):
+        query="""
+	SELECT ROUND(SUM(fmu.food_calories * fr.quantity),2) 'Calories', ROUND(SUM(fmu.food_carbohydrates * fr.quantity), 2) 'Carbohydrates', ROUND(SUM(fmu.food_fats * fr.quantity),2) 'Fats', ROUND(SUM(fmu.food_proteins * fr.quantity),2) 'Proteins'
+	from food_register fr
+	INNER JOIN food_measure_unit fmu ON fr.food_id = fmu.food_id
+	WHERE fr.profile_id = ? AND fr.food_register_day = ?;
+        """
+
+        row = cursor.execute( query, ( profile_id, food_register_day ) ).fetchone()
+        
+        print( row )
+
 
 
