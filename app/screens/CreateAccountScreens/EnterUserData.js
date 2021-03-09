@@ -36,6 +36,7 @@ export const EnterUserData = () => {
 	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 	const [birthdayToShow, setBirthdayToShow] = useState("");
 	const [birthdayToSave, setBirthdayToSave] = useState("");
+	const [birthdayToPicker, setBirthdayToPicker] = useState(new Date());
 	const [height, setHeight] = useState(0);
 	const [genre, setGenre] = useState("");
 	const [actualWeight, setActualWeight] = useState(0);
@@ -86,6 +87,7 @@ export const EnterUserData = () => {
 	const confirmDate = (date) => {
 		setBirthdayToSave(JSON.stringify(date).slice(1, 11));
 		setBirthdayToShow(moment(date).format("L"));
+		setBirthdayToPicker(date);
 		setShowDateTimePicker(false);
 	};
 
@@ -188,7 +190,7 @@ export const EnterUserData = () => {
 							</View>
 							<DateTimePickerModal
 								mode="date"
-								data={birthdayToShow}
+								date={birthdayToPicker}
 								isVisible={showDateTimePicker}
 								onConfirm={confirmDate}
 								onCancel={setShowDateTimePicker.bind(
@@ -351,7 +353,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: "8%",
 	},
 	formContainer: {
-		marginTop: Dimensions.get('window').height > 600 ? 50 : 20,
+		marginTop: Dimensions.get("window").height > 600 ? 50 : 20,
 	},
 	row: {
 		flexDirection: "row",
@@ -365,7 +367,7 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		textAlign: "right",
-		fontSize: Dimensions.get('window').width > 350 ? 16 : 14,
+		fontSize: Dimensions.get("window").width > 350 ? 16 : 14,
 	},
 	inputContainer: {
 		flex: 1,
@@ -374,7 +376,7 @@ const styles = StyleSheet.create({
 		color: colors.grayPlaceholder,
 	},
 	indications: {
-		fontSize: Dimensions.get('window').width > 350 ? 16 : 12,
+		fontSize: Dimensions.get("window").width > 350 ? 16 : 12,
 		fontFamily: "poppins",
 	},
 	selected: {
@@ -386,11 +388,11 @@ const styles = StyleSheet.create({
 		paddingVertical: 5,
 	},
 	indicationsContainer: {
-		marginVertical: Dimensions.get('window').height > 600 ? 20 : 8,
+		marginVertical: Dimensions.get("window").height > 600 ? 20 : 8,
 	},
 	buttonContainer: {
 		width: "100%",
-		marginTop: Dimensions.get('window').height > 600 ? 20 : 0,
-		marginBottom: 20
+		marginTop: Dimensions.get("window").height > 600 ? 20 : 0,
+		marginBottom: 20,
 	},
 });

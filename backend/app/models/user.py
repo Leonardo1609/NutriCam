@@ -13,12 +13,13 @@ class User:
         self.user_pass = user_pass
 
     @classmethod
-    def user_json( cls, user_id, user_name, user_email, role_id ):
+    def user_json( cls, user_id, user_name, user_email, role_id, created_at ):
         return { 
             'user_id': user_id, 
             'user_name': user_name, 
             'user_email': user_email, 
-            'user_role': role_id 
+            'user_role': role_id ,
+            'created_at': str(created_at)
         }
 
     @classmethod
@@ -163,7 +164,7 @@ class User:
         """
         Returns the user found according with the user_id parameter
         """
-        query = "SELECT user_id, user_name, user_email, role_id FROM users WHERE user_id = ?"
+        query = "SELECT user_id, user_name, user_email, role_id, created_at FROM users WHERE user_id = ?"
         user = cursor.execute( query, ( user_id, ) ).fetchone()
         return cls.user_json( *user )
 

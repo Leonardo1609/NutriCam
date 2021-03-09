@@ -6,6 +6,7 @@ import { HomeScreen } from "../screens/AuthenticatedScreens/HomeScreen";
 import { colors } from "../consts/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { DiaryNavigator } from './DiaryNavigator';
 
 const Tab =
 	Platform.OS === "android"
@@ -16,8 +17,8 @@ export const AuthenticatedNavigator = () => {
 	return (
 		<NavigationContainer>
 			<Tab.Navigator
-				initialRouteName="Home"
-				barStyle={{ backgroundColor: colors.green, paddingVertical: 5 }}
+				initialRouteName="Diario"
+				barStyle={{ backgroundColor: colors.green }}
 				activeColor="white"
 				shifting={false}
 				inactiveColor="#e3e3e3"
@@ -68,7 +69,7 @@ export const AuthenticatedNavigator = () => {
 				}}
 			>
 				<Tab.Screen name="Semana" component={HomeScreen} />
-				<Tab.Screen name="Diario" component={HomeScreen} />
+				<Tab.Screen name="Diario" component={DiaryNavigator} />
 				<Tab.Screen name="Search" component={HomeScreen} />
 				<Tab.Screen name="Plan" component={HomeScreen} />
 				<Tab.Screen name="Yo" component={HomeScreen} />
