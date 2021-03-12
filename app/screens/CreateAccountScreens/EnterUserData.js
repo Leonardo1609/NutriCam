@@ -44,16 +44,6 @@ export const EnterUserData = () => {
 	const [errors, setErrors] = useState({});
 	const [formSubmit, setFormSubmit] = useState(false);
 
-	// const [showDateTimePicker, setShowDateTimePicker] = useState(false);
-	// const [birthdayToShow, setBirthdayToShow] = useState("");
-	// const [birthdayToSave, setBirthdayToSave] = useState("1998-09-16");
-	// const [height, setHeight] = useState(175);
-	// const [genre, setGenre] = useState("M");
-	// const [actualWeight, setActualWeight] = useState(80);
-	// const [activityLevel, setActivityLevel] = useState(1);
-	// const [errors, setErrors] = useState({});
-	// const [formSubmit, setFormSubmit] = useState(false);
-
 	const pickerStyle = (error = null) => ({
 		placeholder: {
 			color: colors.grayPlaceholder,
@@ -85,10 +75,16 @@ export const EnterUserData = () => {
 	]);
 
 	const confirmDate = (date) => {
+		setShowDateTimePicker(false);
 		setBirthdayToSave(JSON.stringify(date).slice(1, 11));
 		setBirthdayToShow(moment(date).format("L"));
 		setBirthdayToPicker(date);
-		setShowDateTimePicker(false);
+	};
+
+	const setMinDateTo18YearsOld = () => {
+		const d = new Date();
+		d.setFullYear(d.getFullYear() - 18);
+		return d;
 	};
 
 	const handleHeight = (heightValue) => {
@@ -143,7 +139,7 @@ export const EnterUserData = () => {
 
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-			<ScrollView>
+			<ScrollView contentContainerStyle={{ flex: 1 }}>
 				<View style={styles.screen}>
 					<View style={styles.formContainer}>
 						<View style={styles.row}>
@@ -163,7 +159,7 @@ export const EnterUserData = () => {
 								<TouchableNativeFeedback
 									onPress={setShowDateTimePicker.bind(
 										this,
-										!showDateTimePicker
+										true
 									)}
 								>
 									<View
@@ -191,6 +187,7 @@ export const EnterUserData = () => {
 							<DateTimePickerModal
 								mode="date"
 								date={birthdayToPicker}
+								maximumDate={setMinDateTo18YearsOld()}
 								isVisible={showDateTimePicker}
 								onConfirm={confirmDate}
 								onCancel={setShowDateTimePicker.bind(

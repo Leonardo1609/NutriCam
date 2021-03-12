@@ -18,6 +18,7 @@ export const getUser = () => {
 			dispatch(loadingUserInfo(false));
 		} catch (e) {
 			console.log(e.response);
+			dispatch(loadingUserInfo(false));
 		}
 	};
 };

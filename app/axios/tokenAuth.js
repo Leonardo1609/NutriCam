@@ -3,7 +3,7 @@ import { clientAxios } from "./clientAxios";
 
 export const tokenAuth = async () => {
 	const token = await AsyncStorage.getItem("token");
-	console.log(token);
+
 	if (token) {
 		clientAxios.defaults.headers.common[
 			"Authorization"

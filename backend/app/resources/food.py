@@ -57,7 +57,6 @@ class CreateFood( Resource ):
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
 
-        
 class RegistFood( Resource ):
     parser = reqparse.RequestParser()
     parser.add_argument('day_food_id',
@@ -110,7 +109,7 @@ class FoodRegistersPerDay( Resource ):
         try:
             profile_id = User.get_profile_id_by_user_id( user_id )
             registers = Food.food_registers_per_day( profile_id, day )
-            return { 'foods_registered': registers }
+            return { 'food_registers': registers }
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
 

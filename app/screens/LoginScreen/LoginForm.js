@@ -18,8 +18,8 @@ export const LoginForm = () => {
 	const dispatch = useDispatch();
 
 	const initialValues = {
-		email: "leonardo@gmail.com",
-		password: "123456",
+		email: "wild1@mgmail.com",
+		password: "12345678",
 	};
 
 	const { formValues, errors, handleChange, handleSubmit } = useForm(

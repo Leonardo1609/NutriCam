@@ -8,5 +8,8 @@ export const types = {
 	setUserInformation: '[Auth] Set User Information',
 	logout: '[Auth] Logout',
 
-	loadingUserInfo: '[Ui] Loading User Info'
+	loadingUserInfo: '[Ui] Loading User Info',
+
+	setFoodRegisters: '[Nutrition Summary] Set Food Registers',
+	deleteFoodRegister: '[Nutrition Summary] Delete Food Register'
 }

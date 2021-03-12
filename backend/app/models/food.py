@@ -107,6 +107,8 @@ class Food:
         """
 
         rows = cursor.execute( query, ( profile_id, food_register_day ) ).fetchall()
+        if len(rows) == 0:
+            return []
         registers = [ { 'food_register_id': food_register_id, 'food_name': food_name, 'day_food_id': day_food_id, 'calories': calories } for food_register_id, food_name, day_food_id, calories in rows ]
         return registers
 

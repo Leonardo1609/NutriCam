@@ -16,7 +16,8 @@ export const authReducer = (state = authState, { type, payload }) => {
 		case types.setUserInformation:
 			return {
 				...state,
-				userInformation: payload
+				userInformation: payload,
+				authenticated: true
 			}
 		case types.logout: 
 			return {

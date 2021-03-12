@@ -15,7 +15,7 @@ export const CalorieBar = () => {
 			<View style={styles.descriptionsContainer}>
 				<View>
 					<Text style={styles.descriptionText}>Meta</Text>
-					<Text style={styles.caloriesText}>{ userInformation.profile.profile_caloric_plan }</Text>
+					<Text style={styles.targetText}>{ userInformation.profile.profile_caloric_plan }</Text>
 				</View>
 				<View>
 					<Text style={styles.descriptionText}>Consumido</Text>
@@ -46,17 +46,21 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		fontFamily: "poppins-bold",
 	},
-	caloriesText: {
+	targetText: {
 		textAlign: "left",
 		fontSize: 16,
+		color: 'black',
+		fontWeight: 'bold'
 	},
 	consumedText: {
 		textAlign: "center",
 		fontSize: 16,
+		fontWeight: 'bold'
 	},
 	remainingText: {
 		textAlign: "right",
 		fontSize: 16,
+		fontWeight: 'bold'
 	},
 	barContainer: {
 		borderColor: "black",

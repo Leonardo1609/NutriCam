@@ -9,25 +9,26 @@ import { LoadingScreen } from "../screens/LoadingScreen";
 export const AppNavigator = () => {
 	let token;
 	const dispatch = useDispatch();
-	const { authenticated } = useSelector((state) => state.auth);
+	const { authenticated } = useSelector(
+		(state) => state.auth
+	);
 	const { loading } = useSelector((state) => state.ui);
-
 
 	useEffect(() => {
 		const getToken = async () => {
 			token = await AsyncStorage.getItem("token");
+			if (token) {
+				dispatch(getUser());
+			}
 		};
 
 		getToken();
-
-		if (token) {
-			dispatch(getUser());
-		}
 	}, [token]);
 
 	if (loading) return <LoadingScreen />;
 
-	if (!loading && authenticated) return <AuthenticatedNavigator />;
+	if (!loading && authenticated)
+		return <AuthenticatedNavigator />;
 
 	return <AuthNavigator />;
 };
