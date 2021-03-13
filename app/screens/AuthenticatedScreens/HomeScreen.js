@@ -5,12 +5,12 @@ import {
 	Text,
 	ScrollView,
 	TouchableNativeFeedback,
-	AsyncStorage,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { CalorieBar } from "../../components/CalorieBar";
 import { Ionicons } from "@expo/vector-icons";
+import { totalCaloriesConsumed } from "../../helpers/helpers";
 
 import moment from "moment";
 import "moment/locale/es";
@@ -20,27 +20,22 @@ moment.locale("es");
 
 export const HomeScreen = () => {
 	const dispatch = useDispatch();
+
+	const { userInformation } = useSelector((state) => state.auth);
+	const { foodRegisters } = useSelector((state) => state.nutritionSummary);
+
 	const [registerDayToShow, setRegisterDayToShow] = useState(
 		moment(new Date()).format("L")
 	);
+	const [registerDayToSend, setRegisterDayToSend] = useState(
+		JSON.stringify(new Date()).slice(1, 11)
+	);
+	const [registerDay, setRegisterDay] = useState(new Date());
+	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 
 	const filterFoodsPerDayFoodId = (foods, filterId) => {
 		return foods.filter((food) => food.day_food_id === filterId);
 	};
-
-	const totalCaloriesConsumedPerDayFood = (foods) => {
-		const reducer = (acc, cur) => acc + cur.calories;
-
-		if (foods.length) {
-			return foods.reduce(reducer, 0);
-		}
-
-		return 0;
-	};
-
-	const { userInformation } = useSelector((state) => state.auth);
-
-	const { foodRegisters } = useSelector((state) => state.nutritionSummary);
 
 	const caloriesRecommendationsPerDayFood = userInformation?.profile
 		?.profile_nutritional_plan
@@ -52,13 +47,6 @@ export const HomeScreen = () => {
 				Math.ceil(userInformation.profile.profile_caloric_plan * 0.25),
 		  ]
 		: [];
-
-	const [registerDayToSend, setRegisterDayToSend] = useState(
-		JSON.stringify(new Date()).slice(1, 11)
-	);
-	const [registerDay, setRegisterDay] = useState(new Date());
-
-	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 
 	const confirmDate = (date) => {
 		setShowDateTimePicker(false);
@@ -113,11 +101,11 @@ export const HomeScreen = () => {
 							headerTextIOS="Elige tu fecha de nacimiento"
 						/>
 					</View>
-					<View style={{ marginVertical: 10 }}>
+					<View style={styles.row}>
 						<CalorieBar />
 					</View>
 					<ScrollView contentContainerStyle={{ paddingBottom: 200 }}>
-						<View style={{ marginVertical: 10 }}>
+						<View style={styles.row}>
 							<DayFood
 								title="Desayuno"
 								recommended={
@@ -125,12 +113,12 @@ export const HomeScreen = () => {
 								}
 								dayId={1}
 								data={filterFoodsPerDayFoodId(foodRegisters, 1)}
-								total={totalCaloriesConsumedPerDayFood(
+								total={totalCaloriesConsumed(
 									filterFoodsPerDayFoodId(foodRegisters, 1)
 								)}
 							/>
 						</View>
-						<View style={{ marginVertical: 10 }}>
+						<View style={styles.row}>
 							<DayFood
 								title="Media Mañana"
 								recommended={
@@ -138,12 +126,12 @@ export const HomeScreen = () => {
 								}
 								dayId={2}
 								data={filterFoodsPerDayFoodId(foodRegisters, 2)}
-								total={totalCaloriesConsumedPerDayFood(
+								total={totalCaloriesConsumed(
 									filterFoodsPerDayFoodId(foodRegisters, 2)
 								)}
 							/>
 						</View>
-						<View style={{ marginVertical: 10 }}>
+						<View style={styles.row}>
 							<DayFood
 								title="Almuerzo"
 								recommended={
@@ -151,12 +139,12 @@ export const HomeScreen = () => {
 								}
 								dayId={3}
 								data={filterFoodsPerDayFoodId(foodRegisters, 3)}
-								total={totalCaloriesConsumedPerDayFood(
+								total={totalCaloriesConsumed(
 									filterFoodsPerDayFoodId(foodRegisters, 3)
 								)}
 							/>
 						</View>
-						<View style={{ marginVertical: 10 }}>
+						<View style={styles.row}>
 							<DayFood
 								title="Media Tarde"
 								recommended={
@@ -164,12 +152,12 @@ export const HomeScreen = () => {
 								}
 								dayId={4}
 								data={filterFoodsPerDayFoodId(foodRegisters, 4)}
-								total={totalCaloriesConsumedPerDayFood(
+								total={totalCaloriesConsumed(
 									filterFoodsPerDayFoodId(foodRegisters, 4)
 								)}
 							/>
 						</View>
-						<View style={{ marginVertical: 10 }}>
+						<View style={styles.row}>
 							<DayFood
 								title="Noche"
 								recommended={
@@ -177,7 +165,7 @@ export const HomeScreen = () => {
 								}
 								dayId={5}
 								data={filterFoodsPerDayFoodId(foodRegisters, 5)}
-								total={totalCaloriesConsumedPerDayFood(
+								total={totalCaloriesConsumed(
 									filterFoodsPerDayFoodId(foodRegisters, 5)
 								)}
 							/>
@@ -200,5 +188,8 @@ const styles = StyleSheet.create({
 	},
 	dateContainer: {
 		marginTop: 5,
+	},
+	row: {
+		marginVertical: 10,
 	},
 });

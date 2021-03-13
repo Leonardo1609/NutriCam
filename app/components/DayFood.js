@@ -3,19 +3,30 @@ import { StyleSheet, View, Text, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../consts/colors";
 import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 import { startDeleteFoodRegister } from "../actions/nutritionSummaryActions";
 
 export const DayFood = ({ title, data, total, dayId, recommended }) => {
 	const dispatch = useDispatch();
+	const navigation = useNavigation();
+
 	const deleteFoodRegister = (foodRegisterId) => {
 		dispatch(startDeleteFoodRegister(foodRegisterId));
+	};
+
+	const goToSearchFoodScreen = () => {
+		navigation.navigate("SearchFood");
 	};
 
 	return (
 		<View style={styles.dayFoodContainer}>
 			<View style={styles.titleContainer}>
 				<Text style={styles.title}>{title}</Text>
-				<Ionicons name="ios-add" size={20} />
+				<Ionicons
+					name="ios-add-circle-outline"
+					size={24}
+					onPress={goToSearchFoodScreen}
+				/>
 			</View>
 			{data.length ? (
 				data.map((food) => (
