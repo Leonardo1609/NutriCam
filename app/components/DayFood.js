@@ -15,7 +15,7 @@ export const DayFood = ({ title, data, total, dayId, recommended }) => {
 	};
 
 	const goToSearchFoodScreen = () => {
-		navigation.navigate("SearchFood");
+		navigation.navigate("SearchFood", { dayIdToRegist: dayId });
 	};
 
 	return (

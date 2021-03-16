@@ -16,3 +16,8 @@ export const setFoodsFound = (foodsFound, foodInput) => ({
 	type: types.searchFood,
 	payload: { foodsFound, foodInput }
 });
+
+export const setActiveFoodToRegist = (food) => ({
+	type: types.activeFood,
+	payload: food
+})

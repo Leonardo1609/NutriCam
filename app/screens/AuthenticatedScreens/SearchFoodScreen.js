@@ -1,26 +1,55 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+	StyleSheet,
+	View,
+	Text,
+	FlatList,
+	TouchableOpacity,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { setFoodsFound } from "../../actions/foodActions";
+import { useNavigation } from "@react-navigation/native";
+import {
+	setActiveFoodToRegist,
+	setFoodsFound,
+} from "../../actions/foodActions";
 import { foodNotFoundMessage } from "../../consts/consts";
 import { MainButton } from "../../components/MainButton";
 
-export const SearchFoodScreen = () => {
+export const SearchFoodScreen = ({ route }) => {
+	const navigation = useNavigation();
 	const dispatch = useDispatch();
 	const { foodSearchInput, foodsFound } = useSelector((state) => state.food);
+
+	const [dayIdToRegist, setDayIdToRegist] = useState(null);
+
+	const goToRegistFood = (food) => {
+		dispatch(setActiveFoodToRegist(food));
+		navigation.navigate("RegistFood", { dayIdToRegist });
+	};
 
 	const renderFoods = (food) => {
 		const { item, index } = food;
 		return (
-			<View
-				style={index ? styles.foodContainer : styles.firstFoodContainer}
+			<TouchableOpacity
+				activeOpacity={0.5}
+				onPress={goToRegistFood.bind(this, item)}
 			>
-				<Text style={styles.foodName}>{item.food_name}</Text>
-			</View>
+				<View
+					style={
+						index ? styles.foodContainer : styles.firstFoodContainer
+					}
+				>
+					<Text style={styles.foodName}>{item.food_name}</Text>
+				</View>
+			</TouchableOpacity>
 		);
 	};
 
 	useEffect(() => {
+		if (route.params?.dayIdToRegist) {
+			setDayIdToRegist(route.params.dayIdToRegist);
+		}
+
 		return () => {
 			dispatch(setFoodsFound([], ""));
 		};
@@ -46,7 +75,7 @@ export const SearchFoodScreen = () => {
 				<>
 					<View style={styles.listContainer}>
 						<FlatList
-							keyExtractor={(item) => item.food_id}
+							keyExtractor={(item) => item.food_id.toString()}
 							data={foodsFound}
 							renderItem={renderFoods}
 						/>
@@ -60,7 +89,9 @@ export const SearchFoodScreen = () => {
 						</MainButton>
 					</View>
 				</>
-			) : <View></View>}
+			) : (
+				<View></View>
+			)}
 		</View>
 	);
 };
