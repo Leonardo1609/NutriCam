@@ -9,8 +9,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import {
-	setActiveFoodToRegist,
 	setFoodsFound,
+	startGetFoodInformation,
 } from "../../actions/foodActions";
 import { foodNotFoundMessage } from "../../consts/consts";
 import { MainButton } from "../../components/MainButton";
@@ -23,7 +23,7 @@ export const SearchFoodScreen = ({ route }) => {
 	const [dayIdToRegist, setDayIdToRegist] = useState(null);
 
 	const goToRegistFood = (food) => {
-		dispatch(setActiveFoodToRegist(food));
+		dispatch(startGetFoodInformation(food.food_id));
 		navigation.navigate("RegistFood", { dayIdToRegist });
 	};
 

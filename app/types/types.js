@@ -12,6 +12,7 @@ export const types = {
 
 	setFoodRegisters: "[Nutrition Summary] Set Food Registers",
 	deleteFoodRegister: "[Nutrition Summary] Delete Food Register",
+	registFood: "[Nutrition Summary | Food] Regist Food",
 
 	searchFood: "[Food] Search Food",
 	activeFood: "[Food] Set Active Food",

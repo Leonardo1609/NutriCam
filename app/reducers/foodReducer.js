@@ -18,6 +18,13 @@ export const foodReducer = ( state = initialState, { type, payload } ) => {
 				...state,
 				activeFoodToRegist: payload
 			}
+		case types.registFood:
+			return {
+				...state,
+				activeFoodToRegist: null,
+				foodSearchInput: '',
+				foodsFound: []
+			}
 		default:
 			return state;
 	}

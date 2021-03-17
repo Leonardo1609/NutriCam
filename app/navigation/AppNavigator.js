@@ -5,13 +5,13 @@ import { getUser } from "../actions/authActions";
 import { AuthNavigator } from "./AuthNavigator";
 import { AuthenticatedNavigator } from "./AuthenticatedNavigator";
 import { LoadingScreen } from "../screens/LoadingScreen";
+import { saveIcon } from "../helpers/helpers";
 
 export const AppNavigator = () => {
 	let token;
 	const dispatch = useDispatch();
-	const { authenticated } = useSelector(
-		(state) => state.auth
-	);
+	const { authenticated } = useSelector((state) => state.auth);
+
 	const { loading } = useSelector((state) => state.ui);
 
 	useEffect(() => {
@@ -19,6 +19,10 @@ export const AppNavigator = () => {
 			token = await AsyncStorage.getItem("token");
 			if (token) {
 				dispatch(getUser());
+
+				if (await !AsyncStorage.getItem("icon")) {
+					await saveIcon("pan");
+				}
 			}
 		};
 
@@ -27,8 +31,7 @@ export const AppNavigator = () => {
 
 	if (loading) return <LoadingScreen />;
 
-	if (!loading && authenticated)
-		return <AuthenticatedNavigator />;
+	if (!loading && authenticated) return <AuthenticatedNavigator />;
 
 	return <AuthNavigator />;
 };

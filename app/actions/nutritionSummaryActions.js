@@ -9,7 +9,42 @@ export const startGetFoodRegisters = (registerDay) => {
 			);
 			dispatch(setFoodRegisters(data.food_registers));
 		} catch (e) {
-			console.log( e.response);
+			console.log(e.response);
+		}
+	};
+};
+
+export const startRegistFood = (
+	day_food_id,
+	food_measure_unit_id,
+	food_id,
+	food_name,
+	quantity,
+	calories
+) => {
+	return async (dispatch) => {
+		const dataToSend = {
+			day_food_id,
+			food_measure_unit_id,
+			food_id,
+			quantity,
+		};
+
+		try {
+			const { data } = await clientAxios.post("/regist-food", dataToSend);
+			const foodObject = {
+				food_register_id: data.food_register_id,
+				day_food_id,
+				food_name,
+				calories,
+			};
+			console.log( 'foodObject', foodObject )
+
+			dispatch( newFoodRegister( foodObject ) )
+
+
+		} catch (e) {
+			console.log(e.response);
 		}
 	};
 };
@@ -22,9 +57,8 @@ export const startDeleteFoodRegister = (foodRegisterId) => {
 			);
 
 			dispatch(deleteFoodRegister(foodRegisterId));
-
 		} catch (e) {
-			console.log(e.response );
+			console.log(e.response);
 		}
 	};
 };
@@ -36,7 +70,12 @@ export const setFoodRegisters = (registers) => ({
 
 export const deleteFoodRegister = (foodRegisterId) => {
 	return {
-	type: types.deleteFoodRegister,
-	payload: foodRegisterId,
-		
-}};
+		type: types.deleteFoodRegister,
+		payload: foodRegisterId,
+	};
+};
+
+export const newFoodRegister = ( food ) => ({
+	type: types.registFood,
+	payload: food
+})

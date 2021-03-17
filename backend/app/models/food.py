@@ -15,7 +15,7 @@ class Food:
     @classmethod
     def search_food( cls, food_input, profile_id ):
         query = f"""
-        SELECT food_id, food_name
+        SELECT TOP 20 food_id, food_name
         FROM food 
         WHERE food_name LIKE '%{ food_input }%' AND (creator_id = 1 OR creator_id={profile_id})
         ORDER BY creator_id DESC;

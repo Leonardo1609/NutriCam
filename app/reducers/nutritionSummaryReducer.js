@@ -21,6 +21,12 @@ export const nutritionSummaryReducer = (
 					(food) => food.food_register_id !== payload
 				),
 			};
+		case types.registFood:
+			console.log( 'payload', payload )
+			return {
+				...state,
+				foodRegisters: [ ...state.foodRegisters, payload ] 
+			}
 		default:
 			return state;
 	}

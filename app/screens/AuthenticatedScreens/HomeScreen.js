@@ -23,6 +23,7 @@ export const HomeScreen = () => {
 
 	const { userInformation } = useSelector((state) => state.auth);
 	const { foodRegisters } = useSelector((state) => state.nutritionSummary);
+	console.log( 'foodRegisters', foodRegisters );
 
 	const [registerDayToShow, setRegisterDayToShow] = useState(
 		moment(new Date()).format("L")
