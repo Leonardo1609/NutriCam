@@ -7,6 +7,8 @@ export const startGetFoodRegisters = (registerDay) => {
 			const { data } = await clientAxios.get(
 				`/registers-per-day/${registerDay}`
 			);
+			console.log( registerDay );
+			dispatch(setDateOfRegisters(registerDay));
 			dispatch(setFoodRegisters(data.food_registers));
 		} catch (e) {
 			console.log(e.response);
@@ -38,11 +40,8 @@ export const startRegistFood = (
 				food_name,
 				calories,
 			};
-			console.log( 'foodObject', foodObject )
 
-			dispatch( newFoodRegister( foodObject ) )
-
-
+			dispatch(newFoodRegister(foodObject));
 		} catch (e) {
 			console.log(e.response);
 		}
@@ -75,7 +74,12 @@ export const deleteFoodRegister = (foodRegisterId) => {
 	};
 };
 
-export const newFoodRegister = ( food ) => ({
+export const newFoodRegister = (food) => ({
 	type: types.registFood,
-	payload: food
-})
+	payload: food,
+});
+
+export const setDateOfRegisters = (date) => ({
+	type: types.setDateOfRegisters,
+	payload: date
+});

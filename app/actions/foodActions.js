@@ -17,11 +17,13 @@ const getFoodInformartion = async (foodId) => {
 	return data;
 };
 
-export const startGetFoodInformation = (foodId) => {
+export const startGetFoodInformation = (foodId, fn = null) => {
 	return async (dispatch) => {
 		try {
 			const { food_information } = await getFoodInformartion(foodId);
 			dispatch(setActiveFoodToRegist(food_information));
+
+			if( fn ) fn();
 		} catch (e) {
 			console.log(e.response);
 		}

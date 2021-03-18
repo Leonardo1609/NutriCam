@@ -25,7 +25,7 @@ export const icons = [
 
 export const saveIcon = async (iconName) => {
 	const icon = icons.find((icon) => icon.iconName === iconName);
-	console.log(icon)
+	console.log(icon);
 	await AsyncStorage.setItem("icon", JSON.stringify(icon));
 };
 
@@ -37,4 +37,14 @@ export const totalCaloriesConsumed = (foods) => {
 	}
 
 	return 0;
+};
+
+export const formatDate = (date) => {
+	const day = date.getDate() / 10 > 1 ? date.getDate() : "0" + date.getDate();
+	const month =
+		(date.getMonth() + 1) / 10 > 1
+			? date.getMonth() + 1
+			: "0" + (date.getMonth() + 1);
+	const year = date.getFullYear();
+	return [year, month, day].join("-");
 };

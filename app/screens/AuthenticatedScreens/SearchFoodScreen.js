@@ -23,8 +23,10 @@ export const SearchFoodScreen = ({ route }) => {
 	const [dayIdToRegist, setDayIdToRegist] = useState(null);
 
 	const goToRegistFood = (food) => {
-		dispatch(startGetFoodInformation(food.food_id));
-		navigation.navigate("RegistFood", { dayIdToRegist });
+		const navToRegistFoodScreen = () => {
+			navigation.navigate("RegistFood", { dayIdToRegist });
+		};
+		dispatch(startGetFoodInformation(food.food_id, navToRegistFoodScreen));
 	};
 
 	const renderFoods = (food) => {

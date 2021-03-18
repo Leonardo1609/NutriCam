@@ -1,6 +1,8 @@
 import { types } from "../types/types";
+import { formatDate } from "../helpers/helpers";
 
 const initialState = {
+	dateOfRegister: formatDate(new Date()),
 	foodRegisters: [],
 };
 
@@ -22,11 +24,15 @@ export const nutritionSummaryReducer = (
 				),
 			};
 		case types.registFood:
-			console.log( 'payload', payload )
 			return {
 				...state,
-				foodRegisters: [ ...state.foodRegisters, payload ] 
-			}
+				foodRegisters: [...state.foodRegisters, payload],
+			};
+		case types.setDateOfRegisters:
+			return {
+				...state,
+				dateOfRegister: payload,
+			};
 		default:
 			return state;
 	}

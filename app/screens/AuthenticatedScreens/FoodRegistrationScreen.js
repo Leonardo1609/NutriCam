@@ -14,7 +14,7 @@ export const FoodRegistrationScreen = ({ route }) => {
 	console.log(activeFoodToRegist);
 
 	const [dayIdToRegist, setDayIdToRegist] = useState(1);
-	const [portions, setPortions] = useState(1);
+	const [quantity, setQuantity] = useState(1);
 	const [icon, setIcon] = useState(null);
 
 	const iconImage =
@@ -36,8 +36,12 @@ export const FoodRegistrationScreen = ({ route }) => {
 
 	const equivalence = () => {
 		return Math.ceil(
-			(activeFoodToRegist.food_calories * portions) / icon.foodCalories
+			(activeFoodToRegist.food_calories * quantity) / icon.foodCalories
 		);
+	};
+
+	const toTwoDecimals = (number) => {
+		return parseFloat(number).toFixed(2);
 	};
 
 	const registFood = () => {
@@ -47,8 +51,8 @@ export const FoodRegistrationScreen = ({ route }) => {
 				1,
 				activeFoodToRegist.food_id,
 				activeFoodToRegist.food_name,
-				portions,
-				portions * activeFoodToRegist.food_calories
+				quantity,
+				quantity * activeFoodToRegist.food_calories
 			)
 		);
 		navigation.navigate("Home");
@@ -84,57 +88,93 @@ export const FoodRegistrationScreen = ({ route }) => {
 							}))}
 						/>
 					</View>
-					<View>
-						<View>
-							<Text>Porciones:</Text>
+					<View style={styles.quantityContainer}>
+						<View style={styles.quantityTitleContainer}>
+							<Text style={styles.quantityTitle}>Cantidad*</Text>
 						</View>
-						<View>
+						<View style={styles.quantityInputContainer}>
 							<TextInput
-								onChangeText={(value) => setPortions(value)}
-								value={portions.toString()}
+								style={styles.quantityInput}
+								onChangeText={(value) => setQuantity(value)}
+								value={quantity.toString()}
 								keyboardType="numeric"
 							/>
 						</View>
-						<View>
-							<Text>100g</Text>
+						<View style={styles.unitMeasureContainer}>
+							<Text style={styles.unitMeasure}>100g</Text>
 						</View>
 					</View>
-					<View>
-						<Text>Total: {100 * portions} g</Text>
+					<View style={styles.totalGramsContainer}>
+						<Text style={styles.totalGrams}>
+							<Text style={styles.totalText}>Total:</Text>{" "}
+							{100 * quantity}g
+						</Text>
 					</View>
-					<View>
-						<Text>Información Nutricional</Text>
-						<View>
-							<View>
-								<Text>Calorías</Text>
-								<Text>{activeFoodToRegist.food_calories}</Text>
-							</View>
-							<View>
-								<Text>Grasas Totales</Text>
-								<Text>
-									{activeFoodToRegist.food_fats || "--"}
+					<View style={styles.nutritionalInformationContainer}>
+						<Text style={styles.nutritionalInformationTitle}>
+							Información Nutricional
+						</Text>
+						<View style={styles.nutritionalValues}>
+							<View style={styles.nutritionalValueContainer}>
+								<Text style={styles.nutritionalTitle}>
+									Calorías
+								</Text>
+								<Text style={styles.nutritionalValue}>
+									{activeFoodToRegist.food_calories *
+										quantity}{" "}
+									cal
 								</Text>
 							</View>
-							<View>
-								<Text>Carbohidratos Totales</Text>
-								<Text>
-									{activeFoodToRegist.food_carbohydrates ||
-										"--"}
+							<View style={styles.nutritionalValueContainer}>
+								<Text style={styles.nutritionalTitle}>
+									Grasas Totales
+								</Text>
+								<Text style={styles.nutritionalValue}>
+									{activeFoodToRegist.food_fats
+										? toTwoDecimals(
+												activeFoodToRegist.food_fats *
+													quantity
+										  ) + " g"
+										: "--"}
 								</Text>
 							</View>
-							<View>
-								<Text>Calorías</Text>
-								<Text>
-									{activeFoodToRegist.food_proteins || "--"}
+							<View style={styles.nutritionalValueContainer}>
+								<Text style={styles.nutritionalTitle}>
+									Carbohidratos Totales
+								</Text>
+								<Text style={styles.nutritionalValue}>
+									{activeFoodToRegist.food_carbohydrates
+										? toTwoDecimals(
+												activeFoodToRegist.food_carbohydrates *
+													quantity
+										  ) + " g"
+										: "--"}
+								</Text>
+							</View>
+							<View style={styles.nutritionalValueContainer}>
+								<Text style={styles.nutritionalTitle}>
+									Proteinas
+								</Text>
+								<Text style={styles.nutritionalValue}>
+									{activeFoodToRegist.food_proteins
+										? toTwoDecimals(
+												activeFoodToRegist.food_proteins *
+													quantity
+										  ) + " g"
+										: "--"}
 								</Text>
 							</View>
 						</View>
 					</View>
 					<View style={styles.equivalenceContainer}>
-						<Text>Tu comida equivale en calorías a: </Text>
+						<Text style={styles.equivalenceTitle}>
+							Tu comida equivale en calorías a:
+						</Text>
 						{icon && (
-							<View>
-								<Text>{equivalence()}</Text>
+							<View style={styles.equivalenceIconContainer}>
+								<Text style={styles.equivalence}>
+									{equivalence()}
+								</Text>
 								<View style={styles.iconContainer}>
 									<Image
 										style={styles.icon}
@@ -157,12 +197,102 @@ const styles = StyleSheet.create({
 		backgroundColor: "white",
 		paddingHorizontal: "10%",
 	},
+	quantityContainer: {
+		marginVertical: 10,
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
+	quantityTitleContainer: {},
+	quantityTitle: {
+		fontSize: 20,
+		fontWeight: "bold",
+	},
+	quantityInputContainer: {
+		width: 75,
+	},
+	quantityInput: {
+		borderBottomColor: "black",
+		borderBottomWidth: 1,
+		textAlign: "center",
+		fontSize: 20,
+	},
+	unitMeasureContainer: {
+		borderColor: "black",
+		borderWidth: 2,
+		borderRadius: 5,
+		paddingVertical: 4,
+		paddingHorizontal: 20,
+	},
+	unitMeasure: {
+		fontSize: 20,
+		fontWeight: "bold",
+	},
+	totalGramsContainer: {
+		flexDirection: "row",
+		justifyContent: "flex-end",
+		marginTop: 10,
+	},
+	totalGrams: {
+		fontSize: 20,
+	},
+	totalText: {
+		fontWeight: "bold",
+	},
 	equivalenceContainer: {
 		flexDirection: "row",
 	},
+	nutritionalInformationContainer: {
+		marginVertical: 20,
+	},
+	nutritionalInformationTitle: {
+		fontSize: 20,
+		fontFamily: "poppins-bold",
+	},
+	nutritionalValues: {
+		borderColor: "black",
+		borderWidth: 1,
+		overflow: "hidden",
+	},
+	nutritionalValueContainer: {
+		width: "100%",
+		flexDirection: "row",
+		justifyContent: "space-between",
+		paddingHorizontal: 10,
+		paddingVertical: 5,
+		borderColor: "black",
+		borderWidth: 1,
+	},
+	nutritionalTitle: {
+		fontSize: 14,
+		fontFamily: "poppins-bold",
+	},
+	nutritionalValue: {
+		fontSize: 14,
+		fontWeight: "bold",
+	},
+	equivalenceContainer: {
+		marginVertical: 10,
+	},
+	equivalenceTitle: {
+		textAlign: "center",
+		fontFamily: "poppins-bold",
+		fontSize: 18,
+	},
+	equivalenceIconContainer: {
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	equivalence: {
+		textAlignVertical: "center",
+		fontWeight: "bold",
+		fontSize: 45,
+		marginRight: 20,
+	},
 	iconContainer: {
-		width: 100,
-		height: 100,
+		width: 80,
+		height: 80,
 	},
 	icon: {
 		width: "100%",

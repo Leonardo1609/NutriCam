@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../consts/colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { startDeleteFoodRegister } from "../actions/nutritionSummaryActions";
+import { formatDate } from "../helpers/helpers";
 
 export const DayFood = ({ title, data, total, dayId, recommended }) => {
 	const dispatch = useDispatch();
@@ -14,19 +15,25 @@ export const DayFood = ({ title, data, total, dayId, recommended }) => {
 		dispatch(startDeleteFoodRegister(foodRegisterId));
 	};
 
+	const { dateOfRegister } = useSelector((state) => state.nutritionSummary);
+
 	const goToSearchFoodScreen = () => {
 		navigation.navigate("SearchFood", { dayIdToRegist: dayId });
 	};
+
+	const isToday = () => formatDate(new Date()) === dateOfRegister;
 
 	return (
 		<View style={styles.dayFoodContainer}>
 			<View style={styles.titleContainer}>
 				<Text style={styles.title}>{title}</Text>
-				<Ionicons
-					name="ios-add-circle-outline"
-					size={24}
-					onPress={goToSearchFoodScreen}
-				/>
+				{ isToday() && (
+					<Ionicons
+						name="ios-add-circle-outline"
+						size={24}
+						onPress={goToSearchFoodScreen}
+					/>
+				)}
 			</View>
 			{data.length ? (
 				data.map((food) => (
@@ -38,15 +45,18 @@ export const DayFood = ({ title, data, total, dayId, recommended }) => {
 							<Text numberOfLines={1}>{food.food_name}</Text>
 						</View>
 						<View style={styles.caloriesContainer}>
-							<Ionicons
-								style={styles.deleteIcon}
-								name="ios-trash-outline"
-								size={20}
-								onPress={deleteFoodRegister.bind(
-									this,
-									food.food_register_id
-								)}
-							/>
+							{
+							 isToday && (
+								<Ionicons
+									style={styles.deleteIcon}
+									name="ios-trash-outline"
+									size={20}
+									onPress={deleteFoodRegister.bind(
+										this,
+										food.food_register_id
+									)}
+								/>
+							)}
 							<Text style={styles.calories}>{food.calories}</Text>
 						</View>
 					</View>

@@ -8,14 +8,15 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { formatDate } from "../../helpers/helpers";
 import { CalorieBar } from "../../components/CalorieBar";
 import { Ionicons } from "@expo/vector-icons";
 import { totalCaloriesConsumed } from "../../helpers/helpers";
+import { DayFood } from "../../components/DayFood";
+import { startGetFoodRegisters } from "../../actions/nutritionSummaryActions";
 
 import moment from "moment";
 import "moment/locale/es";
-import { DayFood } from "../../components/DayFood";
-import { startGetFoodRegisters } from "../../actions/nutritionSummaryActions";
 moment.locale("es");
 
 export const HomeScreen = () => {
@@ -23,15 +24,17 @@ export const HomeScreen = () => {
 
 	const { userInformation } = useSelector((state) => state.auth);
 	const { foodRegisters } = useSelector((state) => state.nutritionSummary);
-	console.log( 'foodRegisters', foodRegisters );
 
 	const [registerDayToShow, setRegisterDayToShow] = useState(
 		moment(new Date()).format("L")
 	);
+
 	const [registerDayToSend, setRegisterDayToSend] = useState(
-		JSON.stringify(new Date()).slice(1, 11)
+		formatDate(new Date())
 	);
+
 	const [registerDay, setRegisterDay] = useState(new Date());
+
 	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 
 	const filterFoodsPerDayFoodId = (foods, filterId) => {
@@ -52,7 +55,7 @@ export const HomeScreen = () => {
 	const confirmDate = (date) => {
 		setShowDateTimePicker(false);
 		setRegisterDay(date);
-		setRegisterDayToSend(JSON.stringify(date).slice(1, 11));
+		setRegisterDayToSend(formatDate(date));
 		setRegisterDayToShow(moment(date).format("L"));
 	};
 

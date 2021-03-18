@@ -11,6 +11,7 @@ export const types = {
 	loadingUserInfo: "[Ui] Loading User Info",
 
 	setFoodRegisters: "[Nutrition Summary] Set Food Registers",
+	setDateOfRegisters: "[Nutrition Summary] Set Date Of Registers",
 	deleteFoodRegister: "[Nutrition Summary] Delete Food Register",
 	registFood: "[Nutrition Summary | Food] Regist Food",
 
