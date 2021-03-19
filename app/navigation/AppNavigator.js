@@ -18,9 +18,9 @@ export const AppNavigator = () => {
 		const getToken = async () => {
 			token = await AsyncStorage.getItem("token");
 			if (token) {
-				dispatch(getUser());
+				const icon = await AsyncStorage.getItem("icon");
 
-				if (await !AsyncStorage.getItem("icon")) {
+				if (!icon) {
 					await saveIcon("pan");
 				}
 			}

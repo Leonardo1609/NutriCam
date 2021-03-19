@@ -23,6 +23,30 @@ export const icons = [
 	},
 ];
 
+export const activityLevels = new Map([
+	[1, "Sedentaria"],
+	[2, "Ligera"],
+	[3, "Moderada"],
+	[4, "Intensa"],
+]);
+
+export const genres = new Map([
+	["M", "Masculino"],
+	["F", "Femenino"],
+]);
+
+export const dayFoodMap = new Map([
+	[1, "Registrar Desayuno"],
+	[2, "Registrar Media Mañana"],
+	[3, "Registrar Almuerzo"],
+	[4, "Registrar Media Tarde"],
+	[5, "Registrar Cena"],
+]);
+
+export const toTwoDecimals = (number) => {
+	return parseFloat(number).toFixed(2);
+};
+
 export const saveIcon = async (iconName) => {
 	const icon = icons.find((icon) => icon.iconName === iconName);
 	console.log(icon);

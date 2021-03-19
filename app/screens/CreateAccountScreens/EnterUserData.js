@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 
 import moment from "moment";
 import "moment/locale/es";
+import { activityLevels, genres } from "../../helpers/helpers";
 moment.locale("es");
 
 const errorColor = (error) => (error ? "red" : "black");
@@ -61,18 +62,6 @@ export const EnterUserData = () => {
 			paddingVertical: 5,
 		},
 	});
-
-	const activityLevels = new Map([
-		[1, "Sedentaria"],
-		[2, "Ligera"],
-		[3, "Moderada"],
-		[4, "Intensa"],
-	]);
-
-	const genres = new Map([
-		["M", "Masculino"],
-		["F", "Femenino"],
-	]);
 
 	const confirmDate = (date) => {
 		setShowDateTimePicker(false);

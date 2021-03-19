@@ -1,5 +1,6 @@
 import { types } from "../types/types";
 import { clientAxios } from "../axios/clientAxios";
+import { setActiveFoodToRegist } from "./foodActions";
 
 export const startGetFoodRegisters = (registerDay) => {
 	return async (dispatch) => {
@@ -7,7 +8,7 @@ export const startGetFoodRegisters = (registerDay) => {
 			const { data } = await clientAxios.get(
 				`/registers-per-day/${registerDay}`
 			);
-			console.log( registerDay );
+			console.log(registerDay);
 			dispatch(setDateOfRegisters(registerDay));
 			dispatch(setFoodRegisters(data.food_registers));
 		} catch (e) {
@@ -22,16 +23,18 @@ export const startRegistFood = (
 	food_id,
 	food_name,
 	quantity,
-	calories
+	calories,
+	fn = null
 ) => {
 	return async (dispatch) => {
 		const dataToSend = {
-			day_food_id,
+			day_food_id: Number(day_food_id),
 			food_measure_unit_id,
 			food_id,
-			quantity,
+			quantity: Number(quantity),
 		};
 
+		console.log( dataToSend );
 		try {
 			const { data } = await clientAxios.post("/regist-food", dataToSend);
 			const foodObject = {
@@ -42,6 +45,8 @@ export const startRegistFood = (
 			};
 
 			dispatch(newFoodRegister(foodObject));
+			dispatch(setActiveFoodToRegist(null));
+			if (fn) fn();
 		} catch (e) {
 			console.log(e.response);
 		}
@@ -81,5 +86,5 @@ export const newFoodRegister = (food) => ({
 
 export const setDateOfRegisters = (date) => ({
 	type: types.setDateOfRegisters,
-	payload: date
+	payload: date,
 });

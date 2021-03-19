@@ -5,6 +5,8 @@ import {
 	Text,
 	FlatList,
 	TouchableOpacity,
+	ScrollView,
+	Dimensions,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -114,18 +116,18 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 	foodContainer: {
-		padding: 15,
+		padding: Dimensions.get('window').height > 600 ? 15 : 8 ,
 		borderTopWidth: 1,
 		borderTopColor: "black",
 	},
 	firstFoodContainer: {
-		padding: 15,
+		padding: Dimensions.get('window').height > 600 ? 15 : 8 
 	},
 	foodName: {
-		fontSize: 14,
+		fontSize: Dimensions.get('window').height > 600 ? 14 : 12
 	},
 	listContainer: {
-		maxHeight: 300,
+		maxHeight: Dimensions.get('window').height > 600 ? 300 : 150 ,
 		borderColor: "black",
 		borderWidth: 1,
 		elevation: 2,

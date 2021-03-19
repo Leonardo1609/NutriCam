@@ -83,6 +83,7 @@ class RegistFood( Resource ):
     @jwt_required()
     def post(self):
         data = self.parser.parse_args()
+        print( data )
         user_id = get_jwt_identity()
         try:
             profile_id = User.get_profile_id_by_user_id( user_id )

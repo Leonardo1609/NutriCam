@@ -27,7 +27,7 @@ export const DayFood = ({ title, data, total, dayId, recommended }) => {
 		<View style={styles.dayFoodContainer}>
 			<View style={styles.titleContainer}>
 				<Text style={styles.title}>{title}</Text>
-				{ isToday() && (
+				{isToday() && (
 					<Ionicons
 						name="ios-add-circle-outline"
 						size={24}
@@ -45,8 +45,7 @@ export const DayFood = ({ title, data, total, dayId, recommended }) => {
 							<Text numberOfLines={1}>{food.food_name}</Text>
 						</View>
 						<View style={styles.caloriesContainer}>
-							{
-							 isToday && (
+							{isToday() && (
 								<Ionicons
 									style={styles.deleteIcon}
 									name="ios-trash-outline"
