@@ -34,7 +34,7 @@ export const startRegistFood = (
 			quantity: Number(quantity),
 		};
 
-		console.log( dataToSend );
+		console.log(dataToSend);
 		try {
 			const { data } = await clientAxios.post("/regist-food", dataToSend);
 			const foodObject = {
@@ -56,11 +56,34 @@ export const startRegistFood = (
 export const startDeleteFoodRegister = (foodRegisterId) => {
 	return async (dispatch) => {
 		try {
-			const { data } = await clientAxios.delete(
-				`/delete-regist/${foodRegisterId}`
-			);
+			await clientAxios.delete(`/delete-regist/${foodRegisterId}`);
 
 			dispatch(deleteFoodRegister(foodRegisterId));
+		} catch (e) {
+			console.log(e.response);
+		}
+	};
+};
+
+export const startGetWeeklyCalories = (date) => {
+	return async (dispatch) => {
+		try {
+			const { data } = await clientAxios.get(`/weekly-summary/${date}`);
+			dispatch(setWeeklyCalories(data.weekly_calories));
+		} catch (e) {
+			console.log(e.response);
+		}
+	};
+};
+
+export const startGetNutritionSummary = (date) => {
+	return async (dispatch) => {
+		try {
+			const { data } = await clientAxios.get(
+				`/nutrition-summary/${date}`
+			);
+			console.log(data.summary);
+			dispatch(setNutritionSummary(data.summary));
 		} catch (e) {
 			console.log(e.response);
 		}
@@ -87,4 +110,14 @@ export const newFoodRegister = (food) => ({
 export const setDateOfRegisters = (date) => ({
 	type: types.setDateOfRegisters,
 	payload: date,
+});
+
+export const setWeeklyCalories = (weeklyCalories) => ({
+	type: types.setWeeklyCalories,
+	payload: weeklyCalories,
+});
+
+export const setNutritionSummary = (summary) => ({
+	type: types.setNutritionSummary,
+	payload: summary,
 });

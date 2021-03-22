@@ -120,8 +120,18 @@ class NutritionSummaryPerDay( Resource ):
         user_id = get_jwt_identity()
         try:
             profile_id = User.get_profile_id_by_user_id( user_id )
-            Food.nutrition_summary_per_day( profile_id, day )
+            summary = Food.nutrition_summary_per_day( profile_id, day )
+            return { 'summary': summary }
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
 
-
+class WeeklyCalories( Resource ):
+    @jwt_required()
+    def get( self, date ):
+        user_id = get_jwt_identity()
+        try:
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            weekly_calories = Food.weekly_calories( date )
+            return { 'weekly_calories': weekly_calories }
+        except:
+            return {'msg': 'Ha ocurrido un error'}, 500

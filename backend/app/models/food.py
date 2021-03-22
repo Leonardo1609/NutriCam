@@ -1,4 +1,12 @@
 from ..db import cursor
+from datetime import date, timedelta
+
+def getCaloriesOfDay( input_day, date_calories ):
+    for calories, day in date_calories:
+        if( str(day) == input_day ):
+            return calories
+    return 0
+
 class Food:
     @classmethod
     def food_json( cls, food_id, food_name, food_calories, food_fats, food_carbohydrates, food_proteins, day_food_id , measure_unit_id, measure_name):
@@ -110,6 +118,7 @@ class Food:
         """
 
         rows = cursor.execute( query, ( profile_id, food_register_day ) ).fetchall()
+        print(rows)
         if len(rows) == 0:
             return []
         registers = [ { 'food_register_id': food_register_id, 'food_name': food_name, 'day_food_id': day_food_id, 'calories': calories } for food_register_id, food_name, day_food_id, calories in rows ]
@@ -125,8 +134,47 @@ class Food:
         """
 
         row = cursor.execute( query, ( profile_id, food_register_day ) ).fetchone()
-        
-        print( row )
+        total_calories, total_carbohydrates, total_fats, total_proteins = row
+        return {
+            'total_calories': total_calories or 0,
+            'total_carbohydrates': total_carbohydrates or 0,
+            'total_fats': total_fats or 0,
+            'total_proteins': total_proteins or 0
+        }
+
+    @classmethod
+    def weekly_calories( cls, input_date ):
+        input_year, input_month, input_day = input_date.split('-')
+
+        input_month = input_month if int(input_month) / 10 > 1 else input_month[1]
+        input_day = input_day if int(input_day) / 10 > 1 else input_day[1]
+
+        day = date(int(input_year), int(input_month), int(input_day))
+        monday = day - timedelta( days = ( day.weekday() ) )
+        tuesday = monday + timedelta( days = 1 )
+        wednesday = monday + timedelta( days = 2 )
+        thursday = monday + timedelta( days = 3 )
+        friday = monday + timedelta( days = 4 )
+        satuday = monday + timedelta( days = 5 )
+        sunday = monday + timedelta( days = 6 )
+
+        week = [ str(monday), str(tuesday), str(wednesday), str(thursday), str(friday), str(satuday), str(sunday) ]
+
+        query = """
+        SELECT SUM(fr.quantity * fmu.food_calories), fr.food_register_day
+        FROM food_register fr
+        INNER JOIN food_measure_unit fmu ON fmu.food_id = fr.food_id
+        wHERE profile_id = 25 AND fr.food_register_day BETWEEN ? AND ?
+        GROUP BY fr.food_register_day;
+        """
+
+        rows = cursor.execute( query, ( str(monday), str(sunday) ) ).fetchall()
+
+        weekly_calories = []
+        for week_day in week:
+            weekly_calories.append({ 'weekday': week_day, 'calories':  getCaloriesOfDay( week_day, rows )})
+
+        return weekly_calories
 
 
 

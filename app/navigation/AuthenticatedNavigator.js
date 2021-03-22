@@ -6,7 +6,8 @@ import { HomeScreen } from "../screens/AuthenticatedScreens/HomeScreen";
 import { colors } from "../consts/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { DiaryNavigator } from './DiaryNavigator';
+import { DiaryNavigator } from "./DiaryNavigator";
+import { WeeklyNavigator } from "./WeeklyNavigator";
 
 const Tab =
 	Platform.OS === "android"
@@ -60,7 +61,9 @@ export const AuthenticatedNavigator = () => {
 							</Text>
 						) : route.name !== "Search" ? (
 							route.name
-						) : '',
+						) : (
+							""
+						),
 				})}
 				tabBarOptions={{
 					activeTintColor: colors.green,
@@ -68,7 +71,7 @@ export const AuthenticatedNavigator = () => {
 					labelStyle: { fontSize: 12, fontFamily: "poppins-bold" },
 				}}
 			>
-				<Tab.Screen name="Semana" component={HomeScreen} />
+				<Tab.Screen name="Semana" component={WeeklyNavigator} />
 				<Tab.Screen name="Diario" component={DiaryNavigator} />
 				<Tab.Screen name="Search" component={HomeScreen} />
 				<Tab.Screen name="Plan" component={HomeScreen} />

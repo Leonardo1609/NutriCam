@@ -1,5 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+export const daysFirstLetter = ["L", "M", "M", "J", "V", "S", "D"];
+
 export const icons = [
 	{
 		iconName: "cerveza",

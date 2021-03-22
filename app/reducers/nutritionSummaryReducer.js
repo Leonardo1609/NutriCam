@@ -3,7 +3,10 @@ import { formatDate } from "../helpers/helpers";
 
 const initialState = {
 	dateOfRegister: formatDate(new Date()),
+	dateOfSummary: formatDate(new Date()),
 	foodRegisters: [],
+	weeklyCalories: [],
+	nutritionSummary: [],
 };
 
 export const nutritionSummaryReducer = (
@@ -33,6 +36,22 @@ export const nutritionSummaryReducer = (
 				...state,
 				dateOfRegister: payload,
 			};
+		case types.setWeeklyCalories:
+			return {
+				...state,
+				weeklyCalories: payload,
+			};
+		case types.setNutritionSummary:
+			return {
+				...state,
+				nutritionSummary: payload,
+			};
+		case types.setDateOfSummary:
+			return {
+				...state,
+				dateOfSummary: payload,
+			};
+
 		default:
 			return state;
 	}

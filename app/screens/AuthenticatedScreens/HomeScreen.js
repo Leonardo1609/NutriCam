@@ -108,7 +108,7 @@ export const HomeScreen = () => {
 					<View style={styles.row}>
 						<CalorieBar />
 					</View>
-					<ScrollView contentContainerStyle={{ paddingBottom: 200 }}>
+					<ScrollView>
 						<View style={styles.row}>
 							<DayFood
 								title="Desayuno"
@@ -183,6 +183,7 @@ export const HomeScreen = () => {
 
 const styles = StyleSheet.create({
 	screen: {
+		flex: 1,
 		paddingHorizontal: "10%",
 		backgroundColor: "white",
 	},
