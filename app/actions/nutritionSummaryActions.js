@@ -2,14 +2,13 @@ import { types } from "../types/types";
 import { clientAxios } from "../axios/clientAxios";
 import { setActiveFoodToRegist } from "./foodActions";
 
-export const startGetFoodRegisters = (registerDay) => {
-	return async (dispatch) => {
+export const startGetFoodRegisters = () => {
+	return async (dispatch, getState) => {
+		const { dateOfRegister } = getState().nutritionSummary;
 		try {
 			const { data } = await clientAxios.get(
-				`/registers-per-day/${registerDay}`
+				`/registers-per-day/${dateOfRegister}`
 			);
-			console.log(registerDay);
-			dispatch(setDateOfRegisters(registerDay));
 			dispatch(setFoodRegisters(data.food_registers));
 		} catch (e) {
 			console.log(e.response);
@@ -34,7 +33,6 @@ export const startRegistFood = (
 			quantity: Number(quantity),
 		};
 
-		console.log(dataToSend);
 		try {
 			const { data } = await clientAxios.post("/regist-food", dataToSend);
 			const foodObject = {
@@ -46,6 +44,7 @@ export const startRegistFood = (
 
 			dispatch(newFoodRegister(foodObject));
 			dispatch(setActiveFoodToRegist(null));
+
 			if (fn) fn();
 		} catch (e) {
 			console.log(e.response);
@@ -76,13 +75,13 @@ export const startGetWeeklyCalories = (date) => {
 	};
 };
 
-export const startGetNutritionSummary = (date) => {
-	return async (dispatch) => {
+export const startGetNutritionSummary = () => {
+	return async (dispatch, getState) => {
+		const { dateOfSummary } = getState().nutritionSummary;
 		try {
 			const { data } = await clientAxios.get(
-				`/nutrition-summary/${date}`
+				`/nutrition-summary/${dateOfSummary}`
 			);
-			console.log(data.summary);
 			dispatch(setNutritionSummary(data.summary));
 		} catch (e) {
 			console.log(e.response);
@@ -109,6 +108,11 @@ export const newFoodRegister = (food) => ({
 
 export const setDateOfRegisters = (date) => ({
 	type: types.setDateOfRegisters,
+	payload: date,
+});
+
+export const setDateOfSummary = (date) => ({
+	type: types.setDateOfSummary,
 	payload: date,
 });
 

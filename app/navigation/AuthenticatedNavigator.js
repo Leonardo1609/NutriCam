@@ -8,6 +8,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { DiaryNavigator } from "./DiaryNavigator";
 import { WeeklyNavigator } from "./WeeklyNavigator";
+import { useDispatch } from "react-redux";
+import { setDateOfRegisters } from "../actions/nutritionSummaryActions";
+import { formatDate } from "../helpers/helpers";
 
 const Tab =
 	Platform.OS === "android"
@@ -15,6 +18,7 @@ const Tab =
 		: createBottomTabNavigator();
 
 export const AuthenticatedNavigator = () => {
+	const dispatch = useDispatch();
 	return (
 		<NavigationContainer>
 			<Tab.Navigator
@@ -71,8 +75,30 @@ export const AuthenticatedNavigator = () => {
 					labelStyle: { fontSize: 12, fontFamily: "poppins-bold" },
 				}}
 			>
-				<Tab.Screen name="Semana" component={WeeklyNavigator} />
-				<Tab.Screen name="Diario" component={DiaryNavigator} />
+				<Tab.Screen
+					name="Semana"
+					component={WeeklyNavigator}
+					listeners={({ navigation, route }) => ({
+						tabPress: (e) => {
+							if (route.state) {
+								e.preventDefault();
+								navigation.navigate("MyWeek");
+							}
+						},
+					})}
+				/>
+				<Tab.Screen
+					name="Diario"
+					component={DiaryNavigator}
+					listeners={({ navigation, route }) => ({
+						tabPress: (e) => {
+							if (route.state) {
+								e.preventDefault();
+								navigation.navigate("Home");
+							}
+						},
+					})}
+				/>
 				<Tab.Screen name="Search" component={HomeScreen} />
 				<Tab.Screen name="Plan" component={HomeScreen} />
 				<Tab.Screen name="Yo" component={HomeScreen} />

@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { Text, View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { startGetWeeklyCalories } from "../actions/nutritionSummaryActions";
+import {
+	startGetWeeklyCalories,
+	setDateOfSummary,
+} from "../actions/nutritionSummaryActions";
 import { useNavigation } from "@react-navigation/native";
 import { daysFirstLetter } from "../helpers/helpers";
 import { colors } from "../consts/colors";
@@ -38,7 +41,8 @@ export const WeeklyBars = ({ weekDay }) => {
 		}
 	};
 
-	const goToDiarySummary = () => {
+	const goToDiarySummary = (date) => {
+		dispatch(setDateOfSummary(date));
 		navigation.navigate("DiarySummary");
 	};
 
@@ -52,7 +56,7 @@ export const WeeklyBars = ({ weekDay }) => {
 		<View style={styles.barsContainer}>
 			{weeklyCalories.map((dayCalories, idx) => (
 				<TouchableWithoutFeedback
-					onPress={goToDiarySummary}
+					onPress={goToDiarySummary.bind(this, dayCalories.weekday)}
 					key={dayCalories.weekday}
 				>
 					<View style={styles.barContainer}>

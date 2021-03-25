@@ -8,29 +8,30 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { formatDate } from "../../helpers/helpers";
+import { formatDate, parserDateToLocale } from "../../helpers/helpers";
 import { CalorieBar } from "../../components/CalorieBar";
 import { Ionicons } from "@expo/vector-icons";
 import { totalCaloriesConsumed } from "../../helpers/helpers";
 import { DayFood } from "../../components/DayFood";
-import { startGetFoodRegisters } from "../../actions/nutritionSummaryActions";
+import {
+	startGetFoodRegisters,
+	setDateOfRegisters,
+} from "../../actions/nutritionSummaryActions";
 
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
 
-export const HomeScreen = () => {
+export const HomeScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
 
 	const { userInformation } = useSelector((state) => state.auth);
-	const { foodRegisters } = useSelector((state) => state.nutritionSummary);
+	const { foodRegisters, dateOfRegister } = useSelector(
+		(state) => state.nutritionSummary
+	);
 
 	const [registerDayToShow, setRegisterDayToShow] = useState(
 		moment(new Date()).format("L")
-	);
-
-	const [registerDayToSend, setRegisterDayToSend] = useState(
-		formatDate(new Date())
 	);
 
 	const [registerDay, setRegisterDay] = useState(new Date());
@@ -55,13 +56,27 @@ export const HomeScreen = () => {
 	const confirmDate = (date) => {
 		setShowDateTimePicker(false);
 		setRegisterDay(date);
-		setRegisterDayToSend(formatDate(date));
+		dispatch(setDateOfRegisters(formatDate(date)));
 		setRegisterDayToShow(moment(date).format("L"));
 	};
 
 	useEffect(() => {
-		dispatch(startGetFoodRegisters(registerDayToSend));
-	}, [registerDayToSend]);
+		const unsubscribe = navigation.addListener("blur", () => {
+			setRegisterDay(new Date());
+			setRegisterDayToShow(moment(new Date()).format("L"));
+			dispatch(setDateOfRegisters(formatDate(new Date())));
+		});
+
+		return () => unsubscribe();
+	}, []);
+
+	useEffect(() => {
+		setRegisterDay(parserDateToLocale(dateOfRegister));
+		setRegisterDayToShow(
+			moment(parserDateToLocale(dateOfRegister)).format("L")
+		);
+		dispatch(startGetFoodRegisters());
+	}, [dateOfRegister]);
 
 	return (
 		<View style={styles.screen}>
@@ -72,13 +87,7 @@ export const HomeScreen = () => {
 							<TouchableNativeFeedback
 								onPress={setShowDateTimePicker.bind(this, true)}
 							>
-								<View
-									style={{
-										flexDirection: "row",
-										justifyContent: "center",
-										alignItems: "center",
-									}}
-								>
+								<View style={styles.dateButtonContainer}>
 									<Ionicons
 										name="ios-calendar-outline"
 										size={20}
@@ -186,6 +195,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingHorizontal: "10%",
 		backgroundColor: "white",
+	},
+	dateButtonContainer: {
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	dateText: {
 		fontSize: 20,

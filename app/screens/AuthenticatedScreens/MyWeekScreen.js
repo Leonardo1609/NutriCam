@@ -22,7 +22,7 @@ export const MyWeekScreen = () => {
 		<View style={styles.screen}>
 			<View style={styles.caloricPlanContainer}>
 				<View style={styles.caloricPlan}>
-					<Text style={styles.caloricPlanvalue}>
+					<Text style={styles.caloricPlanValue}>
 						{userInformation.profile.profile_caloric_plan}
 					</Text>
 					<Text style={styles.calorieText}>Calorías</Text>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		borderRadius: 50,
 	},
-	caloricPlanvalue: {
+	caloricPlanValue: {
 		fontFamily: "poppins-bold",
 		fontSize: 20,
 	},

@@ -74,3 +74,15 @@ export const formatDate = (date) => {
 	const year = date.getFullYear();
 	return [year, month, day].join("-");
 };
+
+// Fix the bug of by 1 day
+export const parserDateToLocale = (date) => {
+	const splitedDate = date.split("-");
+	const parserDate = new Date(
+		splitedDate[0],
+		splitedDate[1] - 1,
+		splitedDate[2]
+	);
+
+	return parserDate;
+};
