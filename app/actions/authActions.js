@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { loadingUserInfo } from "./uiActions";
+import { loadingUserInfo, setMessageWarning } from "./uiActions";
 import { clientAxios } from "../axios/clientAxios";
 import { tokenAuth } from "../axios/tokenAuth";
 import { types } from "../types/types";
@@ -74,6 +74,25 @@ export const logoutUser = () => {
 		dispatch({
 			type: types.logout,
 		});
+	};
+};
+
+export const userExists = (username, email, fn) => {
+	return async (dispatch) => {
+		try {
+			const { data } = await clientAxios(
+				`/user-exists/${username}/${email}`
+			);
+			console.log(data);
+			if (data.msg) {
+				dispatch(setMessageWarning(data.msg));
+			} else {
+				dispatch(setMessageWarning(null));
+				fn();
+			}
+		} catch (e) {
+			console.log(e.response);
+		}
 	};
 };
 

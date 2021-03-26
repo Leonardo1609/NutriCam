@@ -1,5 +1,5 @@
 from flask_restful import Api
-from .resources.user import RegisterUser, UserProfile, LoginUser, ProfileInformation
+from .resources.user import RegisterUser, UserProfile, LoginUser, ProfileInformation, UserExists
 from .resources.food import FoodSearch, FoodInformation, CreateFood, RegistFood, DeleteFoodRegist, FoodRegistersPerDay, NutritionSummaryPerDay, WeeklyCalories
 
 api = Api( prefix='/api' )
@@ -16,3 +16,4 @@ api.add_resource( DeleteFoodRegist, '/delete-regist/<int:food_register_id>' )
 api.add_resource( FoodRegistersPerDay, '/registers-per-day/<string:day>' )
 api.add_resource( NutritionSummaryPerDay, '/nutrition-summary/<string:day>'  )
 api.add_resource( WeeklyCalories, '/weekly-summary/<string:date>' )
+api.add_resource( UserExists, '/user-exists/<string:username>/<string:email>' )

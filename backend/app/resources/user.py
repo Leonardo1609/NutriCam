@@ -89,6 +89,20 @@ class UserProfile( Resource ):
             'profile': profile 
         }
 
+class UserExists( Resource ):
+    def get(self, username, email):
+        try:
+            if User.get_user_by_name( username ):
+                return { 'msg': f"El usuario con el nombre de usuario {username} ya existe" }
+            elif User.get_user_by_email( email ):
+                return { 'msg': f"El usuario con el correo {email} ya existe" }
+            else:
+                return False
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+        
+
+# Get the profile information before the user is created (IMC, ideal_weight, etc)
 class ProfileInformation( Resource ):
     parser = reqparse.RequestParser()
 
@@ -120,6 +134,5 @@ class ProfileInformation( Resource ):
 
     def post( self ):
         data = self.parser.parse_args()
-        print( data );
         information = User.get_profile_information_before_created( **data )
         return { 'information': information }

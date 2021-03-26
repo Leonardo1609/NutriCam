@@ -12,11 +12,13 @@ import { useForm } from "../../hooks/useForm";
 import { createAccountValidation } from "../../validations/createAccountValidation";
 import { useNavigation } from "@react-navigation/native";
 import { setBasicData } from "../../actions/createAccountProcessActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userExists } from "../../actions/authActions";
 
 export const CreateAccountMainForm = () => {
-	const dispatch = useDispatch();
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
+	const { messageWarning } = useSelector((state) => state.ui);
 
 	const initialValues = {
 		username: "",
@@ -39,10 +41,14 @@ export const CreateAccountMainForm = () => {
 
 	const { username, email, password, confirmPassword } = formValues;
 
-	function submitForm() {
-		dispatch( setBasicData( username, email, password ) );
+	const submitIfUserDoesntExists = () => {
+		dispatch(setBasicData(username, email, password));
 		navigation.navigate("AskForNutritionalPlan");
 		reset({ ...formValues, password: "", confirmPassword: "" });
+	};
+
+	function submitForm() {
+		dispatch(userExists(username, email, submitIfUserDoesntExists));
 	}
 
 	return (
@@ -94,6 +100,7 @@ export const CreateAccountMainForm = () => {
 				{errors["confirmPassword"] && (
 					<ErrorText>{errors.confirmPassword}</ErrorText>
 				)}
+				{messageWarning && <ErrorText>{messageWarning}</ErrorText>}
 				<MainButton
 					containerStyle={styles.buttonContainer}
 					onPress={handleSubmit}

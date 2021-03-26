@@ -79,16 +79,32 @@ export const DiarySummaryScreen = () => {
 					headerTextIOS="Elige tu fecha de nacimiento"
 				/>
 			</View>
-			<Text>
-				Calorías Consumidas (kcal): {nutritionSummary?.total_calories}
+			<View style={styles.nutritionInformationContainer}>
+			<Text style={styles.nutritionText}>
+				Calorías Consumidas (kcal):{" "}
+				<Text style={styles.nutritionTextBold}>
+					{nutritionSummary?.total_calories}
+				</Text>
 			</Text>
-			<Text>
-				Grasas Totales (g): {nutritionSummary?.total_carbohydrates}
+			<Text style={styles.nutritionText}>
+				Grasas Totales (g):{" "}
+				<Text style={styles.nutritionTextBold}>
+					{nutritionSummary?.total_carbohydrates}
+				</Text>
 			</Text>
-			<Text>
-				Carbohidratos Totales (g): {nutritionSummary?.total_fats}
+			<Text style={styles.nutritionText}>
+				Carbohidratos Totales (g):{" "}
+				<Text style={styles.nutritionTextBold}>
+					{nutritionSummary?.total_fats}
+				</Text>
 			</Text>
-			<Text>Proteínas (g): {nutritionSummary?.total_proteins}</Text>
+			<Text style={styles.nutritionText}>
+				Proteínas (g):{" "}
+				<Text style={styles.nutritionTextBold}>
+					{nutritionSummary?.total_proteins}
+				</Text>
+			</Text>
+		</View>
 			<MainButton
 				onPress={() => {
 					navigation.navigate("Diario");
@@ -118,5 +134,15 @@ const styles = StyleSheet.create({
 	},
 	dateContainer: {
 		marginTop: 5,
+	},
+	nutritionInformationContainer: {
+		marginVertical: 30
+	},
+	nutritionText: {
+		fontSize: 16,
+		marginVertical:5 
+	},
+	nutritionTextBold: {
+		fontWeight: "bold",
 	},
 });

@@ -9,6 +9,7 @@ export const types = {
 	logout: "[Auth] Logout",
 
 	loadingUserInfo: "[Ui] Loading User Info",
+	messageWarning: "[Ui] Set Message Warning",
 
 	setFoodRegisters: "[Nutrition Summary] Set Food Registers",
 	setWeeklyCalories: "[Nutrition Summary] Set Weekly Calories",
