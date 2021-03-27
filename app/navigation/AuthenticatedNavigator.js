@@ -8,9 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { DiaryNavigator } from "./DiaryNavigator";
 import { WeeklyNavigator } from "./WeeklyNavigator";
-import { useDispatch } from "react-redux";
-import { setDateOfRegisters } from "../actions/nutritionSummaryActions";
-import { formatDate } from "../helpers/helpers";
+import { UserConfigurationNavigator } from "./UserConfigurationNavigator";
 
 const Tab =
 	Platform.OS === "android"
@@ -18,7 +16,6 @@ const Tab =
 		: createBottomTabNavigator();
 
 export const AuthenticatedNavigator = () => {
-	const dispatch = useDispatch();
 	return (
 		<NavigationContainer>
 			<Tab.Navigator
@@ -42,7 +39,7 @@ export const AuthenticatedNavigator = () => {
 						} else if (route.name === "Plan") {
 							iconName = "ios-calendar-outline";
 						} else if (route.name === "Yo") {
-							iconName = "ios-person-outline";
+							iconName = "ios-person-circle-outline";
 						}
 
 						return (
@@ -99,9 +96,11 @@ export const AuthenticatedNavigator = () => {
 						},
 					})}
 				/>
-				<Tab.Screen name="Search" component={HomeScreen} />
-				<Tab.Screen name="Plan" component={HomeScreen} />
-				<Tab.Screen name="Yo" component={HomeScreen} />
+				<Tab.Screen
+					name="Search"
+					component={UserConfigurationNavigator}
+				/>
+				<Tab.Screen name="Yo" component={UserConfigurationNavigator} />
 			</Tab.Navigator>
 		</NavigationContainer>
 	);

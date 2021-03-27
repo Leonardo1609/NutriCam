@@ -27,7 +27,6 @@ export const FoodRegistrationScreen = ({ route }) => {
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
 	const { activeFoodToRegist } = useSelector((state) => state.food);
-	console.log(activeFoodToRegist);
 
 	const { formValues, handleChange, handleSubmit, errors } = useForm(
 		initialState,
@@ -47,7 +46,7 @@ export const FoodRegistrationScreen = ({ route }) => {
 			? require("../../assets/images/icons/beer.png")
 			: icon?.iconName === "dona"
 			? require("../../assets/images/icons/donut.png")
-			: require("../../assets/images/icons/soda.svg");
+			: require("../../assets/images/icons/soda.png");
 
 	const pickerStyle = () => ({
 		inputAndroid: {

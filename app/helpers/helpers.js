@@ -16,7 +16,7 @@ export const icons = [
 	{
 		iconName: "gaseosa",
 		foodCalories: 160,
-		image: "soda.svg",
+		image: "soda.png",
 	},
 	{
 		iconName: "pan",
