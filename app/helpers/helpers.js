@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { colors } from "../consts/colors";
 
 export const daysFirstLetter = ["L", "M", "M", "J", "V", "S", "D"];
 
@@ -66,7 +67,8 @@ export const totalCaloriesConsumed = (foods) => {
 };
 
 export const formatDate = (date) => {
-	const day = date.getDate() / 10 >= 1 ? date.getDate() : "0" + date.getDate();
+	const day =
+		date.getDate() / 10 >= 1 ? date.getDate() : "0" + date.getDate();
 	const month =
 		(date.getMonth() + 1) / 10 > 1
 			? date.getMonth() + 1
@@ -85,4 +87,24 @@ export const parserDateToLocale = (date) => {
 	);
 
 	return parserDate;
+};
+
+export const setTargetMessage = (status) => {
+	if (status === "unfulfilled") {
+		return {
+			message:
+				"No has consumido las calorías necesarias, no es saludable limitarse",
+			color: "orange",
+		};
+	} else if (status === "success") {
+		return {
+			message: "Has cumplido con tu plan calórico diario, ¡bien hecho!",
+			color: colors.green,
+		};
+	} else if ("exceded") {
+		return {
+			message: "Has excedido tus calorías diarias",
+			color: "red",
+		};
+	}
 };

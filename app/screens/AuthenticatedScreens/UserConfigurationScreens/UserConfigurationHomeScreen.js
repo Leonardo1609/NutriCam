@@ -14,12 +14,12 @@ export const UserConfigurationMainScreen = () => {
 			component: "",
 		},
 		{
-			name: "Reseñar/Puntuar aplicación",
+			name: "Reseñar / Puntuar aplicación",
 			component: "",
 		},
 		{
 			name: "Administrar Comidas",
-			component: "",
+			component: "MealManagement",
 		},
 		{
 			name: "Administrar Horario",

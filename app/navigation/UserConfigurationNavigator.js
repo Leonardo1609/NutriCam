@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { colors } from "../consts/colors";
 import { UserConfigurationMainScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/UserConfigurationHomeScreen";
 import { EquivalenceScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/EquivalenceScreen";
+import { MealManagementScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MealManagmentScreen";
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,13 @@ export const UserConfigurationNavigator = () => (
 				title: "Mi Cuenta",
 			}}
 			component={UserConfigurationMainScreen}
+		/>
+		<Stack.Screen
+			name="MealManagement"
+			options={{
+				title: "Comidas",
+			}}
+			component={MealManagementScreen}
 		/>
 		<Stack.Screen
 			name="Equivalence"

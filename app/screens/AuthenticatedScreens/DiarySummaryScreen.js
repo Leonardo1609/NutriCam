@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet, TouchableNativeFeedback } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -10,6 +10,7 @@ import {
 } from "../../actions/nutritionSummaryActions";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDate, parserDateToLocale } from "../../helpers/helpers";
+import { setTargetMessage } from "../../helpers/helpers";
 
 import moment from "moment";
 import "moment/locale/es";
@@ -41,12 +42,31 @@ export const DiarySummaryScreen = () => {
 		setSummaryDayToShow(moment(date).format("L"));
 	};
 
+	const getTargetMessage = () => {
+		if (
+			nutritionSummary?.total_calories /
+				userInformation?.profile?.profile_caloric_plan <
+			0.8
+		) {
+			return setTargetMessage("unfulfilled");
+		} else if (
+			nutritionSummary?.total_calories /
+				userInformation?.profile?.profile_caloric_plan >
+			1.2
+		) {
+			return setTargetMessage("exceded");
+		} else {
+			return setTargetMessage("success");
+		}
+	};
+
 	useEffect(() => {
 		setSummaryDay(parserDateToLocale(dateOfSummary));
 
 		setSummaryDayToShow(
 			moment(parserDateToLocale(dateOfSummary)).format("L")
 		);
+
 		dispatch(startGetNutritionSummary());
 	}, [dateOfSummary]);
 
@@ -80,31 +100,41 @@ export const DiarySummaryScreen = () => {
 				/>
 			</View>
 			<View style={styles.nutritionInformationContainer}>
-			<Text style={styles.nutritionText}>
-				Calorías Consumidas (kcal):{" "}
-				<Text style={styles.nutritionTextBold}>
-					{nutritionSummary?.total_calories}
+				<Text style={styles.nutritionText}>
+					Calorías Consumidas (kcal):{" "}
+					<Text style={styles.nutritionTextBold}>
+						{nutritionSummary?.total_calories}
+					</Text>
 				</Text>
-			</Text>
-			<Text style={styles.nutritionText}>
-				Grasas Totales (g):{" "}
-				<Text style={styles.nutritionTextBold}>
-					{nutritionSummary?.total_carbohydrates}
+				<Text style={styles.nutritionText}>
+					Grasas Totales (g):{" "}
+					<Text style={styles.nutritionTextBold}>
+						{nutritionSummary?.total_carbohydrates}
+					</Text>
 				</Text>
-			</Text>
-			<Text style={styles.nutritionText}>
-				Carbohidratos Totales (g):{" "}
-				<Text style={styles.nutritionTextBold}>
-					{nutritionSummary?.total_fats}
+				<Text style={styles.nutritionText}>
+					Carbohidratos Totales (g):{" "}
+					<Text style={styles.nutritionTextBold}>
+						{nutritionSummary?.total_fats}
+					</Text>
 				</Text>
-			</Text>
-			<Text style={styles.nutritionText}>
-				Proteínas (g):{" "}
-				<Text style={styles.nutritionTextBold}>
-					{nutritionSummary?.total_proteins}
+				<Text style={styles.nutritionText}>
+					Proteínas (g):{" "}
+					<Text style={styles.nutritionTextBold}>
+						{nutritionSummary?.total_proteins}
+					</Text>
 				</Text>
-			</Text>
-		</View>
+			</View>
+			<View style={styles.targetMessageContainer}>
+				<Text
+					style={{
+						...styles.targetMessage,
+						color: getTargetMessage().color,
+					}}
+				>
+					{getTargetMessage().message}
+				</Text>
+			</View>
 			<MainButton
 				onPress={() => {
 					navigation.navigate("Diario");
@@ -136,13 +166,21 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 	},
 	nutritionInformationContainer: {
-		marginVertical: 30
+		marginVertical: 30,
 	},
 	nutritionText: {
 		fontSize: 16,
-		marginVertical:5 
+		marginVertical: 5,
 	},
 	nutritionTextBold: {
 		fontWeight: "bold",
+	},
+	targetMessageContainer: {
+		marginBottom: 30,
+	},
+	targetMessage: {
+		fontFamily: "poppins-bold",
+		fontSize: 16,
+		textAlign: "center",
 	},
 });

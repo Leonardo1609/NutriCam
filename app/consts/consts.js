@@ -9,3 +9,4 @@ export const foodNotFoundMessage =
 
 export const equivalenceMessage =
 	"Se mostrará el equivalente al total de calorías de una comida en forma de cantidad del alimento que seleccione";
+
