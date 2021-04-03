@@ -361,17 +361,17 @@ const styles = StyleSheet.create({
 	placeholder: {
 		color: colors.grayPlaceholder,
 	},
+	input: {
+		borderBottomWidth: 1,
+		borderBottomColor: "black",
+		paddingVertical: 5,
+	},
 	indications: {
 		fontSize: Dimensions.get("window").width > 350 ? 16 : 12,
 		fontFamily: "poppins",
 	},
 	selected: {
 		color: "black",
-	},
-	input: {
-		borderBottomWidth: 1,
-		borderBottomColor: "black",
-		paddingVertical: 5,
 	},
 	indicationsContainer: {
 		marginVertical: Dimensions.get("window").height > 600 ? 20 : 8,

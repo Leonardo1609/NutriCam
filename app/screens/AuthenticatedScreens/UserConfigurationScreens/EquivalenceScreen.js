@@ -21,7 +21,6 @@ export const EquivalenceScreen = () => {
 	};
 
 	const setIconImage = (iconName) => {
-		console.log(iconName);
 		switch (iconName) {
 			case "pan":
 				return require("../../../assets/images/icons/bread.png");
@@ -79,7 +78,7 @@ export const EquivalenceScreen = () => {
 											: "black",
 								}}
 							>
-								{icon.foodCalories}
+								{icon.foodCalories} cal
 							</Text>
 						</View>
 					</TouchableWithoutFeedback>

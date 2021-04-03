@@ -18,12 +18,12 @@ class User:
             'user_id': user_id, 
             'user_name': user_name, 
             'user_email': user_email, 
-            'user_role': role_id ,
+            'user_role': role_id,
             'created_at': str(created_at)
         }
 
     @classmethod
-    def profile_json( cls, profile_id, user_id, profile_genre, profile_height, profile_actual_weight, profile_ideal_weight, profile_birthdate, profile_activity_level, profile_imc, profile_nutritional_plan, w_level_id, profile_caloric_plan ):
+    def profile_json( cls, profile_id, user_id,w_level_id, profile_genre, profile_height, profile_actual_weight, profile_ideal_weight, profile_birthdate, profile_activity_level, profile_current_imc, profile_previous_imc, profile_have_caloric_plan, profile_caloric_plan, profile_initial_date_caloric_plan, profile_cancel_date_caloric_plan ):
         return { 
             'profile_id': profile_id, 
             'user_id': user_id, 
@@ -33,10 +33,13 @@ class User:
             'profile_ideal_weight': float(profile_ideal_weight) if profile_ideal_weight else None, 
             'profile_birthdate': str(profile_birthdate) if profile_birthdate else None, 
             'profile_activity_level': profile_activity_level,
-            'profile_imc': float(profile_imc) if profile_imc else None,
-            'profile_nutritional_plan': profile_nutritional_plan,
+            'profile_current_imc': float(profile_current_imc) if profile_current_imc else None,
+            'profile_previous_imc': float(profile_previous_imc) if profile_previous_imc else None,
+            'profile_have_caloric_plan': profile_have_caloric_plan,
             'w_level_name': WeightLevel.get_weight_level_name_by_id( w_level_id ),
-            'profile_caloric_plan': profile_caloric_plan
+            'profile_caloric_plan': profile_caloric_plan,
+            'profile_initial_date_caloric_plan': str(profile_initial_date_caloric_plan) if profile_initial_date_caloric_plan else None,
+            'profile_cancel_date_caloric_plan': str(profile_cancel_date_caloric_plan) if profile_cancel_date_caloric_plan else None
         }
 
     @classmethod
@@ -116,19 +119,19 @@ class User:
 
         # If the user want to have a nutritional plan he have to insert the following data
         if profile_genre and profile_height and profile_actual_weight and profile_activity_level: 
+            profile_initial_date_caloric_plan = date.today()
             profile_ideal_weight = self.ideal_weight( profile_height, profile_genre )
-            profile_imc = self.calculate_imc( profile_height, profile_actual_weight )
-            profile_nutritional_plan = 1
-            w_level_id = WeightLevel.get_weight_level_by_imc( profile_imc )[0]
+            profile_current_imc = self.calculate_imc( profile_height, profile_actual_weight )
+            w_level_id = WeightLevel.get_weight_level_by_imc( profile_current_imc )[0]
             profile_caloric_plan = self.cals_per_day( profile_actual_weight, profile_height, profile_birthdate, profile_genre, profile_activity_level )
-            query_profile = "INSERT INTO profile VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
-            profile_nutritional_plan = 1
-            cursor.execute( query_profile, ( user_id, profile_genre, profile_height, profile_actual_weight, profile_ideal_weight, profile_birthdate, profile_activity_level, profile_imc, profile_nutritional_plan, w_level_id, profile_caloric_plan ) )
+            query_profile = "INSERT INTO profile VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+            profile_have_caloric_plan = 1
+            cursor.execute( query_profile, ( user_id, w_level_id, profile_genre, profile_height, profile_actual_weight, profile_ideal_weight, profile_birthdate, profile_activity_level, profile_current_imc, None, profile_have_caloric_plan,  profile_caloric_plan, profile_initial_date_caloric_plan, None ) )
         # if the user doesn't want to have a plan...
         else:
-            query_profile = "INSERT INTO profile ( user_id, profile_nutritional_plan ) VALUES ( ?, ? )"
-            profile_nutritional_plan = 0
-            cursor.execute( query_profile, ( user_id, profile_nutritional_plan ) )
+            query_profile = "INSERT INTO profile ( user_id, profile_have_caloric_plan ) VALUES ( ?, ? )"
+            profile_have_caloric_plan = 0
+            cursor.execute( query_profile, ( user_id, profile_have_caloric_plan ) )
         cursor.commit()
         return user_id
 

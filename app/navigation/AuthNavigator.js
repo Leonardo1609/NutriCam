@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { CreateAccountMainForm } from "../screens/CreateAccountScreens/CreateAccountMainForm";
-import { AskForNutritionalPlan } from "../screens/CreateAccountScreens/AskForNutritionalPlan";
+import { AskForCaloricPlan } from "../screens/CreateAccountScreens/AskForCaloricPlan";
 import { Results } from "../screens/CreateAccountScreens/Results";
 import { EnterUserData } from "../screens/CreateAccountScreens/EnterUserData";
 import { CaloricPlanResult } from "../screens/CreateAccountScreens/CaloricPlanResult";
@@ -38,16 +38,16 @@ export const AuthNavigator = () => {
 					component={LoginForm}
 				/>
 				<Stack.Screen
+					name="CreateAccount"
 					options={{
 						title: "Crear Cuenta",
 					}}
-					name="CreateAccount"
 					component={CreateAccountMainForm}
 				/>
 				<Stack.Screen
-					name="AskForNutritionalPlan"
-					options={{ title: "Crear Plan Nutricional" }}
-					component={AskForNutritionalPlan}
+					name="AskForCaloricPlan"
+					options={{ title: "Crear Plan Calórico" }}
+					component={AskForCaloricPlan}
 				/>
 				<Stack.Screen
 					name="EnterUserData"
@@ -57,7 +57,7 @@ export const AuthNavigator = () => {
 				<Stack.Screen
 					name="Results"
 					options={{
-						title: "Resultados",
+						title: "Resultados IMC",
 					}}
 					component={Results}
 				/>

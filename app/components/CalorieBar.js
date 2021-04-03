@@ -40,6 +40,8 @@ export const CalorieBar = () => {
 		return remaining > 0 ? remaining : 0;
 	}, [userInformation, foodRegisters]);
 
+	if (!userInformation.profile.profile_have_caloric_plan) return null;
+
 	return (
 		<View style={styles.calorieBarContainer}>
 			<Text style={styles.calorieTitle}>Calorías</Text>

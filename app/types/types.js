@@ -21,4 +21,9 @@ export const types = {
 
 	searchFood: "[Food] Search Food",
 	activeFood: "[Food] Set Active Food",
+	setOwnFoods: "[Food] Set Own Foods",
+	createFood: "[Food] Create Food",
+	updateOwnFood: "[Food] Update Own Food",
+	removeOwnFood: "[Food] Remove Own Food",
+	setActiveOwnFood: "[Food] Set Active Own Food",
 };

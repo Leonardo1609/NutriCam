@@ -21,7 +21,7 @@ export const icons = [
 	},
 	{
 		iconName: "pan",
-		foodCalories: 180,
+		foodCalories: 110,
 		image: "bread.png",
 	},
 ];
@@ -44,6 +44,12 @@ export const dayFoodMap = new Map([
 	[3, "Registrar Almuerzo"],
 	[4, "Registrar Media Tarde"],
 	[5, "Registrar Cena"],
+]);
+
+export const measureUnitMap = new Map([
+	[1, "100gr"],
+	[2, "Unidad"],
+	[3, "Porción"],
 ]);
 
 export const toTwoDecimals = (number) => {

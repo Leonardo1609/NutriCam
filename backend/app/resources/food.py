@@ -52,8 +52,55 @@ class CreateFood( Resource ):
             profile_id = User.get_profile_id_by_user_id( user_id )
             if Food.food_exists( data['food_name'], profile_id ):
                 return { 'msg': "La comida ya existe" }, 409
-            message = Food.create_food( data['food_name'], 1, profile_id, data['food_measure_unit_id'], data['food_calories'], data['food_carbohydrates'], data['food_fats'], data['food_proteins'] )
-            return { 'msg': message }, 201
+            food_created_id = Food.create_food( data['food_name'], profile_id, data['food_measure_unit_id'], data['food_calories'], data['food_carbohydrates'], data['food_fats'], data['food_proteins'] )
+            return { 'food_created_id': food_created_id }, 201
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+class UpdateOwnFood(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('food_name',
+        type=str,
+        required=True,
+        help="El campo nombre comida es requerido"
+    )
+    parser.add_argument('food_measure_unit_id',
+        type=int,
+        required=True,
+        help="El campo unidad de medida es requerido"
+    )
+    parser.add_argument('food_calories',
+        type=float,
+        required=True,
+        help="El campo calorías es requerido"
+    )
+    parser.add_argument('food_carbohydrates', type=float)
+    parser.add_argument('food_fats', type=float)
+    parser.add_argument('food_proteins', type=float)
+
+    @jwt_required()
+    def put(self, food_id):
+        data = self.parser.parse_args()
+        try:
+            user_id = get_jwt_identity()
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            if Food.another_food_exists( food_id, data['food_name'], profile_id ):
+                return { 'msg': "La comida ya existe" }, 409
+            message = Food.update_food( food_id, data['food_name'], profile_id, data['food_measure_unit_id'], data['food_calories'], data['food_carbohydrates'], data['food_fats'], data['food_proteins'] )
+            return { 'msg': message }
+                    
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+
+class RemoveOwnFood(Resource):
+    @jwt_required()
+    def put(self, food_id):
+        try:
+            user_id = get_jwt_identity()
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            message = Food.remove_food( profile_id, food_id )
+            return { 'msg': message }
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
 
@@ -83,7 +130,6 @@ class RegistFood( Resource ):
     @jwt_required()
     def post(self):
         data = self.parser.parse_args()
-        print( data )
         user_id = get_jwt_identity()
         try:
             profile_id = User.get_profile_id_by_user_id( user_id )
@@ -131,7 +177,19 @@ class WeeklyCalories( Resource ):
         user_id = get_jwt_identity()
         try:
             profile_id = User.get_profile_id_by_user_id( user_id )
-            weekly_calories = Food.weekly_calories( date )
+            weekly_calories = Food.weekly_calories( profile_id, date )
             return { 'weekly_calories': weekly_calories }
         except:
             return {'msg': 'Ha ocurrido un error'}, 500
+
+class OwnFoods( Resource ):
+    @jwt_required()
+    def get( self ):
+        user_id = get_jwt_identity()
+        try:
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            foods = Food.get_own_foods( profile_id )
+            return { 'own_foods': foods }
+        except:
+            return {'msg': 'Ha ocurrido un error'}, 500
+

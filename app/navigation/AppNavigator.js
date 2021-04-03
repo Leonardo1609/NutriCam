@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../actions/authActions";
+import { useSelector } from "react-redux";
 import { AuthNavigator } from "./AuthNavigator";
 import { AuthenticatedNavigator } from "./AuthenticatedNavigator";
 import { LoadingScreen } from "../screens/LoadingScreen";
@@ -9,7 +8,6 @@ import { saveIcon } from "../helpers/helpers";
 
 export const AppNavigator = () => {
 	let token;
-	const dispatch = useDispatch();
 	const { authenticated } = useSelector((state) => state.auth);
 
 	const { loading } = useSelector((state) => state.ui);

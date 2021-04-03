@@ -43,7 +43,7 @@ export const CreateAccountMainForm = () => {
 
 	const submitIfUserDoesntExists = () => {
 		dispatch(setBasicData(username, email, password));
-		navigation.navigate("AskForNutritionalPlan");
+		navigation.navigate("AskForCaloricPlan");
 		reset({ ...formValues, password: "", confirmPassword: "" });
 	};
 

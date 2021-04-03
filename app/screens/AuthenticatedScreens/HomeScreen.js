@@ -43,7 +43,7 @@ export const HomeScreen = ({ navigation }) => {
 	};
 
 	const caloriesRecommendationsPerDayFood = userInformation?.profile
-		?.profile_nutritional_plan
+		?.profile_have_caloric_plan
 		? [
 				Math.ceil(userInformation.profile.profile_caloric_plan * 0.2),
 				Math.ceil(userInformation.profile.profile_caloric_plan * 0.1),
@@ -103,7 +103,9 @@ export const HomeScreen = ({ navigation }) => {
 							date={registerDay}
 							minimumDate={
 								new Date(
-									Date.parse(userInformation.user.created_at)
+									Date.parse(
+										userInformation?.user?.created_at
+									)
 								)
 							}
 							maximumDate={new Date()}

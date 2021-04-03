@@ -18,7 +18,7 @@ export const LoginForm = () => {
 	const dispatch = useDispatch();
 
 	const initialValues = {
-		email: "wild1@mgmail.com",
+		email: "leonardo246@gmail.com",
 		password: "12345678",
 	};
 
@@ -64,7 +64,7 @@ export const LoginForm = () => {
 					containerStyle={styles.buttonContainer}
 					onPress={handleSubmit}
 				>
-					Siguiente
+					Ingresar
 				</MainButton>
 			</View>
 		</TouchableWithoutFeedback>

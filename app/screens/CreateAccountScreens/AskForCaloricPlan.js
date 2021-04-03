@@ -6,15 +6,15 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { startCreateUser } from "../../actions/authActions";
 
-export const AskForNutritionalPlan = () => {
+export const AskForCaloricPlan = () => {
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
 
-	const acceptCreateNutritionalPlan = () => {
+	const acceptCreateCaloricPlan = () => {
 		navigation.navigate("EnterUserData");
 	};
 
-	const createUserWithoutNutritionalPlan = () => {
+	const createUserWithoutCaloricPlan = () => {
 		dispatch(startCreateUser());
 	};
 
@@ -34,8 +34,8 @@ export const AskForNutritionalPlan = () => {
 					{question}
 				</Text>
 			</View>
-			<MainButton onPress={acceptCreateNutritionalPlan}>Sí</MainButton>
-			<MainButton onPress={createUserWithoutNutritionalPlan}>
+			<MainButton onPress={acceptCreateCaloricPlan}>Sí</MainButton>
+			<MainButton onPress={createUserWithoutCaloricPlan}>
 				Omitir
 			</MainButton>
 		</View>

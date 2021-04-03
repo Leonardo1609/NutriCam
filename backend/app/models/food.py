@@ -9,7 +9,7 @@ def getCaloriesOfDay( input_day, date_calories ):
 
 class Food:
     @classmethod
-    def food_json( cls, food_id, food_name, food_calories, food_fats, food_carbohydrates, food_proteins, day_food_id , measure_unit_id, measure_name):
+    def food_json( cls, food_id, food_name, food_calories, food_fats, food_carbohydrates, food_proteins , measure_unit_id, measure_name, listed_food):
         return {
             'food_id': food_id,
             'food_name': food_name,
@@ -17,9 +17,9 @@ class Food:
             'food_fats': food_fats,
             'food_carbohydrates': food_carbohydrates,
             'food_proteins': food_proteins,
-            'day_food_id': day_food_id,
             'measure_unit_id': measure_unit_id,
-            'measure_name': measure_name
+            'measure_name': measure_name,
+            'listed_food': listed_food
         }
         
     @classmethod
@@ -27,7 +27,7 @@ class Food:
         query = f"""
         SELECT TOP 20 food_id, food_name
         FROM food 
-        WHERE food_name LIKE '%{ food_input }%' AND (creator_id = 1 OR creator_id={profile_id})
+        WHERE food_name LIKE '%{ food_input }%' AND (creator_id = 1 OR creator_id={profile_id}) AND listed_food = 1
         ORDER BY creator_id DESC;
         """
         rows = cursor.execute( query ).fetchall()
@@ -39,47 +39,86 @@ class Food:
         query="""
         SELECT food_id
         FROM food
-        WHERE food_name=? AND (creator_id=1 OR creator_id=?)
+        WHERE food_name=? AND (creator_id=1 OR creator_id=?) AND listed_food = 1
         """
         food = cursor.execute( query, ( food_name, profile_id ) ).fetchone()
         if food:
             return True
         return False
 
+    # If another food, besides of the food with this id, has the same name
+    @classmethod
+    def another_food_exists( cls, food_id, food_name, profile_id ):
+        query="""
+        SELECT food_id
+        FROM food
+        WHERE food_id != ? AND food_name=? AND (creator_id=1 OR creator_id=?) and listed_food = 1
+        """
+        food = cursor.execute( query, ( food_id, food_name, profile_id ) ).fetchone()
+
+        if food:
+            return True
+        return False
 
     @classmethod
     def get_food_information( cls, food_id ):
         query = """
-        SELECT f.food_id, f.food_name, fmu.food_calories, fmu.food_fats, fmu.food_carbohydrates, fmu.food_proteins, df.day_food_id, mu.measure_unit_id, mu.measure_name
+        SELECT f.food_id, f.food_name, fmu.food_calories, fmu.food_fats, fmu.food_carbohydrates, fmu.food_proteins, mu.measure_unit_id, mu.measure_name, f.listed_food
         FROM food_measure_unit fmu
         INNER JOIN measure_unit mu ON mu.measure_unit_id = fmu.food_measure_unit_id
-        INNER JOIN  food f ON f.food_id = fmu.food_id
-        INNER JOIN  day_food df ON df.day_food_id = f.day_food_id
+        INNER JOIN food f ON f.food_id = fmu.food_id
         WHERE f.food_id = ?;
         """
-
         food_information = cursor.execute( query, ( food_id, ) ).fetchone()
         return cls.food_json( *food_information )
 
     @classmethod
-    def create_food( cls, food_name, day_food_id, creator_id, food_measure_unit_id, food_calories, food_carbohydrates=None, food_fats=None, food_proteins=None ):
+    def create_food( cls, food_name, creator_id, food_measure_unit_id, food_calories, food_carbohydrates=None, food_fats=None, food_proteins=None ):
         create_food_query="""
-        INSERT INTO food VALUES( ?, ?, ? );
+        INSERT INTO food VALUES( ?, 1, ? );
         """
-        cursor.execute( create_food_query, ( food_name, day_food_id, creator_id ) )
+        cursor.execute( create_food_query, ( food_name, creator_id ) )
 
         # get the id of the food created reacently
-        food_id = cursor.execute( "SELECT @@IDENTITY AS ID" ).fetchone()[0]
+        food_created_id = cursor.execute( "SELECT @@IDENTITY AS ID" ).fetchone()[0]
 
         create_food_measure_unit_query = """
         INSERT INTO food_measure_unit VALUES ( ?, ?, ?, ?, ?, ? );
 
         """
-        cursor.execute( create_food_measure_unit_query, ( food_id, food_measure_unit_id, food_calories, food_carbohydrates, food_fats, food_proteins ) )
+        cursor.execute( create_food_measure_unit_query, ( food_created_id, food_measure_unit_id, food_calories, food_carbohydrates, food_fats, food_proteins ) )
 
         cursor.commit()
+        return int(food_created_id)
 
-        return "La comida se ha creado con éxito"
+    @classmethod
+    def update_food( cls, food_id, food_name, creator_id, food_measure_unit_id, food_calories, food_carbohydrates=None, food_fats=None, food_proteins=None ):
+        update_food_query="""
+        UPDATE food
+        SET food_name = ?
+        WHERE food_id = ? AND creator_id = ?
+        """
+        cursor.execute( update_food_query, ( food_name, food_id, creator_id ) )
+
+        update_food_measure_unit_query = """
+        UPDATE food_measure_unit
+        SET food_calories = ?, food_fats = ?, food_carbohydrates = ?, food_proteins = ?
+        WHERE food_id = ?
+        """
+        cursor.execute(update_food_measure_unit_query, ( food_calories, food_fats, food_carbohydrates, food_proteins, food_id ))
+        cursor.commit()
+        return "Comida actualizada"
+
+    @classmethod
+    def remove_food( cls, profile_id, food_id ):
+        remove_created_food_query="""
+        UPDATE food
+        SET listed_food = 0
+        WHERE creator_id=? AND food_id=?
+        """
+        cursor.execute(remove_created_food_query, ( profile_id, food_id ))
+        cursor.commit()
+        return "Comida removida"
 
     @classmethod
     def regist_food( cls, profile_id, day_food_id, food_measure_unit_id, food_id, quantity ):
@@ -118,7 +157,6 @@ class Food:
         """
 
         rows = cursor.execute( query, ( profile_id, food_register_day ) ).fetchall()
-        print(rows)
         if len(rows) == 0:
             return []
         registers = [ { 'food_register_id': food_register_id, 'food_name': food_name, 'day_food_id': day_food_id, 'calories': calories } for food_register_id, food_name, day_food_id, calories in rows ]
@@ -143,7 +181,7 @@ class Food:
         }
 
     @classmethod
-    def weekly_calories( cls, input_date ):
+    def weekly_calories( cls, profile_id, input_date ):
         input_year, input_month, input_day = input_date.split('-')
 
         input_month = input_month if int(input_month) / 10 > 1 else input_month[1]
@@ -164,11 +202,11 @@ class Food:
         SELECT SUM(fr.quantity * fmu.food_calories), fr.food_register_day
         FROM food_register fr
         INNER JOIN food_measure_unit fmu ON fmu.food_id = fr.food_id
-        wHERE profile_id = 25 AND fr.food_register_day BETWEEN ? AND ?
+        wHERE profile_id = ? AND fr.food_register_day BETWEEN ? AND ?
         GROUP BY fr.food_register_day;
         """
 
-        rows = cursor.execute( query, ( str(monday), str(sunday) ) ).fetchall()
+        rows = cursor.execute( query, ( profile_id, str(monday), str(sunday) ) ).fetchall()
 
         weekly_calories = []
         for week_day in week:
@@ -176,5 +214,15 @@ class Food:
 
         return weekly_calories
 
-
+    @classmethod
+    def get_own_foods( cls, profile_id ):
+        query = """
+        SELECT food_id, food_name
+        FROM food 
+        WHERE creator_id=? AND listed_food = 1
+        ORDER BY food_name DESC
+        """
+        rows = cursor.execute( query, (profile_id,) ).fetchall()
+        foods = [ { 'food_id': food_id, 'food_name': food_name } for food_id, food_name in rows ] 
+        return foods
 
