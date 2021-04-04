@@ -53,7 +53,10 @@ class CreateFood( Resource ):
             if Food.food_exists( data['food_name'], profile_id ):
                 return { 'msg': "La comida ya existe" }, 409
             food_created_id = Food.create_food( data['food_name'], profile_id, data['food_measure_unit_id'], data['food_calories'], data['food_carbohydrates'], data['food_fats'], data['food_proteins'] )
-            return { 'food_created_id': food_created_id }, 201
+            return {  
+                'msg': 'Comida creada correctamente' ,
+                'food_created_id': food_created_id 
+            }, 201
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
 
@@ -85,7 +88,7 @@ class UpdateOwnFood(Resource):
             user_id = get_jwt_identity()
             profile_id = User.get_profile_id_by_user_id( user_id )
             if Food.another_food_exists( food_id, data['food_name'], profile_id ):
-                return { 'msg': "La comida ya existe" }, 409
+                return { 'msg': "El nombre de la comida ya se encuentra en uso" }, 409
             message = Food.update_food( food_id, data['food_name'], profile_id, data['food_measure_unit_id'], data['food_calories'], data['food_carbohydrates'], data['food_fats'], data['food_proteins'] )
             return { 'msg': message }
                     

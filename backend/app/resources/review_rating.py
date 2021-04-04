@@ -31,7 +31,7 @@ class ReviewRatingCrud( Resource ):
             profile_id = User.get_profile_id_by_user_id( user_id )
             review_rating_id = ReviewRating.post_review_and_rating( profile_id, data['rating'], data['review'] )
             return {
-                'msg': 'La puntuación y reseña ha sido enviada',
+                'msg': 'Puntuación y reseña enviada',
                 'review_rating_id': int(review_rating_id)
             }, 200
         except:

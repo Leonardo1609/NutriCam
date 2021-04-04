@@ -51,10 +51,10 @@ export const ReviewRatingScreen = () => {
 	};
 
 	const handleReview = (value) => {
-		if(value.length <= 300){
-			setReview( value );
+		if (value.length <= 300) {
+			setReview(value);
 		}
-	}
+	};
 
 	const submitReviewRating = () => {
 		if (!rating) {
@@ -155,9 +155,7 @@ export const ReviewRatingScreen = () => {
 						multiline={true}
 						numberOfLines={5}
 						value={review}
-						onChangeText={(value) => {
-							setReview(value);
-						}}
+						onChangeText={handleReview}
 					/>
 				</View>
 				<MainButton

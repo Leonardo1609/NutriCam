@@ -1,5 +1,6 @@
 import { clientAxios } from "../axios/clientAxios";
 import { types } from "../types/types";
+import { setMessageSuccess, setMessageWarning } from "./uiActions";
 
 export const startSearchFood = (foodInput) => {
 	return async (dispatch) => {
@@ -32,10 +33,14 @@ export const startGetFoodInformation = (foodId, fn = null) => {
 
 export const startGetOwnFoodInformation = (foodId, fn = null) => {
 	return async (dispatch) => {
-		const { food_information } = await getFoodInformartion(foodId);
-		dispatch(setActiveOwnFood(food_information));
+		try {
+			const { food_information } = await getFoodInformartion(foodId);
+			dispatch(setActiveOwnFood(food_information));
 
-		if (fn) fn();
+			if (fn) fn();
+		} catch (e) {
+			console.log(e.response);
+		}
 	};
 };
 
@@ -58,7 +63,15 @@ export const startCreateFood = (foodInfo, fn = null) => {
 				setNewFood({ food_id: data.food_created_id, ...foodInfo })
 			);
 			if (fn) fn();
+			dispatch(setMessageSuccess(data.msg));
+			setTimeout(() => {
+				dispatch(setMessageSuccess(null));
+			}, 2000);
 		} catch (e) {
+			dispatch(setMessageWarning(e.response.data.msg));
+			setTimeout(() => {
+				dispatch(setMessageWarning(null));
+			}, 2000);
 			console.log(e.response);
 		}
 	};
@@ -73,7 +86,15 @@ export const startUpdateOwnFood = (foodId, foodInfo, fn = null) => {
 			);
 			dispatch(setUpdatedFood({ food_id: foodId, ...foodInfo }));
 			if (fn) fn();
+			dispatch(setMessageSuccess(data.msg));
+			setTimeout(() => {
+				dispatch(setMessageSuccess(null));
+			}, 2000);
 		} catch (e) {
+			dispatch(setMessageWarning(e.response.data.msg));
+			setTimeout(() => {
+				dispatch(setMessageWarning(null));
+			}, 2000);
 			console.log(e.response);
 		}
 	};
@@ -82,10 +103,18 @@ export const startUpdateOwnFood = (foodId, foodInfo, fn = null) => {
 export const startRemoveOwnfood = (foodId, fn = null) => {
 	return async (dispatch) => {
 		try {
-			await clientAxios.put(`/remove-food/${foodId}`);
+			const { data } = await clientAxios.put(`/remove-food/${foodId}`);
 			dispatch(removeOwnFood(foodId));
 			if (fn) fn();
+			dispatch(setMessageSuccess(data.msg));
+			setTimeout(() => {
+				dispatch(setMessageSuccess(null));
+			}, 2000);
 		} catch (e) {
+			dispatch(setMessageWarning(e.response.data.msg));
+			setTimeout(() => {
+				dispatch(setMessageWarning(null));
+			}, 2000);
 			console.log(e.response);
 		}
 	};

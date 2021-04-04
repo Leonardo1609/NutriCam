@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
+import { colors } from "../../../consts/colors";
 import {
 	getOwnFoods,
 	startGetOwnFoodInformation,
@@ -12,6 +13,7 @@ export const MealManagementScreen = () => {
 	const dispatch = useDispatch();
 	const navigation = useNavigation();
 	const { ownFoods } = useSelector((state) => state.food);
+	const { messageSuccess } = useSelector((state) => state.ui);
 
 	const renderFoods = ({ item }) => {
 		return (
@@ -41,6 +43,11 @@ export const MealManagementScreen = () => {
 
 	return (
 		<View style={styles.screen}>
+			{messageSuccess && (
+				<View style={styles.messageSuccessContainer}>
+					<Text style={styles.message}>{messageSuccess}</Text>
+				</View>
+			)}
 			<FlatList
 				keyExtractor={(item) => item.food_id.toString()}
 				data={ownFoods}
@@ -67,5 +74,17 @@ const styles = StyleSheet.create({
 	foodName: {
 		fontFamily: "poppins",
 		fontSize: 18,
+	},
+	messageSuccessContainer: {
+		marginVertical: 10,
+		padding: 10,
+		backgroundColor: colors.green,
+		borderRadius: 10,
+	},
+	message: {
+		fontSize: 18,
+		textAlign: "center",
+		color: "white",
+		fontFamily: "poppins-bold",
 	},
 });

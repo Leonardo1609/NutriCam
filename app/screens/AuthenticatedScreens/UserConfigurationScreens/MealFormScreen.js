@@ -25,6 +25,7 @@ export const MealFormScreen = () => {
 	};
 
 	const { activeOwnFood } = useSelector((state) => state.food);
+	const { messageWarning } = useSelector((state) => state.ui);
 
 	const [foodName, setFoodName] = useState("");
 	const [measureUnit, setMeasureUnit] = useState("");
@@ -153,6 +154,11 @@ export const MealFormScreen = () => {
 
 	return (
 		<View style={styles.screen}>
+			{messageWarning && (
+				<View style={styles.messageWarningContainer}>
+					<Text style={styles.message}>{messageWarning}</Text>
+				</View>
+			)}
 			<View style={styles.formContainer}>
 				<View style={styles.row}>
 					<View style={styles.labelContainer}>
@@ -332,13 +338,15 @@ export const MealFormScreen = () => {
 				Guardar
 			</MainButton>
 
-			<MainButton
-				containerStyle={styles.buttonContainer}
-				buttonStyle={styles.removeButton}
-				onPress={removeFoodSubmit}
-			>
-				Remover
-			</MainButton>
+			{activeOwnFood && (
+				<MainButton
+					containerStyle={styles.buttonContainer}
+					buttonStyle={styles.removeButton}
+					onPress={removeFoodSubmit}
+				>
+					Remover
+				</MainButton>
+			)}
 		</View>
 	);
 };
@@ -349,6 +357,18 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		backgroundColor: "white",
 		paddingHorizontal: "8%",
+	},
+	messageWarningContainer: {
+		marginTop: 10,
+		padding: 10,
+		backgroundColor: "red",
+		borderRadius: 10,
+	},
+	message: {
+		fontSize: 18,
+		textAlign: "center",
+		color: "white",
+		fontFamily: "poppins-bold",
 	},
 	formContainer: {
 		marginTop: 20,
@@ -379,7 +399,7 @@ const styles = StyleSheet.create({
 		color: colors.grayPlaceholder,
 	},
 	buttonContainer: {
-		marginVertical: 20,
+		marginVertical: 10,
 	},
 	removeButton: {
 		backgroundColor: "red",
