@@ -75,8 +75,10 @@ export const HomeScreen = ({ navigation }) => {
 		setRegisterDayToShow(
 			moment(parserDateToLocale(dateOfRegister)).format("L")
 		);
-		dispatch(startGetFoodRegisters());
-	}, [dateOfRegister]);
+		if (userInformation?.user) {
+			dispatch(startGetFoodRegisters());
+		}
+	}, [dateOfRegister, userInformation]);
 
 	return (
 		<View style={styles.screen}>

@@ -25,7 +25,6 @@ export const MealFormScreen = () => {
 	};
 
 	const { activeOwnFood } = useSelector((state) => state.food);
-	console.log( activeOwnFood )
 
 	const [foodName, setFoodName] = useState("");
 	const [measureUnit, setMeasureUnit] = useState("");

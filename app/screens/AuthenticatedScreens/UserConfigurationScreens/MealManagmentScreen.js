@@ -62,10 +62,10 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderRadius: 10,
 		marginBottom: 10,
-		alignItems: "center",
+		alignItems: "flex-start",
 	},
 	foodName: {
-		fontFamily: "poppins-bold",
+		fontFamily: "poppins",
 		fontSize: 18,
 	},
 });

@@ -12,7 +12,7 @@ export const CalorieBar = () => {
 	const calculateAdvancePercentage = () => {
 		return (
 			(totalCaloriesConsumed(foodRegisters) /
-				userInformation.profile.profile_caloric_plan) *
+				userInformation.profile?.profile_caloric_plan) *
 			100
 		);
 	};

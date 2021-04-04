@@ -10,6 +10,7 @@ import { MealFormScreen } from "../screens/AuthenticatedScreens/UserConfiguratio
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { setActiveOwnFood } from "../actions/foodActions";
+import { ReviewRatingScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/ReviewRatingScreen";
 
 const Stack = createStackNavigator();
 
@@ -45,7 +46,7 @@ export const UserConfigurationNavigator = () => {
 			<Stack.Screen
 				name="MealManagement"
 				options={{
-					title: "Comidas",
+					title: "Mis Comidas",
 					headerRight: () => (
 						<View style={styles.iconContainer}>
 							<TouchableOpacity
@@ -75,6 +76,13 @@ export const UserConfigurationNavigator = () => {
 					title: "Guardar Comida",
 				}}
 				component={MealFormScreen}
+			/>
+			<Stack.Screen
+				name="ReviewRating"
+				options={{
+					title: "Reseñar/Puntuar",
+				}}
+				component={ReviewRatingScreen}
 			/>
 		</Stack.Navigator>
 	);

@@ -10,6 +10,7 @@ export const types = {
 
 	loadingUserInfo: "[Ui] Loading User Info",
 	messageWarning: "[Ui] Set Message Warning",
+	messageSuccess: "[Ui] Set Message Success",
 
 	setFoodRegisters: "[Nutrition Summary] Set Food Registers",
 	setWeeklyCalories: "[Nutrition Summary] Set Weekly Calories",
@@ -26,4 +27,8 @@ export const types = {
 	updateOwnFood: "[Food] Update Own Food",
 	removeOwnFood: "[Food] Remove Own Food",
 	setActiveOwnFood: "[Food] Set Active Own Food",
+
+	getReviewRating: "[ReviewRating] Get Review Rating",
+	setReviewRating: "[ReviewRating] Set Review Rating",
+	deleteReviewRating: "[ReviewRating] Delete Review Rating",
 };
