@@ -8,6 +8,7 @@ import {
 	getOwnFoods,
 	startGetOwnFoodInformation,
 } from "../../../actions/foodActions";
+import { AlertMessage } from "../../../components/AlertMessage";
 
 export const MealManagementScreen = () => {
 	const dispatch = useDispatch();
@@ -44,9 +45,7 @@ export const MealManagementScreen = () => {
 	return (
 		<View style={styles.screen}>
 			{messageSuccess && (
-				<View style={styles.messageSuccessContainer}>
-					<Text style={styles.message}>{messageSuccess}</Text>
-				</View>
+				<AlertMessage type="success" message={messageSuccess} />
 			)}
 			<FlatList
 				keyExtractor={(item) => item.food_id.toString()}
@@ -74,17 +73,5 @@ const styles = StyleSheet.create({
 	foodName: {
 		fontFamily: "poppins",
 		fontSize: 18,
-	},
-	messageSuccessContainer: {
-		marginVertical: 10,
-		padding: 10,
-		backgroundColor: colors.green,
-		borderRadius: 10,
-	},
-	message: {
-		fontSize: 18,
-		textAlign: "center",
-		color: "white",
-		fontFamily: "poppins-bold",
 	},
 });

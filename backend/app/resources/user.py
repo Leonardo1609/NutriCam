@@ -40,13 +40,13 @@ class RegisterUser( Resource ):
         data = self.parser.parse_args()
         user = User( data['user_name'], data['user_email'], data['user_pass'] )
 
-        if User.get_user_by_name( user.user_name ):
-            return { 'msg': 'El nombre de usuario ya se encuentra en uso' }, 400
-
-        if User.get_user_by_email( user.user_email ):
-            return { 'msg': 'El email ya se encuentra en uso' }, 400
-
         try:
+            if User.get_user_by_name( user.user_name ):
+                return { 'msg': 'El nombre de usuario ya se encuentra en uso' }, 400
+
+            if User.get_user_by_email( user.user_email ):
+                return { 'msg': 'El email ya se encuentra en uso' }, 400
+
             user_id = user.create_user_and_profile( profile_genre = data['profile_genre'], profile_height = data['profile_height'], profile_actual_weight = data['profile_actual_weight'], profile_activity_level = data['profile_activity_level'], profile_birthdate = data['profile_birthdate'] )
             access_token = create_access_token( identity = int( user_id ) )
             return { 'access_token': access_token }, 201
@@ -100,7 +100,68 @@ class UserExists( Resource ):
                 return False
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
-        
+
+class ChangePassword( Resource ):
+    parser = reqparse.RequestParser()
+    parser.add_argument('user_email',
+            type=str,
+            required=True,
+            help="El campo correo es requerido")
+    parser.add_argument('user_pass',
+            type=str,
+            required=True,
+            help="El campo contraseña es requerido")
+    parser.add_argument('new_password',
+            type=str,
+            required=True,
+            help="El campo nueva contraseña es requerida")
+    @jwt_required()
+    def put(self):
+        data = self.parser.parse_args()
+        try:
+            user_id = get_jwt_identity()
+            if not User.verify_email( user_id, data['user_email'] ):
+                return { 'msg': 'Correo no válido' }, 400
+            if not User.verify_password( data['user_email'], data['user_pass'] ):
+                return { 'msg': 'Contraseña actual incorrecta' }, 400
+            message = User.change_password( user_id, data['new_password'] )
+            return { 'msg': message }
+        except:
+            return { 'msg': 'Ha ocurrido un error' }
+
+class ChangeEmail( Resource ):
+    parser = reqparse.RequestParser()
+    parser.add_argument('user_email',
+            type=str,
+            required=True,
+            help="El campo correo es requerido")
+    parser.add_argument('new_email',
+            type=str,
+            required=True,
+            help="El campo nuevo correo es requerido")
+    parser.add_argument('user_pass',
+            type=str,
+            required=True,
+            help="El campo contraseña es requerido")
+
+    @jwt_required()
+    def put(self):
+        data = self.parser.parse_args()
+        try:
+            user_id = get_jwt_identity()
+
+            if not User.verify_email( user_id, data['user_email'] ) or not User.verify_password( data['user_email'], data['user_pass'] ):
+                return { 'msg': 'Credenciales inválidas' }, 400
+
+            if User.get_user_by_email( data['new_email'] ):
+                return { 'msg': 'El email ya se encuentra en uso' }, 400
+
+            message = User.change_email( user_id, data['new_email'] )
+
+            return { 'msg': message }
+                
+        except:
+            return { 'msg': 'Ha ocurrido un error' }
 
 # Get the profile information before the user is created (IMC, ideal_weight, etc)
 class ProfileInformation( Resource ):

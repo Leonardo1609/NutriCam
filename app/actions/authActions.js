@@ -1,5 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { loadingUserInfo, setMessageWarning } from "./uiActions";
+import {
+	loadingUserInfo,
+	setMessageSuccess,
+	setMessageWarning,
+} from "./uiActions";
 import { clientAxios } from "../axios/clientAxios";
 import { tokenAuth } from "../axios/tokenAuth";
 import { types } from "../types/types";
@@ -59,9 +63,63 @@ export const startLoginUser = (email, password) => {
 		try {
 			const { data } = await clientAxios.post("/login", dataToSend);
 			await AsyncStorage.setItem("token", data.access_token);
+			dispatch(setMessageWarning(null));
 			dispatch(getUser());
 			dispatch(authenticateUserLogged());
 		} catch (e) {
+			dispatch(setMessageWarning(e.response.data.msg));
+			console.log(e.response);
+		}
+	};
+};
+
+export const startChangeEmail = (email, newEmail, password) => {
+	return async (dispatch) => {
+		try {
+			const dataToSend = {
+				user_email: email,
+				new_email: newEmail,
+				user_pass: password,
+			};
+			const { data } = await clientAxios.put("/change-email", dataToSend);
+			dispatch(logoutUser());
+			dispatch(setMessageSuccess(data.msg));
+			setTimeout(() => {
+				dispatch(setMessageSuccess(null));
+			}, 2000);
+		} catch (e) {
+			dispatch(setMessageWarning(e.response.data.msg));
+			setTimeout(() => {
+				dispatch(setMessageWarning(null));
+			}, 2000);
+			console.log(e.response);
+		}
+	};
+};
+
+export const startChangePassword = (password, newPassword) => {
+	return async (dispatch, getState) => {
+		try {
+			const { userInformation } = getState().auth;
+			const dataToSend = {
+				user_email: userInformation?.user.user_email,
+				user_pass: password,
+				new_password: newPassword,
+			};
+			const { data } = await clientAxios.put(
+				"/change-password",
+				dataToSend
+			);
+			dispatch(logoutUser());
+			dispatch(setMessageSuccess(data.msg));
+			setTimeout(() => {
+				dispatch(setMessageSuccess(null));
+			}, 2000);
+		} catch (e) {
+			dispatch(setMessageWarning(e.response.data.msg));
+			setTimeout(() => {
+				dispatch(setMessageWarning(null));
+			}, 2000);
 			console.log(e.response);
 		}
 	};

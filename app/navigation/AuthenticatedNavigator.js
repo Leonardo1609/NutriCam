@@ -77,6 +77,7 @@ export const AuthenticatedNavigator = () => {
 					component={WeeklyNavigator}
 					listeners={({ navigation, route }) => ({
 						tabPress: (e) => {
+							// To always navigate to the main screen of the TapScreen (MyWeek). Need the if because in this NavigationContainer MyWeek route doesn't exists when the app is initialized.
 							if (route.state) {
 								e.preventDefault();
 								navigation.navigate("MyWeek");

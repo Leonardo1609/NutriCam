@@ -1,9 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, View, Image } from "react-native";
+import { useSelector } from "react-redux";
+import { AlertMessage } from "../components/AlertMessage";
 import { MainButton } from "../components/MainButton";
 
 export const FirstScreen = () => {
+	const { messageSuccess } = useSelector((state) => state.ui);
 	const navigation = useNavigation();
 	return (
 		<View style={styles.screen}>
@@ -13,6 +16,9 @@ export const FirstScreen = () => {
 					source={require("../assets/images/nutricam-logo.png")}
 				/>
 			</View>
+			{messageSuccess && (
+				<AlertMessage type="success" message={messageSuccess} />
+			)}
 			<View style={styles.buttonsContainer}>
 				<MainButton
 					containerStyle={styles.buttonSeparation}
@@ -42,7 +48,7 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		width: "100%",
-		resizeMode: 'contain'
+		resizeMode: "contain",
 	},
 	logoContainer: {
 		flex: 1,

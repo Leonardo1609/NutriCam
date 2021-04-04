@@ -163,6 +163,40 @@ class User:
         return check_password_hash( hashed_password, password_from_login)
 
     @classmethod
+    def verify_email( cls, user_id, email ):
+        query = """
+        SELECT *
+        FROM users
+        WHERE user_id = ? AND user_email = ?
+        """
+        row = cursor.execute(query, (user_id, email)).fetchone()
+        if row:
+            return True
+        return False
+
+    @classmethod
+    def change_email(cls, user_id, new_email):
+        query = """
+        UPDATE users
+        SET user_email = ?
+        WHERE user_id = ?
+        """
+        cursor.execute( query, (new_email, user_id ) )
+        cursor.commit()
+        return "El correo ha sido modificado"
+
+    @classmethod
+    def change_password(cls, user_id, password):
+        query = """
+        UPDATE users
+        SET user_pass = ?
+        WHERE user_id= ?
+        """
+        hashed_pass = generate_password_hash( password )
+        cursor.execute( query, ( hashed_pass, user_id ) )
+        return "La contraseña ha sido modificada"
+
+    @classmethod
     def get_user_by_id( cls, user_id ):
         """
         Returns the user found according with the user_id parameter

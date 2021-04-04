@@ -21,6 +21,7 @@ import {
 	startModifyReviewRating,
 	startPostReviewRating,
 } from "../../../actions/reviewRatingActions";
+import { AlertMessage } from "../../../components/AlertMessage";
 
 const getRatingColor = (rating) => {
 	switch (rating) {
@@ -112,14 +113,11 @@ export const ReviewRatingScreen = () => {
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			<View style={styles.screen}>
 				{messageSuccess && (
-					<View style={styles.messageSuccessContainer}>
-						<Text style={styles.message}>{messageSuccess}</Text>
-					</View>
+					<AlertMessage type="success" message={messageSuccess} />
 				)}
 				{messageWarning && (
-					<View style={styles.messageWarningContainer}>
-						<Text style={styles.message}>{messageWarning}</Text>
-					</View>
+					<AlertMessage type="warning" message={messageWarning} />
+					
 				)}
 				{!reviewRating && (
 					<View>
@@ -183,24 +181,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "white",
 		paddingHorizontal: "10%",
-	},
-	messageSuccessContainer: {
-		marginTop: 10,
-		padding: 10,
-		backgroundColor: colors.green,
-		borderRadius: 10,
-	},
-	messageWarningContainer: {
-		marginTop: 10,
-		padding: 10,
-		backgroundColor: "red",
-		borderRadius: 10,
-	},
-	message: {
-		fontSize: 18,
-		textAlign: "center",
-		color: "white",
-		fontFamily: "poppins-bold",
 	},
 	greetsUser: {
 		marginTop: 20,

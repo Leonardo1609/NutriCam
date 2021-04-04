@@ -21,7 +21,7 @@ export const createAccountValidation = ({
 	}
 
 	if (password.trim().length < 6 || password.trim().length > 15) {
-		errors["password"] = "El campo contraseña debe tener 6 y 15 caracteres";
+		errors["password"] = "El campo contraseña debe tener entre 6 y 15 caracteres";
 	}
 
 	if (password !== confirmPassword) {

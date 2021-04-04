@@ -13,6 +13,7 @@ import { colors } from "../../../consts/colors";
 import { createFoodValidation } from "../../../validations/createFoodValidation";
 import PickerSelect from "react-native-picker-select";
 import { measureUnitMap } from "../../../helpers/helpers";
+import { AlertMessage } from "../../../components/AlertMessage";
 
 const errorColor = (error) => (error ? "red" : "black");
 
@@ -155,9 +156,7 @@ export const MealFormScreen = () => {
 	return (
 		<View style={styles.screen}>
 			{messageWarning && (
-				<View style={styles.messageWarningContainer}>
-					<Text style={styles.message}>{messageWarning}</Text>
-				</View>
+				<AlertMessage type="warning" message={messageWarning} />
 			)}
 			<View style={styles.formContainer}>
 				<View style={styles.row}>
@@ -357,18 +356,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		backgroundColor: "white",
 		paddingHorizontal: "8%",
-	},
-	messageWarningContainer: {
-		marginTop: 10,
-		padding: 10,
-		backgroundColor: "red",
-		borderRadius: 10,
-	},
-	message: {
-		fontSize: 18,
-		textAlign: "center",
-		color: "white",
-		fontFamily: "poppins-bold",
 	},
 	formContainer: {
 		marginTop: 20,

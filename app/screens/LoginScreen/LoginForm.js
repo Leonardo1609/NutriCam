@@ -10,16 +10,16 @@ import { useForm } from "../../hooks/useForm";
 import { loginValidation } from "../../validations/loginValidation";
 import { MainButton } from "../../components/MainButton";
 import { ErrorText } from "../../components/ErrorText";
-import { useDispatch } from 'react-redux';
-import { startLoginUser } from '../../actions/authActions';
+import { useDispatch, useSelector } from "react-redux";
+import { startLoginUser } from "../../actions/authActions";
 
 export const LoginForm = () => {
-
 	const dispatch = useDispatch();
+	const { messageWarning } = useSelector((state) => state.ui);
 
 	const initialValues = {
 		email: "leonardo246@gmail.com",
-		password: "12345678",
+		password: "23456789",
 	};
 
 	const { formValues, errors, handleChange, handleSubmit } = useForm(
@@ -31,7 +31,7 @@ export const LoginForm = () => {
 	const { email, password } = formValues;
 
 	function loginSubmit() {
-		dispatch( startLoginUser( email, password ) );
+		dispatch(startLoginUser(email, password));
 	}
 
 	return (
@@ -41,8 +41,7 @@ export const LoginForm = () => {
 			}}
 		>
 			<View style={styles.screen}>
-				<InputForm
-					label="Correo"
+				<InputForm label="Correo"
 					onChangeText={(value) => handleChange(value, "email")}
 					value={email}
 					autoCapitalize="none"
@@ -60,6 +59,7 @@ export const LoginForm = () => {
 					inputStyle={errors["password"] && styles.errorInput}
 				/>
 				{errors["password"] && <ErrorText>{errors.password}</ErrorText>}
+				{messageWarning && <ErrorText>{messageWarning}</ErrorText>}
 				<MainButton
 					containerStyle={styles.buttonContainer}
 					onPress={handleSubmit}
