@@ -97,6 +97,26 @@ export const startChangeEmail = (email, newEmail, password) => {
 	};
 };
 
+export const startUnsubscribeNutritionalPlan = (fn = null) => {
+	return async (dispatch) => {
+		try {
+			const { data } = await clientAxios.put("/unsubscribe-caloric-plan");
+			dispatch(getUser());
+			dispatch(setMessageSuccess(data.msg));
+			if (fn) fn();
+			setTimeout(() => {
+				dispatch(setMessageSuccess(null));
+			}, 2000);
+		} catch (e) {
+			dispatch(setMessageWarning(e.response.data.msg));
+			setTimeout(() => {
+				dispatch(setMessageWarning(null));
+			}, 2000);
+			console.log(e.response);
+		}
+	};
+};
+
 export const startChangePassword = (password, newPassword) => {
 	return async (dispatch, getState) => {
 		try {
@@ -114,7 +134,7 @@ export const startChangePassword = (password, newPassword) => {
 			dispatch(setMessageSuccess(data.msg));
 			setTimeout(() => {
 				dispatch(setMessageSuccess(null));
-			}, 2000);
+			}, 5000);
 		} catch (e) {
 			dispatch(setMessageWarning(e.response.data.msg));
 			setTimeout(() => {

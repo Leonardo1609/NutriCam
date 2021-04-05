@@ -53,9 +53,38 @@ class RegisterUser( Resource ):
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
 
+class UpdateProfile( Resource ):
+    parser = reqparse.RequestParser()
+    parser.add_argument('profile_genre', 
+        type=str
+    )
+    parser.add_argument('profile_height',
+        type=int
+    )
+    parser.add_argument('profile_actual_weight',
+        type=float
+    )
+    parser.add_argument('profile_birthdate',
+        type=str
+    )
+    parser.add_argument('profile_activity_level',
+        type=int
+    )
+    @jwt_required()
+    def put( self ):
+        data = self.parser.parse_args()
+        print( data )
+        try:
+            user_id = get_jwt_identity()
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            message = User.update_profile_data( profile_id, data['profile_genre'], data['profile_height'], data['profile_actual_weight'], data['profile_activity_level'], data['profile_birthdate'] )
+            return { 'msg': message }
+                 
+        except:
+            return {'msg': 'Ha ocurrido un error'}, 500
+
 class LoginUser( Resource ):
     parser = reqparse.RequestParser()
-
     parser.add_argument('user_email',
         type=str,
         required=True,
@@ -100,6 +129,17 @@ class UserExists( Resource ):
                 return False
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
+
+class UnsubscribeCaloricPlan( Resource ):
+    @jwt_required()
+    def put(self):
+        try:
+            user_id = get_jwt_identity()
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            message = User.unsubscribe_caloric_plan( profile_id )
+            return { 'msg': message }
+        except:
+            return { 'msg': 'Ha ocurrido un error' }
 
 class ChangePassword( Resource ):
     parser = reqparse.RequestParser()

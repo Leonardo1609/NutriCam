@@ -13,7 +13,9 @@ import { useDispatch } from "react-redux";
 import { setActiveOwnFood } from "../actions/foodActions";
 import { ReviewRatingScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/ReviewRatingScreen";
 import { ChangeEmailForm } from "../screens/AuthenticatedScreens/UserConfigurationScreens/ChangeEmailForm";
-import {ChangePasswordFormScreen} from "../screens/AuthenticatedScreens/UserConfigurationScreens/ChangePasswordFormScreen";
+import { ScheduleManagement } from "../screens/AuthenticatedScreens/UserConfigurationScreens/ScheduleManagement";
+import { ChangePasswordFormScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/ChangePasswordFormScreen";
+import { MyDataScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MyDataScreen";
 
 const Stack = createStackNavigator();
 
@@ -45,6 +47,13 @@ export const UserConfigurationNavigator = () => {
 					title: "Mi Cuenta",
 				}}
 				component={UserConfigurationMainScreen}
+			/>
+			<Stack.Screen
+				name="MyData"
+				options={{
+					title: "Mis datos",
+				}}
+				component={MyDataScreen}
 			/>
 			<Stack.Screen
 				name="GeneralConfiguration"
@@ -86,6 +95,13 @@ export const UserConfigurationNavigator = () => {
 					),
 				}}
 				component={MealManagementScreen}
+			/>
+			<Stack.Screen
+				name="ScheduleManagement"
+				options={{
+					title: "Horario",
+				}}
+				component={ScheduleManagement}
 			/>
 			<Stack.Screen
 				name="Equivalence"

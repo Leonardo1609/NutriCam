@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, Text } from "react-native";
+import { Alert, Platform, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/AuthenticatedScreens/HomeScreen";
@@ -9,6 +9,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { DiaryNavigator } from "./DiaryNavigator";
 import { WeeklyNavigator } from "./WeeklyNavigator";
 import { UserConfigurationNavigator } from "./UserConfigurationNavigator";
+import { useSelector } from "react-redux";
 
 const Tab =
 	Platform.OS === "android"
@@ -16,6 +17,7 @@ const Tab =
 		: createBottomTabNavigator();
 
 export const AuthenticatedNavigator = () => {
+	const { userInformation } = useSelector((state) => state.auth);
 	return (
 		<NavigationContainer>
 			<Tab.Navigator
@@ -77,6 +79,17 @@ export const AuthenticatedNavigator = () => {
 					component={WeeklyNavigator}
 					listeners={({ navigation, route }) => ({
 						tabPress: (e) => {
+							if (
+								!userInformation?.profile
+									?.profile_have_caloric_plan
+							) {
+								e.preventDefault();
+								return Alert.alert(
+									"No permitido",
+									"Solo puede ingresar si cuenta con un plan calórico"
+								);
+							}
+
 							// To always navigate to the main screen of the TapScreen (MyWeek). Need the if because in this NavigationContainer MyWeek route doesn't exists when the app is initialized.
 							if (route.state) {
 								e.preventDefault();

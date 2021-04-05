@@ -1,5 +1,5 @@
 from flask_restful import Api
-from .resources.user import RegisterUser, UserProfile, LoginUser, ProfileInformation, UserExists, ChangeEmail, ChangePassword
+from .resources.user import RegisterUser, UserProfile, LoginUser, ProfileInformation, UserExists, ChangeEmail, ChangePassword, UnsubscribeCaloricPlan, UpdateProfile
 from .resources.food import FoodSearch, FoodInformation, CreateFood, RegistFood, DeleteFoodRegist, FoodRegistersPerDay, NutritionSummaryPerDay, WeeklyCalories, OwnFoods, UpdateOwnFood, RemoveOwnFood
 from .resources.review_rating import ReviewRatingCrud
 
@@ -7,10 +7,12 @@ api = Api( prefix='/api' )
 
 api.add_resource( RegisterUser, '/regist-user' )
 api.add_resource( UserProfile, '/user-profile' )
+api.add_resource( UpdateProfile, '/update-profile' )
 api.add_resource( LoginUser, '/login' )
 api.add_resource( ChangeEmail, '/change-email' )
 api.add_resource( ChangePassword, '/change-password' )
 api.add_resource( ProfileInformation, '/information' )
+api.add_resource( UnsubscribeCaloricPlan, '/unsubscribe-caloric-plan' )
 api.add_resource( FoodSearch, '/search/<string:food_input>' )
 api.add_resource( FoodInformation, '/food/<int:food_id>' )
 api.add_resource( CreateFood, '/create-food' )

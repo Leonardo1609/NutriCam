@@ -117,7 +117,7 @@ class User:
         # get the id of the user inserted recently
         user_id = cursor.execute( "SELECT @@IDENTITY AS ID" ).fetchone()[0]
 
-        # If the user want to have a nutritional plan he have to insert the following data
+        # If the user want to have a caloric plan he have to insert the following data
         if profile_genre and profile_height and profile_actual_weight and profile_activity_level: 
             profile_initial_date_caloric_plan = date.today()
             profile_ideal_weight = self.ideal_weight( profile_height, profile_genre )
@@ -134,6 +134,34 @@ class User:
             cursor.execute( query_profile, ( user_id, profile_have_caloric_plan ) )
         cursor.commit()
         return user_id
+
+    @classmethod
+    def update_profile_data( cls, profile_id, profile_genre, profile_height, profile_actual_weight, profile_activity_level, profile_birthdate ): 
+        profile_initial_date_caloric_plan = date.today()
+        profile_ideal_weight = cls.ideal_weight( profile_height, profile_genre )
+        profile_current_imc = cls.calculate_imc( profile_height, profile_actual_weight )
+        w_level_id = WeightLevel.get_weight_level_by_imc( profile_current_imc )[0]
+        profile_caloric_plan = cls.cals_per_day( profile_actual_weight, profile_height, profile_birthdate, profile_genre, profile_activity_level )
+        query = """
+        UPDATE profile
+        SET w_level_id = ?, profile_genre = ?, profile_height = ?, profile_actual_weight = ?, profile_ideal_weight = ?, profile_birthdate = ?, profile_activity_level = ?, profile_previous_imc = (SELECT profile_current_imc FROM profile WHERE profile_id = ?), profile_current_imc = ?, profile_have_caloric_plan = 1, profile_caloric_plan = ?, profile_initial_date_caloric_plan = ?, profile_cancel_date_caloric_plan = NULL
+        WHERE profile_id = ?
+        """
+        cursor.execute( query, ( w_level_id, profile_genre, profile_height, profile_actual_weight, profile_ideal_weight, profile_birthdate, profile_activity_level, profile_id, profile_current_imc, profile_caloric_plan, profile_initial_date_caloric_plan, profile_id) )
+        cursor.commit()
+        return "Datos actualizados"
+        
+    @classmethod
+    def unsubscribe_caloric_plan( cls, profile_id ):
+        profile_cancel_date_caloric_plan = date.today()
+        unsubscribe_query = """
+        UPDATE profile
+        SET w_level_id = NULL, profile_genre = NULL, profile_height = NULL, profile_actual_weight = NULL, profile_ideal_weight = NULL, profile_birthdate = NULL, profile_activity_level = NULL, profile_current_imc = NULL, profile_previous_imc = NULL, profile_have_caloric_plan = 0, profile_caloric_plan = NULL, profile_initial_date_caloric_plan = NULL, profile_cancel_date_caloric_plan = ?
+        WHERE profile_id = ?
+        """
+        cursor.execute(unsubscribe_query, ( profile_cancel_date_caloric_plan, profile_id ))
+        cursor.commit()
+        return "Ya no cuentas con plan calórico"
 
     @classmethod
     def get_user_by_name( cls, user_name ):

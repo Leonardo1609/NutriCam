@@ -10,3 +10,5 @@ export const foodNotFoundMessage =
 export const equivalenceMessage =
 	"Se mostrará el equivalente al total de calorías de una comida en forma de cantidad del alimento que seleccione";
 
+export const askForUnsubscribeAlert =
+	"¿Estás seguro que deseas dar de baja tu plan calórico? Si es así, tus datos relacionados al cálculo de tu IMC serán eliminados, pero tus registros de comida aún se conservarán.";

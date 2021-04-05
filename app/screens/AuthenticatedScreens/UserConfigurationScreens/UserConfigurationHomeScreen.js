@@ -7,7 +7,7 @@ export const UserConfigurationMainScreen = () => {
 	const routes = [
 		{
 			name: "Mis datos",
-			component: "",
+			component: "MyData",
 		},
 		{
 			name: "Ajustes Generales",
@@ -23,7 +23,7 @@ export const UserConfigurationMainScreen = () => {
 		},
 		{
 			name: "Administrar Horario",
-			component: "",
+			component: "ScheduleManagement",
 		},
 		{
 			name: "Alimento de Equivalencia",

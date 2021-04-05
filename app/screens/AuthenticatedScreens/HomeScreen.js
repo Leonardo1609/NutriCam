@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { AlertMessage } from "../../components/AlertMessage";
 import { formatDate, parserDateToLocale } from "../../helpers/helpers";
 import { CalorieBar } from "../../components/CalorieBar";
 import { Ionicons } from "@expo/vector-icons";
@@ -26,6 +27,7 @@ export const HomeScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
 
 	const { userInformation } = useSelector((state) => state.auth);
+	const { messageSuccess } = useSelector((state) => state.ui);
 	const { foodRegisters, dateOfRegister } = useSelector(
 		(state) => state.nutritionSummary
 	);
@@ -82,6 +84,9 @@ export const HomeScreen = ({ navigation }) => {
 
 	return (
 		<View style={styles.screen}>
+			{messageSuccess && (
+				<AlertMessage type="warning" message={messageSuccess} />
+			)}
 			{userInformation && (
 				<>
 					<View style={styles.dateContainer}>

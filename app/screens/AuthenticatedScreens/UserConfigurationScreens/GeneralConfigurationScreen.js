@@ -1,11 +1,16 @@
 import React from "react";
-import { StyleSheet, View, Text, Switch } from "react-native";
+import { StyleSheet, View, Text, Switch, Alert } from "react-native";
 import { colors } from "../../../consts/colors";
 import { MainButton } from "../../../components/MainButton";
+import { startUnsubscribeNutritionalPlan } from "../../../actions/authActions";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { askForUnsubscribeAlert } from "../../../consts/consts";
 
 export const GeneralConfigurationScreen = () => {
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
+	const { userInformation } = useSelector((state) => state.auth);
 
 	const navToChangeEmail = () => {
 		navigation.navigate("ChangeEmail");
@@ -13,6 +18,25 @@ export const GeneralConfigurationScreen = () => {
 
 	const navToChangePassword = () => {
 		navigation.navigate("ChangePassword");
+	};
+
+	const navToHome = () => {
+		navigation.navigate("Home");
+	};
+
+	const unsubscribeCaloricPlanSubmit = () => {
+		Alert.alert("Dar de baja plan calórico", askForUnsubscribeAlert, [
+			{
+				text: "Cancelar",
+				style: "cancel",
+			},
+			{
+				text: "Estoy seguro",
+				onPress: () => {
+					dispatch(startUnsubscribeNutritionalPlan(navToHome));
+				},
+			},
+		]);
 	};
 
 	return (
@@ -46,12 +70,15 @@ export const GeneralConfigurationScreen = () => {
 				>
 					Cambiar contraseña
 				</MainButton>
-				<MainButton
-					buttonStyle={styles.unsubscribeCaloricPlanButton}
-					containerStyle={styles.buttonContainer}
-				>
-					Dar de baja plan calórico
-				</MainButton>
+				{userInformation?.profile?.profile_have_caloric_plan && (
+					<MainButton
+						onPress={unsubscribeCaloricPlanSubmit}
+						buttonStyle={styles.unsubscribeCaloricPlanButton}
+						containerStyle={styles.buttonContainer}
+					>
+						Dar de baja plan calórico
+					</MainButton>
+				)}
 			</View>
 		</View>
 	);
