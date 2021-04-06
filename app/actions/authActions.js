@@ -8,7 +8,7 @@ import { clientAxios } from "../axios/clientAxios";
 import { tokenAuth } from "../axios/tokenAuth";
 import { types } from "../types/types";
 
-export const getUser = () => {
+export const getUser = (loading = true) => {
 	return async (dispatch) => {
 		const token = await AsyncStorage.getItem("token");
 		if (token) {
@@ -16,10 +16,10 @@ export const getUser = () => {
 		}
 
 		try {
-			dispatch(loadingUserInfo(true));
+			loading && dispatch(loadingUserInfo(true));
 			const { data } = await clientAxios.get("/user-profile");
 			dispatch(setUserInformation(data));
-			dispatch(loadingUserInfo(false));
+			loading && dispatch(loadingUserInfo(false));
 		} catch (e) {
 			console.log(e.response);
 			dispatch(loadingUserInfo(false));
@@ -55,12 +55,11 @@ export const startCreateUser = () => {
 
 export const startLoginUser = (email, password) => {
 	return async (dispatch) => {
-		const dataToSend = {
-			user_email: email,
-			user_pass: password,
-		};
-
 		try {
+			const dataToSend = {
+				user_email: email,
+				user_pass: password,
+			};
 			const { data } = await clientAxios.post("/login", dataToSend);
 			await AsyncStorage.setItem("token", data.access_token);
 			dispatch(setMessageWarning(null));
@@ -68,6 +67,43 @@ export const startLoginUser = (email, password) => {
 			dispatch(authenticateUserLogged());
 		} catch (e) {
 			dispatch(setMessageWarning(e.response.data.msg));
+			console.log(e.response);
+		}
+	};
+};
+
+export const startUpdateProfileData = (
+	profile_birthdate,
+	profile_height,
+	profile_genre,
+	profile_actual_weight,
+	profile_activity_level
+) => {
+	return async (dispatch) => {
+		try {
+			const dataToSend = {
+				profile_genre,
+				profile_height,
+				profile_actual_weight,
+				profile_birthdate,
+				profile_activity_level,
+			};
+
+			const { data } = await clientAxios.put(
+				"/update-profile",
+				dataToSend
+			);
+
+			dispatch(getUser(false));
+			dispatch(setMessageSuccess(data.msg));
+			setTimeout(() => {
+				dispatch(setMessageSuccess(null));
+			}, 2000);
+		} catch (e) {
+			dispatch(setMessageWarning(e.response.data.msg));
+			setTimeout(() => {
+				dispatch(setMessageWarning(null));
+			}, 2000);
 			console.log(e.response);
 		}
 	};

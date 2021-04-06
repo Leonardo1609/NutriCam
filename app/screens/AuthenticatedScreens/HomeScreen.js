@@ -19,6 +19,7 @@ import {
 	setDateOfRegisters,
 } from "../../actions/nutritionSummaryActions";
 
+
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
@@ -81,6 +82,7 @@ export const HomeScreen = ({ navigation }) => {
 			dispatch(startGetFoodRegisters());
 		}
 	}, [dateOfRegister, userInformation]);
+
 
 	return (
 		<View style={styles.screen}>

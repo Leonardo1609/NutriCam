@@ -1,13 +1,14 @@
 import React, { useCallback } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useSelector } from "react-redux";
-import { totalCaloriesConsumed } from "../helpers/helpers";
+import { parserDateToLocale, totalCaloriesConsumed } from "../helpers/helpers";
 import { colors } from "../consts/colors";
 
 export const CalorieBar = () => {
 	const { userInformation } = useSelector((state) => state.auth);
 
 	const { foodRegisters } = useSelector((state) => state.nutritionSummary);
+	const { dateOfRegister } = useSelector((state) => state.nutritionSummary);
 
 	const calculateAdvancePercentage = () => {
 		return (
@@ -40,7 +41,19 @@ export const CalorieBar = () => {
 		return remaining > 0 ? remaining : 0;
 	}, [userInformation, foodRegisters]);
 
-	if (!userInformation.profile.profile_have_caloric_plan) return null;
+	if (
+		!userInformation.profile.profile_have_caloric_plan ||
+		parserDateToLocale(
+			userInformation?.profile?.profile_initial_date_caloric_plan
+		) > parserDateToLocale(dateOfRegister)
+	)
+		return (
+			<View style={styles.totalConsumedContainer}>
+				<Text style={styles.totalConsumedText}>
+					Total Consumido: {totalCaloriesConsumed(foodRegisters)}
+				</Text>
+			</View>
+		);
 
 	return (
 		<View style={styles.calorieBarContainer}>
@@ -79,6 +92,14 @@ export const CalorieBar = () => {
 };
 
 const styles = StyleSheet.create({
+	totalConsumedContainer: {
+		marginVertical: 8,
+	},
+	totalConsumedText: {
+		textAlign: "center",
+		fontFamily: "poppins-bold",
+		fontSize: 18,
+	},
 	calorieBarContainer: {
 		width: "100%",
 	},

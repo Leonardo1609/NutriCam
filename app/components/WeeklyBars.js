@@ -12,7 +12,7 @@ import {
 	setDateOfSummary,
 } from "../actions/nutritionSummaryActions";
 import { useNavigation } from "@react-navigation/native";
-import { daysFirstLetter } from "../helpers/helpers";
+import { daysFirstLetter, parserDateToLocale } from "../helpers/helpers";
 import { colors } from "../consts/colors";
 
 export const WeeklyBars = ({ weekDay }) => {
@@ -36,9 +36,15 @@ export const WeeklyBars = ({ weekDay }) => {
 		return `${percentage < 100 ? percentage : 100}%`;
 	};
 
-	const setBarColor = (caloriesConsumed) => {
+	const setBarColor = (caloriesConsumed, weekday) => {
 		const percentage = calculateAdvancePercentage(caloriesConsumed);
-		if (percentage < 80) {
+		if (
+			parserDateToLocale(
+				userInformation?.profile?.profile_initial_date_caloric_plan
+			) > parserDateToLocale(weekday)
+		) {
+			return "#d9dad7";
+		} else if (percentage < 80) {
 			return "#f5eb31";
 		} else if (percentage > 80 && percentage < 120) {
 			return colors.green;
@@ -48,8 +54,34 @@ export const WeeklyBars = ({ weekDay }) => {
 	};
 
 	const goToDiarySummary = (dayCalories) => {
+		if (
+			parserDateToLocale(
+				userInformation?.profile?.profile_initial_date_caloric_plan
+			) > parserDateToLocale(dayCalories.weekday)
+		) {
+			return Alert.alert(
+				"Antes de la actualización de datos",
+				"El siguiente resumen nutricional pertenece a un día previo a tu actualización de datos",
+				[
+					{
+						text: "Cancelar",
+						style: "cancel",
+					},
+					{
+						text: "Continuar",
+						onPress: () => {
+							dispatch(setDateOfSummary(dayCalories.weekday));
+							navigation.navigate("DiarySummary");
+						},
+					},
+				]
+			);
+		}
 		if (!dayCalories.calories) {
-			return Alert.alert("No realizó registros en el día seleccionado");
+			return Alert.alert(
+				"Sin registros",
+				"No realizó registros en el día seleccionado"
+			);
 		}
 
 		dispatch(setDateOfSummary(dayCalories.weekday));
@@ -77,7 +109,8 @@ export const WeeklyBars = ({ weekDay }) => {
 										dayCalories.calories
 									),
 									backgroundColor: setBarColor(
-										dayCalories.calories
+										dayCalories.calories,
+										dayCalories.weekday
 									),
 								}}
 							></View>

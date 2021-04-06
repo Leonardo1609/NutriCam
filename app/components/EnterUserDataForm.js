@@ -12,8 +12,8 @@ import {
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PickerSelect from "react-native-picker-select";
-import { useNavigation } from "@react-navigation/native";
-import { indications } from "../consts/consts";
+// import { useNavigation } from "@react-navigation/native";
+// import { indications } from "../consts/consts";
 import {
 	setHealthyData,
 	getHealthyInformation,
@@ -30,8 +30,7 @@ moment.locale("es");
 
 const errorColor = (error) => (error ? "red" : "black");
 
-export const EnterUserDataForm = ({ submitFn, ...props }) => {
-
+export const EnterUserDataForm = ({ submitFn, buttonText, ...props }) => {
 	const { userInformation } = useSelector((state) => state.auth);
 
 	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
@@ -332,7 +331,7 @@ export const EnterUserDataForm = ({ submitFn, ...props }) => {
 						containerStyle={styles.buttonContainer}
 						onPress={submit}
 					>
-						Siguiente
+						{buttonText}
 					</MainButton>
 				</View>
 			</ScrollView>
@@ -383,11 +382,11 @@ const styles = StyleSheet.create({
 		color: "black",
 	},
 	childrenContainer: {
-		marginVertical: Dimensions.get("window").height > 600 ? 20 : 8,
+		marginVertical: Dimensions.get("window").height > 600 ? 10 : 8,
 	},
 	buttonContainer: {
 		width: "100%",
-		marginTop: Dimensions.get("window").height > 600 ? 20 : 0,
+		marginTop: Dimensions.get("window").height > 600 ? 10 : 0,
 		marginBottom: 20,
 	},
 });

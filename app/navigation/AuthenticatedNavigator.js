@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert, Platform, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -10,6 +10,16 @@ import { DiaryNavigator } from "./DiaryNavigator";
 import { WeeklyNavigator } from "./WeeklyNavigator";
 import { UserConfigurationNavigator } from "./UserConfigurationNavigator";
 import { useSelector } from "react-redux";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+
+Notifications.setNotificationHandler({
+	handleNotification: async () => {
+		return {
+			shouldShowAlert: true,
+		};
+	},
+});
 
 const Tab =
 	Platform.OS === "android"
@@ -18,6 +28,49 @@ const Tab =
 
 export const AuthenticatedNavigator = () => {
 	const { userInformation } = useSelector((state) => state.auth);
+
+	useEffect(() => {
+		Permissions.getAsync(Permissions.NOTIFICATIONS)
+			.then((statusObj) => {
+				console.log(statusObj);
+				if (statusObj.status !== "granted") {
+					return Permissions.askAsync(Permissions.NOTIFICATIONS);
+				}
+				return statusObj;
+			})
+			.then((statusObj) => {
+				if (statusObj.status !== "granted") {
+					return;
+				}
+			});
+	}, []);
+
+	useEffect(() => {
+		const subscribtion = Notifications.addNotificationResponseReceivedListener(
+			(response) => {
+				console.log(response);
+			}
+		);
+
+		return () => {
+			subscribtion.remove();
+		};
+	}, []);
+
+	useEffect(() => {
+		Notifications.scheduleNotificationAsync({
+			content: {
+				title: "Consejo del día",
+				body: "Bebe mucha agua",
+			},
+			trigger: {
+				hour: 2,
+				minute: 3,
+				repeats: true,
+			},
+		});
+	}, []);
+
 	return (
 		<NavigationContainer>
 			<Tab.Navigator

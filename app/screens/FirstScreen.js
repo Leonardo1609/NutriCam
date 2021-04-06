@@ -1,5 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { useSelector } from "react-redux";
 import { AlertMessage } from "../components/AlertMessage";
@@ -7,6 +8,7 @@ import { MainButton } from "../components/MainButton";
 
 export const FirstScreen = () => {
 	const { messageSuccess } = useSelector((state) => state.ui);
+
 	const navigation = useNavigation();
 	return (
 		<View style={styles.screen}>

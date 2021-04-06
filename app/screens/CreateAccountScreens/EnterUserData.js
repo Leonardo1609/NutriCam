@@ -23,7 +23,7 @@ export const EnterUserData = () => {
 	};
 
 	return (
-		<EnterUserDataForm submitFn={submit}>
+		<EnterUserDataForm submitFn={submit} buttonText="Siguiente">
 			<View style={styles.indicationsContainer}>
 				<Text style={styles.indications}>{indications}</Text>
 			</View>

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Text, View, StyleSheet } from "react-native";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { formatDate, totalCaloriesConsumed } from "../../helpers/helpers";
 import { colors } from "../../consts/colors";
 import { WeeklyBars } from "../../components/WeeklyBars";

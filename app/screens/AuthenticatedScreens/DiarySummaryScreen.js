@@ -125,16 +125,20 @@ export const DiarySummaryScreen = () => {
 					</Text>
 				</Text>
 			</View>
-			<View style={styles.targetMessageContainer}>
-				<Text
-					style={{
-						...styles.targetMessage,
-						color: getTargetMessage().color,
-					}}
-				>
-					{getTargetMessage().message}
-				</Text>
-			</View>
+			{parserDateToLocale(
+				userInformation?.profile?.profile_initial_date_caloric_plan
+			) <= parserDateToLocale(dateOfSummary) && (
+				<View style={styles.targetMessageContainer}>
+					<Text
+						style={{
+							...styles.targetMessage,
+							color: getTargetMessage().color,
+						}}
+					>
+						{getTargetMessage().message}
+					</Text>
+				</View>
+			)}
 			<MainButton
 				onPress={() => {
 					navigation.navigate("Diario");
