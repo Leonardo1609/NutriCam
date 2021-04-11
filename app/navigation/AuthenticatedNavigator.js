@@ -12,6 +12,8 @@ import { UserConfigurationNavigator } from "./UserConfigurationNavigator";
 import { useSelector } from "react-redux";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
+import { clientAxios } from "../axios/clientAxios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => {
@@ -32,7 +34,6 @@ export const AuthenticatedNavigator = () => {
 	useEffect(() => {
 		Permissions.getAsync(Permissions.NOTIFICATIONS)
 			.then((statusObj) => {
-				console.log(statusObj);
 				if (statusObj.status !== "granted") {
 					return Permissions.askAsync(Permissions.NOTIFICATIONS);
 				}
@@ -57,18 +58,46 @@ export const AuthenticatedNavigator = () => {
 		};
 	}, []);
 
-	useEffect(() => {
+	const getRecommendation = async () => {
+		const { data } = await clientAxios("/expert-recommendation");
 		Notifications.scheduleNotificationAsync({
 			content: {
-				title: "Consejo del día",
-				body: "Bebe mucha agua",
+				title: "Consejo del día:",
+				body: data.recommendation,
 			},
 			trigger: {
-				hour: 2,
-				minute: 3,
+				hour: 10,
+				minute: 0,
 				repeats: true,
 			},
 		});
+	};
+
+	useEffect(() => {
+		const setDay = async () => {
+			// await AsyncStorage.removeItem("dayOfDate");
+			let day = await AsyncStorage.getItem("dayOfDate");
+			day = JSON.parse(day);
+
+			if (!day) {
+				await AsyncStorage.setItem(
+					"dayOfDate",
+					JSON.stringify(new Date().getDate())
+				);
+			}
+
+			if (day === new Date().getDate()) {
+				await getRecommendation();
+				await AsyncStorage.setItem(
+					"dayOfDate",
+					JSON.stringify(new Date().getDate() + 1)
+				);
+			} else {
+				console.log("already programmed");
+			}
+		};
+
+		setDay();
 	}, []);
 
 	return (

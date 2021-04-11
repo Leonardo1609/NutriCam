@@ -11,8 +11,11 @@ import { types } from "../types/types";
 export const getUser = (loading = true) => {
 	return async (dispatch) => {
 		const token = await AsyncStorage.getItem("token");
+
 		if (token) {
 			await tokenAuth(token);
+		} else {
+			dispatch(logoutUser());
 		}
 
 		try {
@@ -23,6 +26,7 @@ export const getUser = (loading = true) => {
 		} catch (e) {
 			console.log(e.response);
 			dispatch(loadingUserInfo(false));
+			dispatch(logoutUser());
 		}
 	};
 };
@@ -197,7 +201,6 @@ export const userExists = (username, email, fn) => {
 			const { data } = await clientAxios(
 				`/user-exists/${username}/${email}`
 			);
-			console.log(data);
 			if (data.msg) {
 				dispatch(setMessageWarning(data.msg));
 			} else {

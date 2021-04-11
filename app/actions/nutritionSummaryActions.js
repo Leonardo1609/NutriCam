@@ -12,6 +12,7 @@ export const startGetFoodRegisters = () => {
 			dispatch(setFoodRegisters(data.food_registers));
 		} catch (e) {
 			console.log(e.response);
+			dispatch(logoutUser());
 		}
 	};
 };

@@ -14,4 +14,4 @@ export const askForUnsubscribeAlert =
 	"¿Estás seguro que deseas dar de baja tu plan calórico? Si es así, tus datos relacionados al cálculo de tu IMC serán eliminados, pero tus registros de comida aún se conservarán.";
 
 export const changeProfileDateMessage =
-	"Al cambiar tus datos tu índice de masa corporal se volverá a calcular y se te asignará un nuevo plan nutricional";
+	"Al cambiar tus datos tu índice de masa corporal se volverá a calcular y se te asignará un nuevo plan calórico";

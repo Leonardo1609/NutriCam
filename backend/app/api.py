@@ -2,6 +2,8 @@ from flask_restful import Api
 from .resources.user import RegisterUser, UserProfile, LoginUser, ProfileInformation, UserExists, ChangeEmail, ChangePassword, UnsubscribeCaloricPlan, UpdateProfile
 from .resources.food import FoodSearch, FoodInformation, CreateFood, RegistFood, DeleteFoodRegist, FoodRegistersPerDay, NutritionSummaryPerDay, WeeklyCalories, OwnFoods, UpdateOwnFood, RemoveOwnFood
 from .resources.review_rating import ReviewRatingCrud
+from .resources.expert_recomendation import R_ExpertRecommendation
+from .resources.schedule import R_Schedule, R_GetSchedule
 
 api = Api( prefix='/api' )
 
@@ -26,3 +28,6 @@ api.add_resource( WeeklyCalories, '/weekly-summary/<string:date>' )
 api.add_resource( UserExists, '/user-exists/<string:username>/<string:email>' )
 api.add_resource( OwnFoods, '/own-foods' )
 api.add_resource( ReviewRatingCrud, '/review-rating' )
+api.add_resource( R_ExpertRecommendation, '/expert-recommendation' )
+api.add_resource( R_Schedule, '/config-schedule' )
+api.add_resource( R_GetSchedule, '/get-config-schedule' )

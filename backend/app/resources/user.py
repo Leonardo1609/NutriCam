@@ -41,9 +41,6 @@ class RegisterUser( Resource ):
         user = User( data['user_name'], data['user_email'], data['user_pass'] )
 
         try:
-            if User.get_user_by_name( user.user_name ):
-                return { 'msg': 'El nombre de usuario ya se encuentra en uso' }, 400
-
             if User.get_user_by_email( user.user_email ):
                 return { 'msg': 'El email ya se encuentra en uso' }, 400
 
@@ -121,10 +118,10 @@ class UserProfile( Resource ):
 class UserExists( Resource ):
     def get(self, username, email):
         try:
-            if User.get_user_by_name( username ):
-                return { 'msg': f"El usuario con el nombre de usuario {username} ya existe" }
-            elif User.get_user_by_email( email ):
-                return { 'msg': f"El usuario con el correo {email} ya existe" }
+            # if User.get_user_by_name( username ):
+            #     return { 'msg': f"El usuario con el nombre de usuario {username} ya existe" }
+            if User.get_user_by_email( email ):
+                return { 'msg': f"El correo {email} ya se encuentra en uso" }
             else:
                 return False
         except:

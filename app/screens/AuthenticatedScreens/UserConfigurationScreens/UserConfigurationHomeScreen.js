@@ -1,9 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../../actions/authActions";
 
 export const UserConfigurationMainScreen = () => {
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
 	const routes = [
 		{
 			name: "Mis datos",
@@ -35,6 +38,10 @@ export const UserConfigurationMainScreen = () => {
 		navigation.navigate(component);
 	};
 
+	const logout = () => {
+		dispatch(logoutUser());
+	};
+
 	return (
 		<View style={styles.screen}>
 			{routes.map(({ name, component }) => (
@@ -48,6 +55,12 @@ export const UserConfigurationMainScreen = () => {
 					</View>
 				</TouchableOpacity>
 			))}
+
+			<TouchableOpacity activeOpacity={0.5} onPress={logout}>
+				<View style={styles.logoutContainer}>
+					<Text style={styles.routeText}>Cerrar sesión</Text>
+				</View>
+			</TouchableOpacity>
 		</View>
 	);
 };
@@ -66,5 +79,11 @@ const styles = StyleSheet.create({
 	routeText: {
 		fontSize: 16,
 		fontFamily: "poppins-bold",
+	},
+	logoutContainer: {
+		padding: 10,
+		backgroundColor: "red",
+		borderBottomWidth: 1,
+		borderBottomColor: "black",
 	},
 });

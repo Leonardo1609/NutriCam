@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	StyleSheet,
 	View,
@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { setBasicData } from "../../actions/createAccountProcessActions";
 import { useDispatch, useSelector } from "react-redux";
 import { userExists } from "../../actions/authActions";
+import { setMessageWarning } from "../../actions/uiActions";
 
 export const CreateAccountMainForm = () => {
 	const navigation = useNavigation();
@@ -44,6 +45,10 @@ export const CreateAccountMainForm = () => {
 	function submitForm() {
 		dispatch(userExists(username, email, submitIfUserDoesntExists));
 	}
+
+	useEffect(() => {
+		dispatch(setMessageWarning(null));
+	}, [email]);
 
 	return (
 		<TouchableWithoutFeedback
