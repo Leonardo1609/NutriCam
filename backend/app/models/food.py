@@ -61,8 +61,21 @@ class Food:
         return False
 
     @classmethod
-    def get_food_information( cls, food_id ):
-        query = """
+    def get_measure_units( cls, food_id ):
+        query="""
+        SELECT mu.measure_unit_id, mu.measure_name
+        FROM food_measure_unit fmu
+        INNER JOIN measure_unit mu ON mu.measure_unit_id = fmu.food_measure_unit_id
+        INNER JOIN food f ON f.food_id = fmu.food_id
+        WHERE f.food_id = ?;
+        """
+        rows = cursor.execute( query, ( food_id, ) ).fetchall()
+        measure_units = [ { 'measure_unit_id': measure_unit_id, 'measure_name': measure_name } for measure_unit_id, measure_name in rows ]
+        return measure_units
+
+    @classmethod
+    def get_own_food_information( cls, food_id ):
+        query="""
         SELECT f.food_id, f.food_name, fmu.food_calories, fmu.food_fats, fmu.food_carbohydrates, fmu.food_proteins, mu.measure_unit_id, mu.measure_name, f.listed_food
         FROM food_measure_unit fmu
         INNER JOIN measure_unit mu ON mu.measure_unit_id = fmu.food_measure_unit_id
@@ -70,6 +83,18 @@ class Food:
         WHERE f.food_id = ?;
         """
         food_information = cursor.execute( query, ( food_id, ) ).fetchone()
+        return cls.food_json( *food_information )
+
+    @classmethod
+    def get_food_information( cls, food_id, measure_unit_id ):
+        query = """
+        SELECT f.food_id, f.food_name, fmu.food_calories, fmu.food_fats, fmu.food_carbohydrates, fmu.food_proteins, mu.measure_unit_id, mu.measure_name, f.listed_food
+        FROM food_measure_unit fmu
+        INNER JOIN measure_unit mu ON mu.measure_unit_id = fmu.food_measure_unit_id
+        INNER JOIN food f ON f.food_id = fmu.food_id
+        WHERE f.food_id = ? and mu.measure_unit_id = ?;
+        """
+        food_information = cursor.execute( query, ( food_id, measure_unit_id ) ).fetchone()
         return cls.food_json( *food_information )
 
     @classmethod
@@ -152,7 +177,7 @@ class Food:
         FROM food f 
         INNER JOIN food_measure_unit fmu ON fmu.food_id = f.food_id
         INNER JOIN food_register fr ON fr.food_id = f.food_id
-        WHERE fr.profile_id = ? AND fr.food_register_day = ?
+        WHERE fr.profile_id = ? AND fr.food_register_day = ? AND fr.food_measure_unit_id = fmu.food_measure_unit_id
         ORDER BY fr.day_food_id ASC;
         """
 
@@ -168,9 +193,8 @@ class Food:
 	SELECT ROUND(SUM(fmu.food_calories * fr.quantity),2) 'Calories', ROUND(SUM(fmu.food_carbohydrates * fr.quantity), 2) 'Carbohydrates', ROUND(SUM(fmu.food_fats * fr.quantity),2) 'Fats', ROUND(SUM(fmu.food_proteins * fr.quantity),2) 'Proteins'
 	from food_register fr
 	INNER JOIN food_measure_unit fmu ON fr.food_id = fmu.food_id
-	WHERE fr.profile_id = ? AND fr.food_register_day = ?;
+	WHERE fr.profile_id = ? AND fr.food_register_day = ? AND fr.food_measure_unit_id = fmu.food_measure_unit_id;
         """
-
         row = cursor.execute( query, ( profile_id, food_register_day ) ).fetchone()
         total_calories, total_carbohydrates, total_fats, total_proteins = row
         return {
@@ -184,8 +208,10 @@ class Food:
     def weekly_calories( cls, profile_id, input_date ):
         input_year, input_month, input_day = input_date.split('-')
 
-        input_month = input_month if int(input_month) / 10 > 1 else input_month[1]
-        input_day = input_day if int(input_day) / 10 > 1 else input_day[1]
+        input_month = input_month if int(input_month) / 10 >= 1 else input_month[1]
+        print( input_month )
+        input_day = input_day if int(input_day) / 10 >= 1 else input_day[1]
+        print( input_day )
 
         day = date(int(input_year), int(input_month), int(input_day))
         monday = day - timedelta( days = ( day.weekday() ) )
@@ -197,21 +223,20 @@ class Food:
         sunday = monday + timedelta( days = 6 )
 
         week = [ str(monday), str(tuesday), str(wednesday), str(thursday), str(friday), str(satuday), str(sunday) ]
+        print(week)
 
         query = """
         SELECT SUM(fr.quantity * fmu.food_calories), fr.food_register_day
         FROM food_register fr
         INNER JOIN food_measure_unit fmu ON fmu.food_id = fr.food_id
-        wHERE profile_id = ? AND fr.food_register_day BETWEEN ? AND ?
+        wHERE profile_id = ? AND fr.food_register_day BETWEEN ? AND ? AND fr.food_measure_unit_id = fmu.food_measure_unit_id
         GROUP BY fr.food_register_day;
         """
-
         rows = cursor.execute( query, ( profile_id, str(monday), str(sunday) ) ).fetchall()
 
         weekly_calories = []
         for week_day in week:
             weekly_calories.append({ 'weekday': week_day, 'calories':  getCaloriesOfDay( week_day, rows )})
-
         return weekly_calories
 
     @classmethod

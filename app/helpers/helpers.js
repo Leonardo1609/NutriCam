@@ -49,7 +49,7 @@ export const dayFoodMap = new Map([
 export const measureUnitMap = new Map([
 	[1, "100gr"],
 	[2, "Unidad"],
-	[3, "Porción"],
+	[3, "Plato"],
 ]);
 
 export const toTwoDecimals = (number) => {

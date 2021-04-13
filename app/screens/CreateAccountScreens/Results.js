@@ -17,9 +17,9 @@ export const Results = () => {
 
 	return (
 		<ScrollView
-			contentContainerStyle={
-				{ flex: Dimensions.get('window').height > 600 ? 1 : null }
-			}
+			contentContainerStyle={{
+				flex: Dimensions.get("window").height > 600 ? 1 : null,
+			}}
 		>
 			<View style={styles.screen}>
 				<View style={styles.section}>
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
 	},
 	diseasesList: {
 		width: "100%",
-		paddingVertical: 10,
 		borderColor: "black",
 		borderWidth: 1,
 		backgroundColor: "white",

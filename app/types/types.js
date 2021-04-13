@@ -27,8 +27,11 @@ export const types = {
 	updateOwnFood: "[Food] Update Own Food",
 	removeOwnFood: "[Food] Remove Own Food",
 	setActiveOwnFood: "[Food] Set Active Own Food",
+	setMeasureUnits: "[Food] Set Measure Units",
 
 	getReviewRating: "[ReviewRating] Get Review Rating",
 	setReviewRating: "[ReviewRating] Set Review Rating",
 	deleteReviewRating: "[ReviewRating] Delete Review Rating",
+
+	emailSended: "[RestorePasswordProcess]"
 };

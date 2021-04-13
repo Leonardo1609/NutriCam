@@ -17,26 +17,29 @@ import { ScrollView } from "react-native-gesture-handler";
 import { dayFoodMap, toTwoDecimals } from "../../helpers/helpers";
 import { useForm } from "../../hooks/useForm";
 import { registFoodValidation } from "../../validations/registFoodValidation";
+import { startGetFoodInformation } from "../../actions/foodActions";
 
 export const FoodRegistrationScreen = ({ route }) => {
+	const { activeFoodToRegist, measureUnits } = useSelector(
+		(state) => state.food
+	);
+
 	const initialState = {
 		dayIdToRegist: 1,
 		quantity: 1,
+		measureUnit: 0,
 	};
 
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
-	const { activeFoodToRegist } = useSelector((state) => state.food);
 
 	const { formValues, handleChange, handleSubmit, errors } = useForm(
 		initialState,
 		registFoodValidation,
 		registFood
 	);
-	const { dayIdToRegist, quantity } = formValues;
+	const { dayIdToRegist, quantity, measureUnit } = formValues;
 
-	// const [dayIdToRegist, setDayIdToRegist] = useState(1);
-	// const [quantity, setQuantity] = useState(1);
 	const [icon, setIcon] = useState(null);
 
 	const iconImage =
@@ -67,18 +70,18 @@ export const FoodRegistrationScreen = ({ route }) => {
 		},
 	});
 
-	const formatTotal = (quantity) => {
-		if (activeFoodToRegist.measure_unit_id === 1) {
-			// 100g
-			return `${quantity}00g`;
-		} else if (activeFoodToRegist.measure_unit_id === 2) {
-			// unidad
-			return `${quantity} ${quantity > 1 ? "unidades" : "unidad"}`;
-		} else {
-			// porción
-			return `${quantity} ${quantity > 1 ? "porciones" : "porción"}`;
-		}
-	};
+	// const formatTotal = (quantity) => {
+	// 	if (activeFoodToRegist.measure_unit_id === 1) {
+	// 		// 100g
+	// 		return `${quantity}00g`;
+	// 	} else if (activeFoodToRegist.measure_unit_id === 2) {
+	// 		// unidad
+	// 		return `${quantity} ${quantity > 1 ? "unidades" : "unidad"}`;
+	// 	} else {
+	// 		// porción
+	// 		return `${quantity} ${quantity > 1 ? "porciones" : "porción"}`;
+	// 	}
+	// };
 
 	const equivalence = () => {
 		return Math.ceil(
@@ -130,6 +133,20 @@ export const FoodRegistrationScreen = ({ route }) => {
 		}
 	}, []);
 
+	useEffect(() => {
+		if (measureUnit) {
+			dispatch(
+				startGetFoodInformation(activeFoodToRegist.food_id, measureUnit)
+			);
+		}
+	}, [measureUnit]);
+
+	useEffect(() => {
+		if (measureUnits.length && !measureUnit) {
+			handleChange(measureUnits[0].measure_unit_id, "measureUnit");
+		}
+	}, [measureUnits]);
+
 	return (
 		<View style={styles.screen}>
 			<ScrollView>
@@ -172,16 +189,25 @@ export const FoodRegistrationScreen = ({ route }) => {
 								/>
 							</View>
 							<View style={styles.unitMeasureContainer}>
-								<Text style={styles.unitMeasure}>
-									{activeFoodToRegist.measure_name}
-								</Text>
+								{measureUnits.length > 0 ? (
+									<PickerSelect
+										style={pickerStyle()}
+										value={measureUnit}
+										useNativeAndroidPickerStyle={false}
+										placeholder={{}}
+										onValueChange={(value) =>
+											handleChange(value, "measureUnit")
+										}
+										items={measureUnits.map(
+											(measureUnit) => ({
+												label: measureUnit.measure_name,
+												value:
+													measureUnit.measure_unit_id,
+											})
+										)}
+									/>
+								) : null}
 							</View>
-						</View>
-						<View style={styles.totalGramsContainer}>
-							<Text style={styles.totalGrams}>
-								<Text style={styles.totalText}>Total:</Text>{" "}
-								{formatTotal(quantity)}
-							</Text>
 						</View>
 						<View style={styles.nutritionalInformationContainer}>
 							<Text style={styles.nutritionalInformationTitle}>
@@ -297,26 +323,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 	},
 	unitMeasureContainer: {
-		borderColor: "black",
-		borderWidth: 2,
-		borderRadius: 5,
-		paddingVertical: 4,
-		paddingHorizontal: 20,
-	},
-	unitMeasure: {
-		fontSize: 20,
-		fontWeight: "bold",
-	},
-	totalGramsContainer: {
-		flexDirection: "row",
-		justifyContent: "flex-end",
-		marginTop: 10,
-	},
-	totalGrams: {
-		fontSize: 20,
-	},
-	totalText: {
-		fontWeight: "bold",
+		width: 100,
 	},
 	equivalenceContainer: {
 		flexDirection: "row",

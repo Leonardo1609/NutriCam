@@ -3,7 +3,9 @@ import {
 	StyleSheet,
 	View,
 	TouchableWithoutFeedback,
+	Text,
 	Keyboard,
+	Button,
 } from "react-native";
 import { InputForm } from "../../components/InputForm";
 import { useForm } from "../../hooks/useForm";
@@ -12,8 +14,10 @@ import { MainButton } from "../../components/MainButton";
 import { ErrorText } from "../../components/ErrorText";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoginUser } from "../../actions/authActions";
+import { useNavigation } from "@react-navigation/native";
 
 export const LoginForm = () => {
+	const navigation = useNavigation();
 	const dispatch = useDispatch();
 	const { messageWarning } = useSelector((state) => state.ui);
 
@@ -21,6 +25,11 @@ export const LoginForm = () => {
 		email: "leonardo246@gmail.com",
 		password: "23456789",
 	};
+	//
+	// const initialValues = {
+	// 	email: "",
+	// 	password: "",
+	// };
 
 	const { formValues, errors, handleChange, handleSubmit } = useForm(
 		initialValues,
@@ -34,6 +43,10 @@ export const LoginForm = () => {
 		dispatch(startLoginUser(email, password));
 	}
 
+	const goToSendEmailToRestorePassword = () => {
+		navigation.navigate("SendEmailToRestorePassword");
+	};
+
 	return (
 		<TouchableWithoutFeedback
 			onPress={() => {
@@ -41,7 +54,8 @@ export const LoginForm = () => {
 			}}
 		>
 			<View style={styles.screen}>
-				<InputForm label="Correo"
+				<InputForm
+					label="Correo"
 					onChangeText={(value) => handleChange(value, "email")}
 					value={email}
 					autoCapitalize="none"
@@ -66,6 +80,13 @@ export const LoginForm = () => {
 				>
 					Ingresar
 				</MainButton>
+				<TouchableWithoutFeedback
+					onPress={goToSendEmailToRestorePassword}
+				>
+					<Text style={styles.forgotPasswordText}>
+						¿Olvidaste tu contraseña?
+					</Text>
+				</TouchableWithoutFeedback>
 			</View>
 		</TouchableWithoutFeedback>
 	);
@@ -87,5 +108,10 @@ const styles = StyleSheet.create({
 	},
 	errorInput: {
 		borderBottomColor: "red",
+	},
+	forgotPasswordText: {
+		color: "#3d5af1",
+		fontFamily: "poppins-bold",
+		fontSize: 18,
 	},
 });

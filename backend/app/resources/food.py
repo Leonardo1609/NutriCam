@@ -2,6 +2,10 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource, reqparse
 from ..models.food import Food
 from ..models.user import User
+from ..recognition import predict
+import werkzeug
+import shortuuid
+import os
 
 class FoodSearch( Resource ):
     @jwt_required()
@@ -14,11 +18,30 @@ class FoodSearch( Resource ):
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
 
-class FoodInformation( Resource ):
+class FoodMeasureUnits( Resource ):
     @jwt_required()
     def get( self, food_id ):
         try:
-            food_information = Food.get_food_information( food_id )
+            measure_units = Food.get_measure_units( food_id )
+            return { 'measure_units': measure_units }
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+
+class FoodInformation( Resource ):
+    @jwt_required()
+    def get( self, food_id, measure_unit_id ):
+        try:
+            food_information = Food.get_food_information( food_id, measure_unit_id )
+            return { 'food_information': food_information }
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+class OwnFoodInformation ( Resource ):
+    @jwt_required()
+    def get( self, food_id ):
+        try:
+            food_information = Food.get_own_food_information( food_id )
             return { 'food_information': food_information }
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
@@ -30,6 +53,7 @@ class CreateFood( Resource ):
         required=True,
         help="El campo nombre comida es requerido"
     )
+
     parser.add_argument('food_measure_unit_id',
         type=int,
         required=True,
@@ -159,6 +183,7 @@ class FoodRegistersPerDay( Resource ):
         try:
             profile_id = User.get_profile_id_by_user_id( user_id )
             registers = Food.food_registers_per_day( profile_id, day )
+            print(registers)
             return { 'food_registers': registers }
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
@@ -196,3 +221,25 @@ class OwnFoods( Resource ):
         except:
             return {'msg': 'Ha ocurrido un error'}, 500
 
+class ProcessImageToRecognition( Resource ):
+    parser = reqparse.RequestParser()
+    parser.add_argument("image", 
+        type=werkzeug.datastructures.FileStorage, 
+        location='files', 
+        required=True,
+        help="La imagen es requerida"
+    )
+
+    @jwt_required()
+    def get( self ):
+        data = self.parser.parse_args(strict=True)
+        food_img = data['image']
+        path = os.path.join(os.path.dirname(__file__), "../temp", f"{shortuuid.uuid()}-{food_img.filename}")
+        try:
+            food_img.save(path)
+            foods = predict(path)
+            os.remove(path) 
+            return  { 'recognize_foods': foods }
+        except:
+            os.remove(path)
+            return { 'msg': 'Ha ocurrido un error' }, 500

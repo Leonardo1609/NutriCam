@@ -40,7 +40,7 @@ class ReviewRating :
         """
         cursor.execute( query, ( rating, review, profile_id ) )
         cursor.commit()
-        return "Puntuación y Reseña Actualizada"
+        return "Calificación y Reseña Actualizada"
 
     @classmethod
     def delete_review_and_rating( cls, profile_id ):
@@ -50,5 +50,5 @@ class ReviewRating :
         """
         cursor.execute( query, ( profile_id, ) )
         cursor.commit()
-        return "Puntuación y reseña eliminada"
+        return "Calificación y reseña eliminada"
 

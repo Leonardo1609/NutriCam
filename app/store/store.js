@@ -6,6 +6,7 @@ import { nutritionSummaryReducer } from "../reducers/nutritionSummaryReducer";
 import thunk from "redux-thunk";
 import { foodReducer } from "../reducers/foodReducer";
 import { reviewRatingReducer } from "../reducers/reviewRatingReducer";
+import {restorePasswordProccesReducer} from "../reducers/restorePasswordProcessReducer";
 
 const rootReducer = combineReducers({
 	createAccountProcess: createAccountProcessReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
 	nutritionSummary: nutritionSummaryReducer,
 	food: foodReducer,
 	reviewRating: reviewRatingReducer,
+	restorePasswordProcess: restorePasswordProccesReducer
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

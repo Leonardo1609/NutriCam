@@ -6,6 +6,8 @@ import { SearchInput } from "../components/SearchInput";
 import { colors } from "../consts/colors";
 import { useSelector } from "react-redux";
 import { FoodRegistrationScreen } from "../screens/AuthenticatedScreens/FoodRegistrationScreen";
+import { MealFormScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MealFormScreen";
+import { MealManagementScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MealManagmentScreen";
 
 const Stack = createStackNavigator();
 
@@ -38,6 +40,20 @@ export const DiaryNavigator = () => {
 				name="RegistFood"
 				options={{ title: activeFoodToRegist?.food_name }}
 				component={FoodRegistrationScreen}
+			/>
+			<Stack.Screen
+				name="MealForm"
+				options={{
+					title: "Guardar Comida",
+				}}
+				component={MealFormScreen}
+			/>
+			<Stack.Screen
+				name="MealManagement"
+				options={{
+					title: "Mis Comidas",
+				}}
+				component={MealManagementScreen}
 			/>
 		</Stack.Navigator>
 	);

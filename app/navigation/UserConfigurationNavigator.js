@@ -120,7 +120,7 @@ export const UserConfigurationNavigator = () => {
 			<Stack.Screen
 				name="ReviewRating"
 				options={{
-					title: "Reseñar/Puntuar",
+					title: "Reseñar/Calificar",
 				}}
 				component={ReviewRatingScreen}
 			/>

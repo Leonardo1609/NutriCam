@@ -2,6 +2,8 @@ from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from ..db import cursor
 from ..models.user import User
+from ..email import restore_password_email
+import random
 
 class RegisterUser( Resource ):
     parser = reqparse.RequestParser()
@@ -42,7 +44,7 @@ class RegisterUser( Resource ):
 
         try:
             if User.get_user_by_email( user.user_email ):
-                return { 'msg': 'El email ya se encuentra en uso' }, 400
+                return { 'msg': 'El correo ya se encuentra en uso' }, 400
 
             user_id = user.create_user_and_profile( profile_genre = data['profile_genre'], profile_height = data['profile_height'], profile_actual_weight = data['profile_actual_weight'], profile_activity_level = data['profile_activity_level'], profile_birthdate = data['profile_birthdate'] )
             access_token = create_access_token( identity = int( user_id ) )
@@ -191,7 +193,7 @@ class ChangeEmail( Resource ):
                 return { 'msg': 'Credenciales inválidas' }, 400
 
             if User.get_user_by_email( data['new_email'] ):
-                return { 'msg': 'El email ya se encuentra en uso' }, 400
+                return { 'msg': 'El correo ya se encuentra en uso' }, 400
 
             message = User.change_email( user_id, data['new_email'] )
 
@@ -231,6 +233,71 @@ class ProfileInformation( Resource ):
     )
 
     def post( self ):
+        try:
+            data = self.parser.parse_args()
+            information = User.get_profile_information_before_created( **data )
+            return { 'information': information }
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+class SendRecoveryCode( Resource ):
+    def post(self, email):
+        try:
+            user = User.get_user_by_email( email )
+
+            if not user: 
+                return { 'msg': 'El correo no se encuentra registrado' }, 404
+            user = {
+                'email': email,
+                'username': user[1]
+            }
+
+            code = random.randrange(111111, 999999)
+            message = User.generate_code_to_restore( email, code )
+            restore_password_email( user, code )
+            return { 'msg': message }
+        except: 
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+class SuccessCode( Resource ):
+    parser = reqparse.RequestParser()
+    parser.add_argument('recovery_code',
+        type=str,
+        required=True,
+        help="El código es requerido"
+    )
+
+    def post(self, email):
         data = self.parser.parse_args()
-        information = User.get_profile_information_before_created( **data )
-        return { 'information': information }
+        try:
+            user = User.get_user_by_email( email )
+            if not user: 
+                return { 'msg': 'El correo no se encuentra registrado' }, 404
+
+            if not User.recovery_code_exists( email, data['recovery_code'] ):
+                return { 'msg': 'Código inválido' }, 400
+
+            if not User.recovery_code_expires( email ):
+                return { 'msg': 'Su código ha expirado' }, 400
+
+            return { 'msg': 'Código válido' }, 200
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+class RestorePassword( Resource ):
+    parser = reqparse.RequestParser()
+    parser.add_argument('new_password',
+        type=str,
+        required=True,
+        help="El contraseña es requerida"
+    )
+    def put( self, email ):
+        data = self.parser.parse_args()
+        try:
+            user = User.get_user_by_email( email )
+            if not user: 
+                return { 'msg': 'El correo no se encuentra registrado' }, 404
+            message = User.restore_password( email, data['new_password'] )
+            return { 'msg': message }
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500

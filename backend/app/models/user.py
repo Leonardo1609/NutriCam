@@ -1,6 +1,6 @@
 import math
 from werkzeug.security import check_password_hash, generate_password_hash
-from datetime import date
+from datetime import date, datetime
 from ..db import cursor
 from .disease import Disease
 from .weight_level import WeightLevel
@@ -268,3 +268,51 @@ class User:
                 'profile_ideal_weight': profile_ideal_weight,
                 'profile_caloric_plan': profile_caloric_plan,
         }
+
+    @classmethod
+    def generate_code_to_restore( cls, email, code ):
+        query = """
+        UPDATE users
+        SET recovery_code = ?, code_expiration_time = DATEADD (hour, 1,getdate())
+        WHERE user_email = ?;
+        """ 
+        cursor.execute( query, ( code, email ) )
+        cursor.commit()
+        return "El código enviado a su correo expira dentro de 1 hora"
+    
+    @classmethod
+    def recovery_code_exists( cls, email, code ):
+        query = """
+        SELECT *
+        FROM users
+        WHERE user_email = ? AND recovery_code = ?
+        """
+        row = cursor.execute( query, ( email, code ) ).fetchone()
+        if row:
+            return True
+        return False
+
+    @classmethod
+    def recovery_code_expires( cls, email ):
+        query = """
+        SELECT code_expiration_time
+        FROM users
+        WHERE user_email = ?
+        """
+        row = cursor.execute( query, ( email, ) ).fetchone()
+        code_expiration_time = row[0]
+        if datetime.now() < code_expiration_time:
+            return True
+        return False
+
+    @classmethod
+    def restore_password( cls, email, password ):
+        query = """
+        UPDATE users
+        SET user_pass = ?, recovery_code = NULL, code_expiration_time = NULL
+        WHERE user_email = ?
+        """
+        hashed_pass = generate_password_hash( password )
+        cursor.execute(query, ( hashed_pass, email ))
+        cursor.commit()
+        return 'La contraseña ha sido restablecida'

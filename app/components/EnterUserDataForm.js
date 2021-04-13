@@ -12,16 +12,11 @@ import {
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PickerSelect from "react-native-picker-select";
-// import { useNavigation } from "@react-navigation/native";
-// import { indications } from "../consts/consts";
-import {
-	setHealthyData,
-	getHealthyInformation,
-} from "../actions/createAccountProcessActions";
 import { colors } from "../consts/colors";
 import { MainButton } from "./MainButton";
 import { userDataValidation } from "../validations/userDataValidation";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { ErrorText } from "./ErrorText";
 
 import moment from "moment";
 import "moment/locale/es";
@@ -324,6 +319,11 @@ export const EnterUserDataForm = ({ submitFn, buttonText, ...props }) => {
 							</View>
 						</View>
 					</View>
+					{Object.keys(errors).length > 0 && (
+						<View style={styles.errorContainer}>
+							<ErrorText>Complete los datos faltantes</ErrorText>
+						</View>
+					)}
 					<View style={styles.childrenContainer}>
 						{props.children}
 					</View>
@@ -388,5 +388,8 @@ const styles = StyleSheet.create({
 		width: "100%",
 		marginTop: Dimensions.get("window").height > 600 ? 10 : 0,
 		marginBottom: 20,
+	},
+	errorContainer: {
+		marginVertical: 8,
 	},
 });

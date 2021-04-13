@@ -13,19 +13,45 @@ export const startSearchFood = (foodInput) => {
 	};
 };
 
-const getFoodInformartion = async (foodId) => {
-	const { data } = await clientAxios.get(`/food/${foodId}`);
-	return data;
+const getFoodInformartion = async (foodId, measureUnitId = null) => {
+	if (measureUnitId) {
+		const { data } = await clientAxios.get(
+			`/food/${foodId}/${measureUnitId}`
+		);
+		return data;
+	} else {
+		const { data } = await clientAxios.get(`/own-food/${foodId}`);
+		return data;
+	}
 };
 
-export const startGetFoodInformation = (foodId, fn = null) => {
+export const startGetFoodMeasureUnits = (foodId) => {
 	return async (dispatch) => {
 		try {
-			const { food_information } = await getFoodInformartion(foodId);
+			const { data } = await clientAxios.get(`/measure-units/${foodId}`);
+			dispatch(setMeasureUnits(data.measure_units));
+		} catch (e) {
+			console.log(e.response);
+		}
+	};
+};
+
+export const startGetFoodInformation = (
+	foodId,
+	measureUnitId = null,
+	fn = null
+) => {
+	return async (dispatch) => {
+		try {
+			const { food_information } = await getFoodInformartion(
+				foodId,
+				measureUnitId
+			);
 			dispatch(setActiveFoodToRegist(food_information));
 
 			if (fn) fn();
 		} catch (e) {
+			console.log(e);
 			console.log(e.response);
 		}
 	};
@@ -36,7 +62,6 @@ export const startGetOwnFoodInformation = (foodId, fn = null) => {
 		try {
 			const { food_information } = await getFoodInformartion(foodId);
 			dispatch(setActiveOwnFood(food_information));
-
 			if (fn) fn();
 		} catch (e) {
 			console.log(e.response);
@@ -153,4 +178,9 @@ export const removeOwnFood = (foodId) => ({
 export const setActiveOwnFood = (food) => ({
 	type: types.setActiveOwnFood,
 	payload: food,
+});
+
+export const setMeasureUnits = (measureUnits) => ({
+	type: types.setMeasureUnits,
+	payload: measureUnits,
 });

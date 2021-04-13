@@ -14,6 +14,7 @@ import { createFoodValidation } from "../../../validations/createFoodValidation"
 import PickerSelect from "react-native-picker-select";
 import { measureUnitMap } from "../../../helpers/helpers";
 import { AlertMessage } from "../../../components/AlertMessage";
+import { ErrorText } from "../../../components/ErrorText";
 
 const errorColor = (error) => (error ? "red" : "black");
 
@@ -330,6 +331,12 @@ export const MealFormScreen = () => {
 					</View>
 				</View>
 			</View>
+
+			{Object.keys(errors).length ? (
+				<View>
+					<ErrorText>Complete los campos requeridos</ErrorText>
+				</View>
+			) : null}
 			<MainButton
 				containerStyle={styles.buttonContainer}
 				onPress={saveFoodSubmit}

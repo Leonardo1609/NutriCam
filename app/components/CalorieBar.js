@@ -25,11 +25,11 @@ export const CalorieBar = () => {
 
 	const setBarColor = () => {
 		const percentage = calculateAdvancePercentage();
-		if (percentage < 80) {
+		if (percentage < 90) {
 			return "#f5eb31";
-		} else if (percentage > 80 && percentage < 120) {
+		} else if (percentage >= 90 && percentage <= 110) {
 			return colors.green;
-		} else if (percentage > 120) {
+		} else if (percentage > 110) {
 			return "red";
 		}
 	};

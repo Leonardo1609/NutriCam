@@ -7,6 +7,7 @@ import {
 import { clientAxios } from "../axios/clientAxios";
 import { tokenAuth } from "../axios/tokenAuth";
 import { types } from "../types/types";
+import { setFoodRegisters } from "./nutritionSummaryActions";
 
 export const getUser = (loading = true) => {
 	return async (dispatch) => {
@@ -188,7 +189,7 @@ export const startChangePassword = (password, newPassword) => {
 export const logoutUser = () => {
 	return async (dispatch) => {
 		await AsyncStorage.removeItem("token");
-
+		dispatch(setFoodRegisters([]));
 		dispatch({
 			type: types.logout,
 		});

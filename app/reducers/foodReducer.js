@@ -3,6 +3,7 @@ const initialState = {
 	activeFoodToRegist: null,
 	foodSearchInput: "",
 	foodsFound: [],
+	measureUnits: [],
 	ownFoods: [],
 	activeOwnFood: null,
 };
@@ -47,6 +48,11 @@ export const foodReducer = (state = initialState, { type, payload }) => {
 						return food;
 					}
 				}),
+			};
+		case types.setMeasureUnits:
+			return {
+				...state,
+				measureUnits: payload,
 			};
 		case types.setActiveOwnFood:
 			return {

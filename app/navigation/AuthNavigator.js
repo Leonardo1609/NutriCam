@@ -7,6 +7,9 @@ import { Results } from "../screens/CreateAccountScreens/Results";
 import { EnterUserData } from "../screens/CreateAccountScreens/EnterUserData";
 import { CaloricPlanResult } from "../screens/CreateAccountScreens/CaloricPlanResult";
 import { LoginForm } from "../screens/LoginScreen/LoginForm";
+import { RecoveryCodeScreen } from "../screens/RestorePasswordScreens/RecoveryCodeScreen";
+import { SendEmailToRestorePasswordScreen } from "../screens/RestorePasswordScreens/SendEmailToRestorePasswordScreen";
+import { RestorePasswordScreen } from "../screens/RestorePasswordScreens/RestorePasswordScreen";
 import { FirstScreen } from "../screens/FirstScreen";
 import { colors } from "../consts/colors";
 
@@ -36,6 +39,23 @@ export const AuthNavigator = () => {
 					name="Login"
 					options={{ title: "Iniciar Sesión" }}
 					component={LoginForm}
+				/>
+				<Stack.Screen
+					name="SendEmailToRestorePassword"
+					options={{
+						title: "Enviar Código",
+					}}
+					component={SendEmailToRestorePasswordScreen}
+				/>
+				<Stack.Screen
+					name="RecoveryCode"
+					options={{ title: "Código de Recuperación" }}
+					component={RecoveryCodeScreen}
+				/>
+				<Stack.Screen
+					name="RestorePassword"
+					options={{ title: "Restablecer Contraseña" }}
+					component={RestorePasswordScreen}
 				/>
 				<Stack.Screen
 					name="CreateAccount"

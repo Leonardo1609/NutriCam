@@ -43,6 +43,8 @@ export const ReviewRatingScreen = () => {
 
 	const { reviewRating } = useSelector((state) => state.reviewRating);
 	const { messageWarning, messageSuccess } = useSelector((state) => state.ui);
+	const { userInformation } = useSelector( (state) => state.auth )
+	console.log(userInformation)
 
 	const [rating, setRating] = useState(0);
 	const [review, setReview] = useState("");
@@ -59,7 +61,7 @@ export const ReviewRatingScreen = () => {
 
 	const submitReviewRating = () => {
 		if (!rating) {
-			dispatch(setMessageWarning("La puntuación es requerida"));
+			dispatch(setMessageWarning("La calificación es requerida"));
 			setTimeout(() => {
 				dispatch(setMessageWarning(null));
 			}, 2000);
@@ -121,7 +123,7 @@ export const ReviewRatingScreen = () => {
 				)}
 				{!reviewRating && (
 					<View>
-						<Text style={styles.greetsUser}>Hola Leonardo </Text>
+						<Text style={styles.greetsUser}>Hola { userInformation?.user?.user_name } </Text>
 						<Text style={styles.giveUsReviewText}>
 							Déjanos tu comentario sobre la aplicación
 						</Text>

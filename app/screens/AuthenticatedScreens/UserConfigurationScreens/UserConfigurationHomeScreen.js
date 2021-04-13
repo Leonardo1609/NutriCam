@@ -17,7 +17,7 @@ export const UserConfigurationMainScreen = () => {
 			component: "GeneralConfiguration",
 		},
 		{
-			name: "Reseñar / Puntuar aplicación",
+			name: "Reseñar / Calificar aplicación",
 			component: "ReviewRating",
 		},
 		{
