@@ -9,6 +9,7 @@ import { FoodRegistrationScreen } from "../screens/AuthenticatedScreens/FoodRegi
 import { MealFormScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MealFormScreen";
 import { MealManagementScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MealManagmentScreen";
 import { RegisterModal } from "../components/RegisterModal";
+import { PosibleOptionsScreen } from "../screens/AuthenticatedScreens/PosibleOptionsScreen";
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,11 @@ export const DiaryNavigator = ({ navigation }) => {
 					name="Home"
 					options={{ title: "Diario" }}
 					component={HomeScreen}
+				/>
+				<Stack.Screen
+					name="PosibleOptions"
+					options={{ title: "Comidas Reconocidas" }}
+					component={PosibleOptionsScreen}
 				/>
 				<Stack.Screen
 					name="SearchFood"

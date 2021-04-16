@@ -38,6 +38,10 @@ export const RegisterModal = () => {
 	const navigation = useNavigation();
 	const { showRegisterModal } = useSelector((state) => state.ui);
 
+	const navToPosibleOptions = () => {
+		navigation.navigate("PosibleOptions");
+	};
+
 	const takeFoodPhoto = async () => {
 		dispatch(setShowRegisterModal(false));
 		const permissions = await verifyPermissions();
@@ -49,7 +53,7 @@ export const RegisterModal = () => {
 			aspect: [16, 9],
 			quality: 0.5,
 		});
-		console.log(image);
+		dispatch(startSendImage(image, navToPosibleOptions));
 	};
 
 	const uploadFoodPhoto = async () => {
@@ -60,7 +64,7 @@ export const RegisterModal = () => {
 		}
 
 		const image = await ImagePicker.launchImageLibraryAsync();
-		dispatch(startSendImage(image));
+		dispatch(startSendImage(image, navToPosibleOptions));
 	};
 
 	const toggleModal = (bool) => {

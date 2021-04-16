@@ -1,7 +1,8 @@
 import { clientAxios } from "../axios/clientAxios";
 import FormData from "form-data";
+import { types } from "../types/types";
 
-export const startSendImage = (image) => {
+export const startSendImage = (image, fn) => {
 	return async (dispatch) => {
 		try {
 			const formData = new FormData();
@@ -23,10 +24,22 @@ export const startSendImage = (image) => {
 					headers: { "Content-Type": "multipart/form-data" },
 				}
 			);
-			console.log(data);
+			dispatch(setFoodImage(image));
+			dispatch(setPosibleOptions(data.recognized_foods));
+			if (fn) fn();
 		} catch (e) {
 			console.log(e);
 			console.log(e.response);
 		}
 	};
 };
+
+export const setFoodImage = (image) => ({
+	type: types.setFoodImage,
+	payload: image,
+});
+
+export const setPosibleOptions = (options) => ({
+	type: types.setPosibleOptions,
+	payload: options,
+});
