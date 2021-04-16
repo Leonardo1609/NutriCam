@@ -231,7 +231,7 @@ class ProcessImageToRecognition( Resource ):
     )
 
     @jwt_required()
-    def get( self ):
+    def post( self ):
         data = self.parser.parse_args(strict=True)
         food_img = data['image']
         path = os.path.join(os.path.dirname(__file__), "../temp", f"{shortuuid.uuid()}-{food_img.filename}")

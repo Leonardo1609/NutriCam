@@ -11,6 +11,7 @@ export const types = {
 	loadingUserInfo: "[Ui] Loading User Info",
 	messageWarning: "[Ui] Set Message Warning",
 	messageSuccess: "[Ui] Set Message Success",
+	showRegisterModal: "[Ui] Show Register Modal",
 
 	setFoodRegisters: "[Nutrition Summary] Set Food Registers",
 	setWeeklyCalories: "[Nutrition Summary] Set Weekly Calories",
@@ -33,5 +34,10 @@ export const types = {
 	setReviewRating: "[ReviewRating] Set Review Rating",
 	deleteReviewRating: "[ReviewRating] Delete Review Rating",
 
-	emailSended: "[RestorePasswordProcess]"
+	emailSended: "[RestorePasswordProcess] Email Sended",
+
+	setSchedule: "[Schedule] Set Schedule",
+
+	setFoodImage: "[FoodRecognition] Set Food Image",
+	setPosibleOptions: "[FoodRecognition] Set Posible Options",
 };

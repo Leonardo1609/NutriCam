@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { Alert, Platform, Text } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen } from "../screens/AuthenticatedScreens/HomeScreen";
 import { colors } from "../consts/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
@@ -14,6 +13,10 @@ import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import { clientAxios } from "../axios/clientAxios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import { startGetSchedule } from "../actions/scheduleActions";
+import { useState } from "react";
+import { setShowRegisterModal } from "../actions/uiActions";
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => {
@@ -29,7 +32,12 @@ const Tab =
 		: createBottomTabNavigator();
 
 export const AuthenticatedNavigator = () => {
+	const dispatch = useDispatch();
 	const { userInformation } = useSelector((state) => state.auth);
+
+	useEffect(() => {
+		dispatch(startGetSchedule());
+	}, []);
 
 	useEffect(() => {
 		Permissions.getAsync(Permissions.NOTIFICATIONS)
@@ -101,103 +109,120 @@ export const AuthenticatedNavigator = () => {
 	}, []);
 
 	return (
-		<NavigationContainer>
-			<Tab.Navigator
-				initialRouteName="Diario"
-				barStyle={{ backgroundColor: colors.green }}
-				activeColor="white"
-				shifting={false}
-				inactiveColor="#e3e3e3"
-				screenOptions={({ route }) => ({
-					tabBarIcon: ({ _, color }) => {
-						let iconName;
-						let size = 24;
+		<>
+			<NavigationContainer>
+				<Tab.Navigator
+					initialRouteName="Diario"
+					barStyle={{ backgroundColor: colors.green }}
+					activeColor="white"
+					shifting={false}
+					inactiveColor="#e3e3e3"
+					screenOptions={({ route }) => ({
+						tabBarIcon: ({ _, color }) => {
+							let iconName;
+							let size = 24;
 
-						if (route.name === "Diario") {
-							iconName = "ios-list";
-						} else if (route.name === "Semana") {
-							iconName = "ios-bar-chart";
-						} else if (route.name === "Search") {
-							iconName = "ios-add-circle";
-							size = 28;
-						} else if (route.name === "Plan") {
-							iconName = "ios-calendar-outline";
-						} else if (route.name === "Yo") {
-							iconName = "ios-person-circle-outline";
-						}
-
-						return (
-							<Ionicons
-								name={iconName}
-								size={size}
-								color={color}
-							/>
-						);
-					},
-					tabBarLabel:
-						Platform.OS === "android" ? (
-							<Text
-								style={{
-									fontSize: 12,
-									fontFamily: "poppins-bold",
-								}}
-							>
-								{route.name !== "Search" ? route.name : null}
-							</Text>
-						) : route.name !== "Search" ? (
-							route.name
-						) : (
-							""
-						),
-				})}
-				tabBarOptions={{
-					activeTintColor: colors.green,
-					inactiveTintColor: colors.grayPlaceholder,
-					labelStyle: { fontSize: 12, fontFamily: "poppins-bold" },
-				}}
-			>
-				<Tab.Screen
-					name="Semana"
-					component={WeeklyNavigator}
-					listeners={({ navigation, route }) => ({
-						tabPress: (e) => {
-							if (
-								!userInformation?.profile
-									?.profile_have_caloric_plan
-							) {
-								e.preventDefault();
-								return Alert.alert(
-									"No permitido",
-									"Solo puede ingresar si cuenta con un plan calórico"
-								);
+							if (route.name === "Diario") {
+								iconName = "ios-list";
+							} else if (route.name === "Semana") {
+								iconName = "ios-bar-chart";
+							} else if (route.name === "Search") {
+								iconName = "ios-add-circle";
+								size = 28;
+							} else if (route.name === "Plan") {
+								iconName = "ios-calendar-outline";
+							} else if (route.name === "Yo") {
+								iconName = "ios-person-circle-outline";
 							}
 
-							// To always navigate to the main screen of the TapScreen (MyWeek). Need the if because in this NavigationContainer MyWeek route doesn't exists when the app is initialized.
-							if (route.state) {
-								e.preventDefault();
-								navigation.navigate("MyWeek");
-							}
+							return (
+								<Ionicons
+									name={iconName}
+									size={size}
+									color={color}
+								/>
+							);
 						},
+						tabBarLabel:
+							Platform.OS === "android" ? (
+								<Text
+									style={{
+										fontSize: 12,
+										fontFamily: "poppins-bold",
+									}}
+								>
+									{route.name !== "Search"
+										? route.name
+										: null}
+								</Text>
+							) : route.name !== "Search" ? (
+								route.name
+							) : (
+								""
+							),
 					})}
-				/>
-				<Tab.Screen
-					name="Diario"
-					component={DiaryNavigator}
-					listeners={({ navigation, route }) => ({
-						tabPress: (e) => {
-							if (route.state) {
-								e.preventDefault();
-								navigation.navigate("Home");
-							}
+					tabBarOptions={{
+						activeTintColor: colors.green,
+						inactiveTintColor: colors.grayPlaceholder,
+						labelStyle: {
+							fontSize: 12,
+							fontFamily: "poppins-bold",
 						},
-					})}
-				/>
-				<Tab.Screen
-					name="Search"
-					component={UserConfigurationNavigator}
-				/>
-				<Tab.Screen name="Yo" component={UserConfigurationNavigator} />
-			</Tab.Navigator>
-		</NavigationContainer>
+					}}
+				>
+					<Tab.Screen
+						name="Semana"
+						component={WeeklyNavigator}
+						listeners={({ navigation, route }) => ({
+							tabPress: (e) => {
+								if (
+									!userInformation?.profile
+										?.profile_have_caloric_plan
+								) {
+									e.preventDefault();
+									return Alert.alert(
+										"No permitido",
+										"Solo puede ingresar si cuenta con un plan calórico"
+									);
+								}
+
+								// To always navigate to the main screen of the TapScreen (MyWeek). Need the if because in this NavigationContainer MyWeek route doesn't exists when the app is initialized.
+								if (route.state) {
+									e.preventDefault();
+									navigation.navigate("MyWeek");
+								}
+							},
+						})}
+					/>
+					<Tab.Screen
+						name="Diario"
+						component={DiaryNavigator}
+						listeners={({ navigation, route }) => ({
+							tabPress: (e) => {
+								if (route.state) {
+									e.preventDefault();
+									navigation.navigate("Home");
+								}
+							},
+						})}
+					/>
+					<Tab.Screen
+						name="Search"
+						component={DiaryNavigator}
+						listeners={({ navigation }) => ({
+							tabPress: (e) => {
+								e.preventDefault();
+								dispatch(setShowRegisterModal(true));
+								navigation.navigate("Diario");
+							},
+						})}
+					/>
+					<Tab.Screen
+						name="Yo"
+						component={UserConfigurationNavigator}
+					/>
+				</Tab.Navigator>
+			</NavigationContainer>
+		</>
 	);
 };

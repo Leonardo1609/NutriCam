@@ -8,53 +8,59 @@ import { useSelector } from "react-redux";
 import { FoodRegistrationScreen } from "../screens/AuthenticatedScreens/FoodRegistrationScreen";
 import { MealFormScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MealFormScreen";
 import { MealManagementScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MealManagmentScreen";
+import { RegisterModal } from "../components/RegisterModal";
 
 const Stack = createStackNavigator();
 
-export const DiaryNavigator = () => {
+export const DiaryNavigator = ({ navigation }) => {
 	const { activeFoodToRegist } = useSelector((state) => state.food);
 	return (
-		<Stack.Navigator
-			initialRouteName="Home"
-			screenOptions={{
-				headerStyle: {
-					backgroundColor: colors.green,
-				},
-				headerTintColor: "white",
-				headerTitleStyle: {
-					fontWeight: "bold",
-				},
-			}}
-		>
-			<Stack.Screen
-				name="Home"
-				options={{ title: "Diario" }}
-				component={HomeScreen}
-			/>
-			<Stack.Screen
-				name="SearchFood"
-				options={{ headerTitle: (props) => <SearchInput {...props} /> }}
-				component={SearchFoodScreen}
-			/>
-			<Stack.Screen
-				name="RegistFood"
-				options={{ title: activeFoodToRegist?.food_name }}
-				component={FoodRegistrationScreen}
-			/>
-			<Stack.Screen
-				name="MealForm"
-				options={{
-					title: "Guardar Comida",
+		<>
+			<RegisterModal />
+			<Stack.Navigator
+				initialRouteName="Home"
+				screenOptions={{
+					headerStyle: {
+						backgroundColor: colors.green,
+					},
+					headerTintColor: "white",
+					headerTitleStyle: {
+						fontWeight: "bold",
+					},
 				}}
-				component={MealFormScreen}
-			/>
-			<Stack.Screen
-				name="MealManagement"
-				options={{
-					title: "Mis Comidas",
-				}}
-				component={MealManagementScreen}
-			/>
-		</Stack.Navigator>
+			>
+				<Stack.Screen
+					name="Home"
+					options={{ title: "Diario" }}
+					component={HomeScreen}
+				/>
+				<Stack.Screen
+					name="SearchFood"
+					options={{
+						headerTitle: (props) => <SearchInput {...props} />,
+					}}
+					component={SearchFoodScreen}
+				/>
+				<Stack.Screen
+					name="RegistFood"
+					options={{ title: activeFoodToRegist?.food_name }}
+					component={FoodRegistrationScreen}
+				/>
+				<Stack.Screen
+					name="MealForm"
+					options={{
+						title: "Guardar Comida",
+					}}
+					component={MealFormScreen}
+				/>
+				<Stack.Screen
+					name="MealManagement"
+					options={{
+						title: "Mis Comidas",
+					}}
+					component={MealManagementScreen}
+				/>
+			</Stack.Navigator>
+		</>
 	);
 };

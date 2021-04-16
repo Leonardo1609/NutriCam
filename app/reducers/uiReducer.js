@@ -4,6 +4,7 @@ const initialState = {
 	loading: false,
 	messageWarning: null,
 	messageSuccess: null,
+	showRegisterModal: false,
 };
 
 export const uiReducer = (state = initialState, { type, payload }) => {
@@ -22,6 +23,11 @@ export const uiReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				messageWarning: payload,
+			};
+		case types.showRegisterModal:
+			return {
+				...state,
+				showRegisterModal: payload,
 			};
 		default:
 			return state;

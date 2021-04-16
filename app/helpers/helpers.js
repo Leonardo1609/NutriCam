@@ -84,8 +84,8 @@ export const formatDate = (date) => {
 };
 
 // Fix the bug of by 1 day
-export const parserDateToLocale = (date) => {
-	const splitedDate = date.split("-");
+export const parserDateToLocale = (stringDate) => {
+	const splitedDate = stringDate.split("-");
 	const parserDate = new Date(
 		splitedDate[0],
 		splitedDate[1] - 1,
@@ -93,6 +93,13 @@ export const parserDateToLocale = (date) => {
 	);
 
 	return parserDate;
+};
+
+export const formatHour = (hours, minutes) => {
+	const parseHour = hours >= 10 ? hours : "0" + hours;
+	const parseMinutes = minutes >= 10 ? minutes : "0" + minutes;
+
+	return parseHour + ":" + parseMinutes;
 };
 
 export const setTargetMessage = (status) => {

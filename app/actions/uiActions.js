@@ -14,3 +14,8 @@ export const setMessageSuccess = (message) => ({
 	type: types.messageSuccess,
 	payload: message,
 });
+
+export const setShowRegisterModal = (bool) => ({
+	type: types.showRegisterModal,
+	payload: bool,
+});

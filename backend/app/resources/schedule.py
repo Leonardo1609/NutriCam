@@ -18,7 +18,8 @@ class R_Schedule( Resource ):
             user_id = get_jwt_identity()
             profile_id = User.get_profile_id_by_user_id( user_id )
             message = Schedule.config_schedule( data['schedule'], profile_id )
-            return { 'msg': message }, 200
+            schedule = Schedule.get_schedule( profile_id )
+            return { 'msg': message, "schedule": schedule }, 200
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
     @jwt_required()
@@ -28,7 +29,8 @@ class R_Schedule( Resource ):
             user_id = get_jwt_identity()
             profile_id = User.get_profile_id_by_user_id( user_id )
             message = Schedule.update_schedule( data['schedule'], profile_id )
-            return { 'msg': message }, 200
+            schedule = Schedule.get_schedule( profile_id )
+            return { 'msg': message, 'schedule': schedule }, 200
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
         
