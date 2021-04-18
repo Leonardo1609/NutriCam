@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { HomeScreen } from "../screens/AuthenticatedScreens/HomeScreen";
 import { SearchFoodScreen } from "../screens/AuthenticatedScreens/SearchFoodScreen";
@@ -10,13 +10,17 @@ import { MealFormScreen } from "../screens/AuthenticatedScreens/UserConfiguratio
 import { MealManagementScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MealManagmentScreen";
 import { RegisterModal } from "../components/RegisterModal";
 import { PosibleOptionsScreen } from "../screens/AuthenticatedScreens/PosibleOptionsScreen";
+import { MotivationalMessageModal } from "../components/MotivationalMessageModal";
+import { DiarySummaryScreen } from "../screens/AuthenticatedScreens/DiarySummaryScreen";
 
 const Stack = createStackNavigator();
 
-export const DiaryNavigator = ({ navigation }) => {
+export const DiaryNavigator = () => {
 	const { activeFoodToRegist } = useSelector((state) => state.food);
+
 	return (
 		<>
+			<MotivationalMessageModal />
 			<RegisterModal />
 			<Stack.Navigator
 				initialRouteName="Home"
@@ -65,6 +69,13 @@ export const DiaryNavigator = ({ navigation }) => {
 						title: "Mis Comidas",
 					}}
 					component={MealManagementScreen}
+				/>
+				<Stack.Screen
+					name="DiarySummary"
+					options={{
+						title: "Resumen",
+					}}
+					component={DiarySummaryScreen}
 				/>
 			</Stack.Navigator>
 		</>

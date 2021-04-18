@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	StyleSheet,
 	View,
@@ -57,6 +57,12 @@ export const RecoveryCodeScreen = () => {
 		dispatch(setMessageWarning(null));
 		handleChange(value, "code");
 	};
+
+	useEffect(() => {
+		return () => {
+			dispatch(setMessageWarning(null));
+		};
+	}, []);
 
 	return (
 		<>

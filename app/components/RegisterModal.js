@@ -53,7 +53,10 @@ export const RegisterModal = () => {
 			aspect: [16, 9],
 			quality: 0.5,
 		});
-		dispatch(startSendImage(image, navToPosibleOptions));
+
+		if (!image.cancelled) {
+			dispatch(startSendImage(image, navToPosibleOptions));
+		}
 	};
 
 	const uploadFoodPhoto = async () => {
@@ -64,7 +67,9 @@ export const RegisterModal = () => {
 		}
 
 		const image = await ImagePicker.launchImageLibraryAsync();
-		dispatch(startSendImage(image, navToPosibleOptions));
+		if (!image.cancelled) {
+			dispatch(startSendImage(image, navToPosibleOptions));
+		}
 	};
 
 	const toggleModal = (bool) => {

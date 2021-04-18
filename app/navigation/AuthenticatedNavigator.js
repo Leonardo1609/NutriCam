@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Alert, Platform, Text } from "react-native";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors } from "../consts/colors";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,7 +15,6 @@ import { clientAxios } from "../axios/clientAxios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import { startGetSchedule } from "../actions/scheduleActions";
-import { useState } from "react";
 import { setShowRegisterModal } from "../actions/uiActions";
 
 Notifications.setNotificationHandler({

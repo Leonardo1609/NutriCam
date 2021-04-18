@@ -19,7 +19,6 @@ import {
 	setDateOfRegisters,
 } from "../../actions/nutritionSummaryActions";
 
-
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
@@ -42,7 +41,7 @@ export const HomeScreen = ({ navigation }) => {
 	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 
 	const filterFoodsPerDayFoodId = (foods, filterId) => {
-		return foods.filter((food) => food.day_food_id === filterId);
+		return foods?.filter((food) => food.day_food_id === filterId);
 	};
 
 	const caloriesRecommendationsPerDayFood = userInformation?.profile
@@ -82,7 +81,6 @@ export const HomeScreen = ({ navigation }) => {
 			dispatch(startGetFoodRegisters());
 		}
 	}, [dateOfRegister, userInformation]);
-
 
 	return (
 		<View style={styles.screen}>

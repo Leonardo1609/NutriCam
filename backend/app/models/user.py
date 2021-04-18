@@ -273,7 +273,7 @@ class User:
     def generate_code_to_restore( cls, email, code ):
         query = """
         UPDATE users
-        SET recovery_code = ?, code_expiration_time = DATEADD (hour, 1,getdate())
+        SET recovery_code = ?, code_expiration_time = DATEADD (hour, 0,getdate())
         WHERE user_email = ?;
         """ 
         cursor.execute( query, ( code, email ) )
@@ -316,3 +316,50 @@ class User:
         cursor.execute(query, ( hashed_pass, email ))
         cursor.commit()
         return 'La contraseña ha sido restablecida'
+
+    @classmethod
+    def yesterday_fullfiled( cls, profile_id ):
+        yesterday_calories_query = """
+        SELECT ROUND(SUM(fmu.food_calories * fr.quantity),2) 'Calories'
+        FROM food_register fr
+        INNER JOIN food_measure_unit fmu ON fr.food_id = fmu.food_id
+        WHERE fr.profile_id = ? AND fr.food_register_day = DATEADD(dd, -1, CAST(GETDATE() as date)) AND fr.food_measure_unit_id = fmu.food_measure_unit_id;
+        """
+        yesterday_calories = cursor.execute( yesterday_calories_query, ( profile_id, ) ).fetchone()[0]
+
+        caloric_plan_query = """
+        SELECT profile_caloric_plan 
+        FROM profile 
+        WHERE profile_id = ?;
+        """
+
+        caloric_plan = cursor.execute( caloric_plan_query, ( profile_id, ) ).fetchone()[0]
+
+        if not yesterday_calories:
+            return { "target": False, "has_calories": False }
+
+        if caloric_plan * 0.90 <= yesterday_calories or caloric_plan * 1.10 >= yesterday_calories:
+            return { "target": True, "has_calories": True, "message": "Ayer cumpliste con tu plan calórico. ¡Felicidades 🎉🎉!" }
+        return { "target": False, "has_calories": True, "message": "Ayer no cumpliste con tu plan calórico. ¡Esfuerzate por coseguirlo hoy 💪!"}
+
+    @classmethod
+    def week_fullfiled( cls, profile_id ):
+        caloric_plan_query = """
+        SELECT profile_caloric_plan 
+        FROM profile 
+        WHERE profile_id = ?;
+        """
+
+        caloric_plan = cursor.execute( caloric_plan_query, ( profile_id, ) ).fetchone()[0]
+
+        week_calories_query = """
+        SELECT ROUND(SUM(fmu.food_calories * fr.quantity),2) 'Calories'
+        FROM food_register fr
+        INNER JOIN food_measure_unit fmu ON fr.food_id = fmu.food_id
+        WHERE fr.profile_id = ? AND fr.food_register_day = DATEADD(dd, -?, CAST(GETDATE() as date)) AND fr.food_measure_unit_id = fmu.food_measure_unit_id;
+        """
+        for i in range(1,8):
+            calories = cursor.execute(week_calories_query, ( profile_id, i )).fetchone()[0]
+            if not calories or caloric_plan * 0.90 > calories or caloric_plan * 1.10 < calories:
+                return { "target": False, "message": None }
+        return { "target": True, "message": "Conseguiste un gran logro, has cumplido tu plan nutricional por 7 días seguidos, ¡Felicidades 🎉🎉!." }

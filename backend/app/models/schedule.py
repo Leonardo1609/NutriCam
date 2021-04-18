@@ -40,8 +40,7 @@ class Schedule:
         WHERE profile_id = ?
         """
         rows = cursor.execute( query, ( profile_id ) ).fetchall()
-        # for mt, df in rows:
-        #     print( mt.strftime("%H:%M") if mt else None )
+
         schedule = [ { 'day_food_id': day_food_id, 'meal_time': meal_time.strftime("%H:%M") if meal_time else None } for meal_time, day_food_id in rows ]
 
         return schedule 

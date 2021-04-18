@@ -9,11 +9,12 @@ export const startGetFoodRegisters = () => {
 			const { data } = await clientAxios.get(
 				`/registers-per-day/${dateOfRegister}`
 			);
-			console.log(data.food_registers)
 			dispatch(setFoodRegisters(data.food_registers));
 		} catch (e) {
 			console.log(e.response);
-			dispatch(logoutUser());
+			dispatch({
+				type: types.logout,
+			});
 		}
 	};
 };

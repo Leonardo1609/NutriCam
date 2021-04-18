@@ -141,7 +141,7 @@ export const DiarySummaryScreen = () => {
 			)}
 			<MainButton
 				onPress={() => {
-					navigation.navigate("Diario");
+					navigation.navigate("Home");
 					dispatch(setDateOfRegisters(dateOfSummary));
 				}}
 			>

@@ -239,7 +239,7 @@ class ProcessImageToRecognition( Resource ):
             food_img.save(path)
             foods = predict(path)
             os.remove(path) 
-            return  { 'recognize_foods': foods }
+            return  { 'recognized_foods': foods }
         except:
             os.remove(path)
             return { 'msg': 'Ha ocurrido un error' }, 500

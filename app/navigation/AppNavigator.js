@@ -10,7 +10,7 @@ import { getUser } from "../actions/authActions";
 export const AppNavigator = () => {
 	let token;
 	const dispatch = useDispatch();
-	const { authenticated } = useSelector((state) => state.auth);
+	const { userInformation, authenticated } = useSelector((state) => state.auth);
 
 	const { loading } = useSelector((state) => state.ui);
 
@@ -34,7 +34,7 @@ export const AppNavigator = () => {
 
 	if (loading) return <LoadingScreen />;
 
-	if (!loading && authenticated) return <AuthenticatedNavigator />;
+	if (!loading && authenticated && userInformation?.user) return <AuthenticatedNavigator />;
 
 	return <AuthNavigator />;
 };

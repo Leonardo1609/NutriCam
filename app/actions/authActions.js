@@ -9,6 +9,16 @@ import { tokenAuth } from "../axios/tokenAuth";
 import { types } from "../types/types";
 import { setFoodRegisters } from "./nutritionSummaryActions";
 
+export const logoutUser = () => {
+	return async (dispatch) => {
+		await AsyncStorage.removeItem("token");
+		dispatch(setFoodRegisters([]));
+		dispatch({
+			type: types.logout,
+		});
+	};
+};
+
 export const getUser = (loading = true) => {
 	return async (dispatch) => {
 		const token = await AsyncStorage.getItem("token");
@@ -26,8 +36,8 @@ export const getUser = (loading = true) => {
 			loading && dispatch(loadingUserInfo(false));
 		} catch (e) {
 			console.log(e.response);
-			dispatch(loadingUserInfo(false));
 			dispatch(logoutUser());
+			dispatch(loadingUserInfo(false));
 		}
 	};
 };
@@ -183,16 +193,6 @@ export const startChangePassword = (password, newPassword) => {
 			}, 2000);
 			console.log(e.response);
 		}
-	};
-};
-
-export const logoutUser = () => {
-	return async (dispatch) => {
-		await AsyncStorage.removeItem("token");
-		dispatch(setFoodRegisters([]));
-		dispatch({
-			type: types.logout,
-		});
 	};
 };
 

@@ -301,3 +301,25 @@ class RestorePassword( Resource ):
             return { 'msg': message }
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
+
+class YesterdayFullfiled( Resource ):
+    @jwt_required()
+    def get( self ):
+        try:
+            user_id = get_jwt_identity()
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            results = User.yesterday_fullfiled( profile_id )
+            return results 
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+class WeekFullfield( Resource ):
+    @jwt_required()
+    def get( self ):
+        try:
+            user_id = get_jwt_identity()
+            profile_id = User.get_profile_id_by_user_id( user_id )
+            results = User.week_fullfiled( profile_id )
+            return results
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
