@@ -12,7 +12,7 @@ import { clientAxios } from "../axios/clientAxios";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { setDateOfSummary } from "../actions/nutritionSummaryActions";
-import { formatDate } from "../helpers/helpers";
+import { formatDate, parserDateToLocale } from "../helpers/helpers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const MotivationalMessageModal = () => {
@@ -21,6 +21,7 @@ export const MotivationalMessageModal = () => {
 	const { userInformation } = useSelector((state) => state.auth);
 	const [showMotivationalModal, setShowMotivationalModal] = useState(false);
 	const [targetMessage, setTargetMessage] = useState({
+		type: null,
 		target: false,
 		message: null,
 	});
@@ -40,27 +41,55 @@ export const MotivationalMessageModal = () => {
 	};
 
 	useEffect(() => {
-		const dayScheduledToShowMotivationalMessage = async () => {
-			const scheduledDay = await AsyncStorage.getItem("scheduledDay");
+		// const dayScheduledToShowMotivationalMessage = async () => {
+		// 	const scheduledDay = await AsyncStorage.getItem("scheduledDay");
 
-			if (formatDate(new Date()) !== scheduledDay) {
-				weekFullfiled();
-				await AsyncStorage.setItem(
-					"scheduledDay",
-					formatDate(new Date())
-				);
-			}
-		};
+		// 	if (formatDate(new Date()) !== scheduledDay) {
+		// 		weekFullfiled(scheduledDay);
+		// 		await AsyncStorage.setItem(
+		// 			"scheduledDay",
+		// 			formatDate(new Date())
+		// 		);
+		// 	}
+		// };
 
 		const yesterdayFullfiled = async () => {
 			try {
 				const { data } = await clientAxios.get("/yesterday-fullfiled");
-				setTargetMessage(data);
+				console.log(data);
 				if (data.has_calories) {
-					setShowMotivationalModal(true);
+					const today = parserDateToLocale(formatDate(new Date())); // today but without hours
+					const scheduleDiaryDay = JSON.parse(
+						await AsyncStorage.getItem("scheduleDiaryDay")
+					);
+
+					const scheduledWeekday = JSON.parse(
+						await AsyncStorage.getItem("scheduledWeekday")
+					);
+
+					if (
+						parserDateToLocale(formatDate(new Date())) >
+							scheduleDiaryDay &&
+						parserDateToLocale(formatDate(new Date())) >
+							scheduledWeekday
+					) {
+						setTargetMessage({
+							type: "yesterday",
+							...data,
+						});
+						setShowMotivationalModal(true);
+						await AsyncStorage.setItem(
+							"scheduleDiaryDay",
+							JSON.stringify(today)
+						);
+					} else {
+						console.log("aún no acabó el día");
+					}
+				} else {
+					setShowMotivationalModal(false);
 				}
 			} catch (e) {
-				console.log(e.response);
+				console.log(e);
 				setShowMotivationalModal(false);
 			}
 		};
@@ -69,23 +98,43 @@ export const MotivationalMessageModal = () => {
 			try {
 				const { data } = await clientAxios("week-fullfiled");
 				if (data.target) {
-					setTargetMessage(data);
-					setShowMotivationalModal(true);
+					const today = parserDateToLocale(formatDate(new Date())); // today but without hours
+					const weekAgo = new Date(today);
+					weekAgo.setDate(weekAgo.getDate() - 6); // wwek ago but withou hours
+
+					const scheduledWeekday = JSON.parse(
+						await AsyncStorage.getItem("scheduledWeekday")
+					);
+
+					if (scheduledWeekday >= weekAgo || !scheduledWeekday) {
+						setTargetMessage({
+							type: "week",
+							...data,
+						});
+						setShowMotivationalModal(true);
+						await AsyncStorage.setItem(
+							"scheduledWeekday",
+							JSON.stringify(today)
+						);
+					} else {
+						console.log("aún no pasaron 7 días");
+						yesterdayFullfiled();
+					}
 				} else {
 					yesterdayFullfiled();
 				}
 			} catch (e) {
-				console.log(e.response);
+				console.log(e);
 				setShowMotivationalModal(false);
 			}
 		};
 
 		// (async () => {
-		// 	await AsyncStorage.removeItem(
-		// 		"dayScheduledToShowMotivationalMessage"
-		// 	);
+		// 	await AsyncStorage.removeItem("scheduleDiaryDay");
+		// 	await AsyncStorage.removeItem("scheduledWeekday");
 		// })();
-		dayScheduledToShowMotivationalMessage();
+
+		weekFullfiled();
 	}, []);
 
 	return (
@@ -112,8 +161,12 @@ export const MotivationalMessageModal = () => {
 							</View>
 							{targetMessage.target && (
 								<Image
-									style={styles.medalImage}
-									source={require("../assets/images/congratulations.png")}
+									style={styles.congratulationsImage}
+									source={
+										targetMessage.type === "yesterday"
+											? require("../assets/images/medal.png")
+											: require("../assets/images/trophy.png")
+									}
 								/>
 							)}
 							<Text style={styles.greetsText}>
@@ -147,8 +200,9 @@ const styles = StyleSheet.create({
 		backgroundColor: "rgba(0, 0, 0, 0.5)",
 	},
 	modalBody: {
-		backgroundColor: "white",
+		backgroundColor: "#a7ff83",
 		position: "relative",
+		paddingHorizontal: 15,
 		width: "80%",
 		height: "60%",
 		borderRadius: 20,
@@ -157,12 +211,12 @@ const styles = StyleSheet.create({
 	},
 	motivationalMessageText: {
 		fontFamily: "poppins-bold",
-		fontSize: 20,
+		fontSize: 16,
 		textAlign: "center",
 	},
-	medalImage: {
-		width: 150,
-		height: 150,
+	congratulationsImage: {
+		width: 130,
+		height: 130,
 		resizeMode: "contain",
 	},
 	greetsText: {

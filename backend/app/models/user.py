@@ -338,7 +338,7 @@ class User:
         if not yesterday_calories:
             return { "target": False, "has_calories": False }
 
-        if caloric_plan * 0.90 <= yesterday_calories or caloric_plan * 1.10 >= yesterday_calories:
+        if caloric_plan * 0.90 <= yesterday_calories and caloric_plan * 1.10 >= yesterday_calories:
             return { "target": True, "has_calories": True, "message": "Ayer cumpliste con tu plan calórico. ¡Felicidades 🎉🎉!" }
         return { "target": False, "has_calories": True, "message": "Ayer no cumpliste con tu plan calórico. ¡Esfuerzate por coseguirlo hoy 💪!"}
 
@@ -362,4 +362,4 @@ class User:
             calories = cursor.execute(week_calories_query, ( profile_id, i )).fetchone()[0]
             if not calories or caloric_plan * 0.90 > calories or caloric_plan * 1.10 < calories:
                 return { "target": False, "message": None }
-        return { "target": True, "message": "Conseguiste un gran logro, has cumplido tu plan nutricional por 7 días seguidos, ¡Felicidades 🎉🎉!." }
+        return { "target": True, "message": "Conseguiste un gran logro, has cumplido tu plan calórico por 7 días seguidos, ¡Felicidades 🎉🎉!." }
