@@ -12,7 +12,11 @@ import { clientAxios } from "../axios/clientAxios";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { setDateOfSummary } from "../actions/nutritionSummaryActions";
-import { formatDate, parserDateToLocale } from "../helpers/helpers";
+import {
+	formatDate,
+	parserAndFormatDateToLocale,
+	parserDateToLocale,
+} from "../helpers/helpers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const MotivationalMessageModal = () => {
@@ -56,9 +60,9 @@ export const MotivationalMessageModal = () => {
 		const yesterdayFullfiled = async () => {
 			try {
 				const { data } = await clientAxios.get("/yesterday-fullfiled");
-				console.log(data);
 				if (data.has_calories) {
 					const today = parserDateToLocale(formatDate(new Date())); // today but without hours
+
 					const scheduleDiaryDay = JSON.parse(
 						await AsyncStorage.getItem("scheduleDiaryDay")
 					);
@@ -67,11 +71,23 @@ export const MotivationalMessageModal = () => {
 						await AsyncStorage.getItem("scheduledWeekday")
 					);
 
+					console.log("scheduleWeekday in diary", scheduledWeekday);
+
+					// const temp = parserDateToLocale(formatDate(new Date())); // today but without hours
+					// temp.setDate(temp.getDate() + 1);
+
+					// console.log(
+					// 	temp , parserAndFormatDateToLocale(scheduleDiaryDay)
+					// );
+
 					if (
-						parserDateToLocale(formatDate(new Date())) >
-							scheduleDiaryDay &&
-						parserDateToLocale(formatDate(new Date())) >
-							scheduledWeekday
+						(today >
+							parserAndFormatDateToLocale(scheduleDiaryDay) &&
+							today >
+								parserAndFormatDateToLocale(
+									scheduledWeekday
+								)) ||
+						(!scheduleDiaryDay && !scheduledWeekday)
 					) {
 						setTargetMessage({
 							type: "yesterday",
@@ -106,7 +122,11 @@ export const MotivationalMessageModal = () => {
 						await AsyncStorage.getItem("scheduledWeekday")
 					);
 
-					if (scheduledWeekday >= weekAgo || !scheduledWeekday) {
+					if (
+						!scheduledWeekday ||
+						parserAndFormatDateToLocale(scheduledWeekday) < weekAgo
+					) {
+						console.log("if");
 						setTargetMessage({
 							type: "week",
 							...data,
@@ -117,6 +137,7 @@ export const MotivationalMessageModal = () => {
 							JSON.stringify(today)
 						);
 					} else {
+						console.log("else");
 						console.log("aún no pasaron 7 días");
 						yesterdayFullfiled();
 					}

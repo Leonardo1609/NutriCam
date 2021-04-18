@@ -361,5 +361,5 @@ class User:
         for i in range(1,8):
             calories = cursor.execute(week_calories_query, ( profile_id, i )).fetchone()[0]
             if not calories or caloric_plan * 0.90 > calories or caloric_plan * 1.10 < calories:
-                return { "target": False, "message": None }
+                return { "target": False, "message": None  }
         return { "target": True, "message": "Conseguiste un gran logro, has cumplido tu plan calórico por 7 días seguidos, ¡Felicidades 🎉🎉!." }

@@ -125,9 +125,8 @@ export const AuthenticatedNavigator = () => {
 								iconName = "ios-list";
 							} else if (route.name === "Semana") {
 								iconName = "ios-bar-chart";
-							} else if (route.name === "Search") {
+							} else if (route.name === "Registrar") {
 								iconName = "ios-add-circle";
-								size = 28;
 							} else if (route.name === "Plan") {
 								iconName = "ios-calendar-outline";
 							} else if (route.name === "Yo") {
@@ -142,23 +141,16 @@ export const AuthenticatedNavigator = () => {
 								/>
 							);
 						},
-						tabBarLabel:
-							Platform.OS === "android" ? (
-								<Text
-									style={{
-										fontSize: 12,
-										fontFamily: "poppins-bold",
-									}}
-								>
-									{route.name !== "Search"
-										? route.name
-										: null}
-								</Text>
-							) : route.name !== "Search" ? (
-								route.name
-							) : (
-								""
-							),
+						tabBarLabel: (
+							<Text
+								style={{
+									fontSize: 12,
+									fontFamily: "poppins-bold",
+								}}
+							>
+								{route.name}
+							</Text>
+						),
 					})}
 					tabBarOptions={{
 						activeTintColor: colors.green,
@@ -206,7 +198,7 @@ export const AuthenticatedNavigator = () => {
 						})}
 					/>
 					<Tab.Screen
-						name="Search"
+						name="Registrar"
 						component={DiaryNavigator}
 						listeners={({ navigation }) => ({
 							tabPress: (e) => {

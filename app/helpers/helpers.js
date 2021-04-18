@@ -95,6 +95,11 @@ export const parserDateToLocale = (stringDate) => {
 	return parserDate;
 };
 
+// Arregla el problema de que una fecha guardada en el AsyncStorage cuando se hace el getItem con el JSON.parse sigue siendo un string.
+export const parserAndFormatDateToLocale = (date) => {
+	return parserDateToLocale(formatDate(new Date(date)));
+};
+
 export const formatHour = (hours, minutes) => {
 	const parseHour = hours >= 10 ? hours : "0" + hours;
 	const parseMinutes = minutes >= 10 ? minutes : "0" + minutes;
