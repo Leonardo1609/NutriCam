@@ -1,12 +1,35 @@
 import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { getFoodId } from "../../actions/foodRecognitionActions";
+import {
+	startGetFoodMeasureUnits,
+	startGetFoodInformation,
+} from "../../actions/foodActions";
 
 export const PosibleOptionsScreen = () => {
+	const navigation = useNavigation();
+	const dispatch = useDispatch();
 	const { image, posibleOptions } = useSelector(
 		(state) => state.foodRecognition
 	);
+
+	const goToRegistFood = async (foodName) => {
+		const navToRegistFoodScreen = () => {
+			navigation.navigate("RegistFood");
+		};
+		try {
+			const { foodId } = await getFoodId(foodName);
+			dispatch(startGetFoodMeasureUnits(foodId));
+			dispatch(
+				startGetFoodInformation(foodId, null, navToRegistFoodScreen)
+			);
+		} catch (e) {
+			console.log(e.response);
+		}
+	};
+
 	return (
 		<View style={styles.screen}>
 			<View style={styles.imageContainer}>
@@ -21,7 +44,9 @@ export const PosibleOptionsScreen = () => {
 						<TouchableOpacity
 							key={option}
 							activeOpacity={0.6}
-							onPress={() => {}}
+							onPress={() => {
+								goToRegistFood(option);
+							}}
 						>
 							<View style={styles.foodContainer}>
 								<Text style={styles.foodName} numberOfLines={1}>

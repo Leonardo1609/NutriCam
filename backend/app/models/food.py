@@ -98,6 +98,18 @@ class Food:
         return cls.food_json( *food_information )
 
     @classmethod
+    def get_food_id_by_name( cls, food_name ):
+        query  = """
+        SELECT food_id 
+        FROM food
+        WHERE food_name = ?
+        """
+        food_id = cursor.execute( query, ( food_name, ) ).fetchone()
+        if food_id:
+            return food_id[0]
+        return False
+
+    @classmethod
     def create_food( cls, food_name, creator_id, food_measure_unit_id, food_calories, food_carbohydrates=None, food_fats=None, food_proteins=None ):
         create_food_query="""
         INSERT INTO food VALUES( ?, 1, ? );
@@ -223,7 +235,6 @@ class Food:
         sunday = monday + timedelta( days = 6 )
 
         week = [ str(monday), str(tuesday), str(wednesday), str(thursday), str(friday), str(satuday), str(sunday) ]
-        print(week)
 
         query = """
         SELECT SUM(fr.quantity * fmu.food_calories), fr.food_register_day

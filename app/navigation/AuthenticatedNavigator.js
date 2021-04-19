@@ -16,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import { startGetSchedule } from "../actions/scheduleActions";
 import { setShowRegisterModal } from "../actions/uiActions";
+import { getPartOfHour, reminderMessages } from "../helpers/helpers";
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => {
@@ -33,6 +34,71 @@ const Tab =
 export const AuthenticatedNavigator = () => {
 	const dispatch = useDispatch();
 	const { userInformation } = useSelector((state) => state.auth);
+	const { schedule } = useSelector((state) => state.schedule);
+
+	const getRecommendation = async () => {
+		const { data } = await clientAxios("/expert-recommendation");
+		Notifications.scheduleNotificationAsync({
+			content: {
+				title: "Consejo del día:",
+				body: data.recommendation,
+			},
+			trigger: {
+				hour: 10,
+				minute: 0,
+				repeats: true,
+			},
+		});
+	};
+
+	const setReminder = async (day_food_id, meal_time) => {
+		const identifier = await Notifications.scheduleNotificationAsync({
+			content: {
+				title: "Nutri Recordatorio",
+				body: reminderMessages[day_food_id - 1],
+			},
+			trigger: {
+				hour: getPartOfHour(meal_time, "hours"),
+				minute: getPartOfHour(meal_time, "minutes"),
+				repeats: true,
+			},
+		});
+		return identifier;
+	};
+
+	const getReminder = async (day_food_id, meal_time) => {
+		const reminder = await AsyncStorage.getItem(`reminder ${day_food_id}`);
+
+		if (!reminder && day_food_id && meal_time) {
+			const identifier = await setReminder(day_food_id, meal_time);
+			await AsyncStorage.setItem(
+				`reminder ${day_food_id}`,
+				JSON.stringify({
+					hour: meal_time,
+					identifier,
+				})
+			);
+		} else if (reminder && day_food_id && meal_time) {
+			const { hour, identifier } = JSON.parse(reminder);
+			if (hour !== meal_time) {
+				await Notifications.cancelScheduledNotificationAsync(
+					identifier
+				);
+				const newIdentifier = await setReminder(day_food_id, meal_time);
+				await AsyncStorage.setItem(
+					`reminder ${day_food_id}`,
+					JSON.stringify({
+						hour: meal_time,
+						identifier: newIdentifier,
+					})
+				);
+			}
+		} else if (reminder && !meal_time && day_food_id) {
+			const { identifier } = JSON.parse(reminder);
+			await AsyncStorage.removeItem(`reminder ${day_food_id}`);
+			await Notifications.cancelScheduledNotificationAsync(identifier);
+		}
+	};
 
 	useEffect(() => {
 		dispatch(startGetSchedule());
@@ -65,21 +131,6 @@ export const AuthenticatedNavigator = () => {
 		};
 	}, []);
 
-	const getRecommendation = async () => {
-		const { data } = await clientAxios("/expert-recommendation");
-		Notifications.scheduleNotificationAsync({
-			content: {
-				title: "Consejo del día:",
-				body: data.recommendation,
-			},
-			trigger: {
-				hour: 10,
-				minute: 0,
-				repeats: true,
-			},
-		});
-	};
-
 	useEffect(() => {
 		const setDay = async () => {
 			// await AsyncStorage.removeItem("dayOfDate");
@@ -106,6 +157,14 @@ export const AuthenticatedNavigator = () => {
 
 		setDay();
 	}, []);
+
+	useEffect(() => {
+		if (schedule.length) {
+			schedule.forEach(({ day_food_id, meal_time }) => {
+				getReminder(day_food_id, meal_time);
+			});
+		}
+	}, [schedule]);
 
 	return (
 		<>

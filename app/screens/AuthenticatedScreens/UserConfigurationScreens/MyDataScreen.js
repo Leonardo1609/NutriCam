@@ -38,7 +38,7 @@ export const MyDataScreen = () => {
 				</View>
 			)}
 			<EnterUserDataForm submitFn={submit} buttonText="Guardar">
-				{userInformation?.profile && (
+				{userInformation?.profile?.profile_have_caloric_plan && (
 					<>
 						<Text style={styles.changeProfileDataMessage}>
 							{changeProfileDateMessage}

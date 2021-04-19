@@ -3,6 +3,16 @@ import { colors } from "../consts/colors";
 
 export const daysFirstLetter = ["L", "M", "M", "J", "V", "S", "D"];
 
+const aComer = "¡A comer!";
+
+export const reminderMessages = [
+	`${aComer} Tu desayuno te espera`,
+	`${aComer} Tu media mañana te espera`,
+	`${aComer} Tu almuerzo te espera`,
+	`${aComer} Tu media tarde te espera`,
+	`${aComer} Tu cena te espera`,
+];
+
 export const icons = [
 	{
 		iconName: "cerveza",
@@ -21,7 +31,7 @@ export const icons = [
 	},
 	{
 		iconName: "pan",
-		foodCalories: 110,
+		foodCalories: 95,
 		image: "bread.png",
 	},
 ];
@@ -124,5 +134,17 @@ export const setTargetMessage = (status) => {
 			message: "Has excedido tus calorías diarias",
 			color: "red",
 		};
+	}
+};
+
+export const getPartOfHour = (hoursAndMinuts, part) => {
+	if (part === "hours") {
+		const hours = Number(hoursAndMinuts.slice(0, 2));
+		return hours;
+	}
+
+	if (part === "minutes") {
+		const minuts = Number(hoursAndMinuts.slice(3, 6));
+		return minuts;
 	}
 };

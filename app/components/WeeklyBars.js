@@ -57,7 +57,8 @@ export const WeeklyBars = ({ weekDay }) => {
 		if (
 			parserDateToLocale(
 				userInformation?.profile?.profile_initial_date_caloric_plan
-			) > parserDateToLocale(dayCalories.weekday)
+			) > parserDateToLocale(dayCalories.weekday) &&
+			dayCalories.calories
 		) {
 			return Alert.alert(
 				"Antes de la actualización de datos",

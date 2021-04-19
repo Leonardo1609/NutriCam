@@ -35,7 +35,7 @@ export const getUser = (loading = true) => {
 			dispatch(setUserInformation(data));
 			loading && dispatch(loadingUserInfo(false));
 		} catch (e) {
-			console.log(e.response);
+			console.log("getUser", e.response);
 			dispatch(logoutUser());
 			dispatch(loadingUserInfo(false));
 		}
@@ -63,7 +63,7 @@ export const startCreateUser = () => {
 			dispatch(getUser());
 			dispatch(authenticateUserCreated());
 		} catch (e) {
-			console.log(e.response);
+			console.log("startCreateUser", e.response);
 		}
 	};
 };
@@ -82,7 +82,7 @@ export const startLoginUser = (email, password) => {
 			dispatch(authenticateUserLogged());
 		} catch (e) {
 			dispatch(setMessageWarning(e.response.data.msg));
-			console.log(e.response);
+			console.log("startLoginUser", e.response);
 		}
 	};
 };
@@ -156,7 +156,7 @@ export const startUnsubscribeNutritionalPlan = (fn = null) => {
 			dispatch(setMessageSuccess(data.msg));
 			if (fn) fn();
 			setTimeout(() => {
-				dispatch(setMessageSuccess(null));
+				dispatch(setMessageWarning(null));
 			}, 2000);
 		} catch (e) {
 			dispatch(setMessageWarning(e.response.data.msg));

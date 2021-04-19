@@ -28,10 +28,14 @@ export const startSendImage = (image, fn) => {
 			dispatch(setPosibleOptions(data.recognized_foods));
 			if (fn) fn();
 		} catch (e) {
-			console.log(e);
 			console.log(e.response);
 		}
 	};
+};
+
+export const getFoodId = async (foodName) => {
+	const { data } = await clientAxios.get(`/food-id/${foodName}`);
+	return { foodId: data.food_id };
 };
 
 export const setFoodImage = (image) => ({

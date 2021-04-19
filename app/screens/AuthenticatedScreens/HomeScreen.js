@@ -27,7 +27,7 @@ export const HomeScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
 
 	const { userInformation } = useSelector((state) => state.auth);
-	const { messageSuccess } = useSelector((state) => state.ui);
+	const { messageWarning } = useSelector((state) => state.ui);
 	const { foodRegisters, dateOfRegister } = useSelector(
 		(state) => state.nutritionSummary
 	);
@@ -40,8 +40,9 @@ export const HomeScreen = ({ navigation }) => {
 
 	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 
-	const filterFoodsPerDayFoodId = (foods, filterId) => {
-		return foods?.filter((food) => food.day_food_id === filterId);
+	const filterFoodsPerDayFoodId = (foods = [], filterId) => {
+
+		return foods.filter((food) => food.day_food_id === filterId);
 	};
 
 	const caloriesRecommendationsPerDayFood = userInformation?.profile
@@ -84,8 +85,8 @@ export const HomeScreen = ({ navigation }) => {
 
 	return (
 		<View style={styles.screen}>
-			{messageSuccess && (
-				<AlertMessage type="warning" message={messageSuccess} />
+			{messageWarning && (
+				<AlertMessage type="warning" message={messageWarning} />
 			)}
 			{userInformation && (
 				<>

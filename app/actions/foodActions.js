@@ -51,8 +51,7 @@ export const startGetFoodInformation = (
 
 			if (fn) fn();
 		} catch (e) {
-			console.log(e);
-			console.log(e.response);
+			console.log('startGetOwnFoodInformation', e.response);
 		}
 	};
 };

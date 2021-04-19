@@ -14,20 +14,20 @@ from os import path
 def DecodePredict(pos):
     switcher = {
         0: "Aguadito de pollo",
-        1: "Aji de pollo y arroz",
+        1: "Ají de pollo y arroz",
         2: "Almendras",
-        3: "Anticucho",
+        3: "Anticucho con papa",
         4: "Arroz chaufa de pollo",
         5: "Arroz con leche",
         6: "Arroz con pollo",
         7: "Causa rellena",
         8: "Cebiche de pescado",
-        9: "Chanfainita",
+        9: "Chanfainita con arroz",
         10: "Choclo con queso",
         11: "Granadilla",
         12: "Lomo saltado con arroz",
         13: "Maní",
-        14: "Manzana",
+        14: "Manzana delicia roja",
         15: "Mazamorra morada",
         16: "Pan con chicharron",
         17: "Pan con pollo",
@@ -37,7 +37,7 @@ def DecodePredict(pos):
         21: "Pecanas",
         22: "Pistachos",
         23: "Pizza",
-        24: "Plátano",
+        24: "Plátano de seda",
         25: "Pollo a la brasa con papas fritas",
         26: "Pollo broaster con papas fritas",
         27: "Sandía",
@@ -45,10 +45,10 @@ def DecodePredict(pos):
         29: "Tacacho con cecina",
         30: "Tallarines rojos con pollo",
         31: "Tallarines saltados con pollo",
-        32: "Tallarines verdes con bistec",
+        32: "Tallarines verdes con churrasco",
         33: "Tamal de pollo",
         34: "Triple",
-        35: "Uva verde"
+        35: "Uva italia"
     }
     return switcher.get(pos,"Invalid")
 

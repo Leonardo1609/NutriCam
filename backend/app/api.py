@@ -1,6 +1,6 @@
 from flask_restful import Api
 from .resources.user import RegisterUser, UserProfile, LoginUser, ProfileInformation, UserExists, ChangeEmail, ChangePassword, UnsubscribeCaloricPlan, UpdateProfile, SendRecoveryCode, SuccessCode, RestorePassword, YesterdayFullfiled, WeekFullfield
-from .resources.food import FoodSearch, FoodInformation, CreateFood, RegistFood, DeleteFoodRegist, FoodRegistersPerDay, NutritionSummaryPerDay, WeeklyCalories, OwnFoods, UpdateOwnFood, RemoveOwnFood, FoodMeasureUnits, OwnFoodInformation, ProcessImageToRecognition
+from .resources.food import FoodSearch, FoodInformation, CreateFood, RegistFood, DeleteFoodRegist, FoodRegistersPerDay, NutritionSummaryPerDay, WeeklyCalories, OwnFoods, UpdateOwnFood, RemoveOwnFood, FoodMeasureUnits, OwnFoodInformation, ProcessImageToRecognition, FoodIdByName
 from .resources.review_rating import ReviewRatingCrud
 from .resources.expert_recomendation import R_ExpertRecommendation
 from .resources.schedule import R_Schedule, R_GetSchedule
@@ -17,6 +17,7 @@ api.add_resource( ProfileInformation, '/information' )
 api.add_resource( UnsubscribeCaloricPlan, '/unsubscribe-caloric-plan' )
 api.add_resource( FoodSearch, '/search/<string:food_input>' )
 api.add_resource( FoodInformation, '/food/<int:food_id>/<int:measure_unit_id>' )
+api.add_resource( FoodIdByName, '/food-id/<string:food_name>'  )
 api.add_resource( OwnFoodInformation, '/own-food/<int:food_id>' )
 api.add_resource( FoodMeasureUnits, '/measure-units/<int:food_id>' )
 api.add_resource( CreateFood, '/create-food' )

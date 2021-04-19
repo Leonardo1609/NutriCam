@@ -243,3 +243,15 @@ class ProcessImageToRecognition( Resource ):
         except:
             os.remove(path)
             return { 'msg': 'Ha ocurrido un error' }, 500
+
+class FoodIdByName( Resource ):
+    @jwt_required()
+    def get(self, food_name):
+        try:
+            food_id = Food.get_food_id_by_name( food_name )
+            if not food_id:
+                return { 'message': 'Comida no encontrada' }, 404
+            return { 'food_id': food_id }
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+

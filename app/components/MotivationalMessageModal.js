@@ -105,7 +105,7 @@ export const MotivationalMessageModal = () => {
 					setShowMotivationalModal(false);
 				}
 			} catch (e) {
-				console.log(e);
+				console.log(e.response);
 				setShowMotivationalModal(false);
 			}
 		};
@@ -145,7 +145,7 @@ export const MotivationalMessageModal = () => {
 					yesterdayFullfiled();
 				}
 			} catch (e) {
-				console.log(e);
+				console.log(e.response);
 				setShowMotivationalModal(false);
 			}
 		};
@@ -155,7 +155,9 @@ export const MotivationalMessageModal = () => {
 		// 	await AsyncStorage.removeItem("scheduledWeekday");
 		// })();
 
-		weekFullfiled();
+		if (userInformation?.profile?.profile_have_caloric_plan) {
+			weekFullfiled();
+		}
 	}, []);
 
 	return (
