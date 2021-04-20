@@ -73,13 +73,6 @@ export const MotivationalMessageModal = () => {
 
 					console.log("scheduleWeekday in diary", scheduledWeekday);
 
-					// const temp = parserDateToLocale(formatDate(new Date())); // today but without hours
-					// temp.setDate(temp.getDate() + 1);
-
-					// console.log(
-					// 	temp , parserAndFormatDateToLocale(scheduleDiaryDay)
-					// );
-
 					if (
 						(today >
 							parserAndFormatDateToLocale(scheduleDiaryDay) &&
@@ -149,11 +142,6 @@ export const MotivationalMessageModal = () => {
 				setShowMotivationalModal(false);
 			}
 		};
-
-		// (async () => {
-		// 	await AsyncStorage.removeItem("scheduleDiaryDay");
-		// 	await AsyncStorage.removeItem("scheduledWeekday");
-		// })();
 
 		if (userInformation?.profile?.profile_have_caloric_plan) {
 			weekFullfiled();

@@ -8,11 +8,11 @@ export const createAccountValidation = ({
 
 	if (username.trim().length < 6 || username.trim().length > 15) {
 		errors["username"] =
-			"El campo usuario debe tener entre 6 y 15 caracteres";
+			"El campo nombre de usuario debe tener entre 6 y 15 caracteres";
 	}
 
 	if (email.trim() === "") {
-		errors["email"] = "El campo email es obligatorio";
+		errors["email"] = "El campo correo es obligatorio";
 	}
 
 	const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;

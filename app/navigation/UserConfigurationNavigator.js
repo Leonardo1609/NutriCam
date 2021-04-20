@@ -16,6 +16,7 @@ import { ChangeEmailForm } from "../screens/AuthenticatedScreens/UserConfigurati
 import { ScheduleManagement } from "../screens/AuthenticatedScreens/UserConfigurationScreens/ScheduleManagement";
 import { ChangePasswordFormScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/ChangePasswordFormScreen";
 import { MyDataScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MyDataScreen";
+import { AdministrationNavigator } from "./AdministrationNavigator";
 
 const Stack = createStackNavigator();
 
@@ -123,6 +124,13 @@ export const UserConfigurationNavigator = () => {
 					title: "Reseñar/Calificar",
 				}}
 				component={ReviewRatingScreen}
+			/>
+			<Stack.Screen
+				name="AdministrationPanel"
+				options={{
+					title: "Panel de Administrador",
+				}}
+				component={AdministrationNavigator}
 			/>
 		</Stack.Navigator>
 	);

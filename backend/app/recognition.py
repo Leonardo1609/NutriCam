@@ -58,11 +58,8 @@ def predict(path):
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
     preds = model.predict(x)
-    # pick3(preds, path)
     return pick3(preds)
-    # print(" ")
 
-# def pick3 (tup, path):
 def pick3(tup):
     lst=[]
     lst = tup[0]
@@ -85,8 +82,6 @@ def pick3(tup):
     
     print("Las predicciones de " + "here" + " son: ")   
     return[ nombres[i] for i in range(len(values)) ]
-    # for i in range(len(values)):
-    #     print("El " + position(i) + " resultado es: " + nombres[i] + " con un porcentaje de " + str(margen[i]) + "%")
 
 def position(pos):
     switcher = {

@@ -1,12 +1,14 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../actions/authActions";
 
 export const UserConfigurationMainScreen = () => {
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
+	const { userInformation } = useSelector((state) => state.auth);
+
 	const routes = [
 		{
 			name: "Mis datos",
@@ -55,6 +57,20 @@ export const UserConfigurationMainScreen = () => {
 					</View>
 				</TouchableOpacity>
 			))}
+			{userInformation?.user?.user_role === 1 && (
+				<TouchableOpacity
+					activeOpacity={0.5}
+					onPress={() => {
+						navigateFn("AdministrationPanel");
+					}}
+				>
+					<View style={styles.routeContainer}>
+						<Text style={styles.routeText}>
+							Panel de Administrador
+						</Text>
+					</View>
+				</TouchableOpacity>
+			)}
 
 			<TouchableOpacity activeOpacity={0.5} onPress={logout}>
 				<View style={styles.logoutContainer}>
