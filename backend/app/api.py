@@ -1,7 +1,7 @@
 from flask_restful import Api
 from .resources.review_rating import ReviewRatingCrud
 from .resources.schedule import R_Schedule, R_GetSchedule
-from .resources.administrator import Statistics
+from .resources.administrator import Statistics, FirstDate
 from .resources.expert_recomendation import R_ExpertRecommendation
 from .resources.user import RegisterUser, UserProfile, LoginUser, ProfileInformation, UserExists, ChangeEmail, ChangePassword, UnsubscribeCaloricPlan, UpdateProfile, SendRecoveryCode, SuccessCode, RestorePassword, YesterdayFullfiled, WeekFullfield
 from .resources.food import FoodSearch, FoodInformation, CreateFood, RegistFood, DeleteFoodRegist, FoodRegistersPerDay, NutritionSummaryPerDay, WeeklyCalories, OwnFoods, UpdateOwnFood, RemoveOwnFood, FoodMeasureUnits, OwnFoodInformation, ProcessImageToRecognition, FoodIdByName
@@ -42,3 +42,4 @@ api.add_resource( RestorePassword, '/restore-password/<string:email>' )
 api.add_resource( YesterdayFullfiled, '/yesterday-fullfiled' )
 api.add_resource( WeekFullfield, '/week-fullfiled' )
 api.add_resource( Statistics, '/statistics' )
+api.add_resource( FirstDate, '/first-date' )

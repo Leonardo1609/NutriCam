@@ -1,4 +1,5 @@
 from ..db import cursor
+
 class Administration:
     @classmethod
     def is_administrator(cls, user_id):
@@ -36,7 +37,19 @@ class Administration:
 
         first_user_date = cursor.execute( first_user_date_query ).fetchone()[0]
 
-        query = """
+        query_without_dates = """
+        SELECT COUNT(*) 
+        FROM profile p
+        INNER JOIN users u ON u.user_id = p.user_id 
+        WHERE profile_have_caloric_plan = 1 AND u.created_at BETWEEN ? AND GETDATE() 
+        UNION
+        SELECT COUNT(*) 
+        from profile p
+        INNER JOIN users u ON u.user_id = p.user_id 
+        WHERE profile_have_caloric_plan = 0 AND u.created_at BETWEEN ? AND GETDATE();
+        """
+
+        query_with_dates = """
         SELECT COUNT(*) 
         FROM profile p
         INNER JOIN users u ON u.user_id = p.user_id 
@@ -45,11 +58,11 @@ class Administration:
         SELECT COUNT(*) 
         from profile p
         INNER JOIN users u ON u.user_id = p.user_id 
-        WHERE profile_have_caloric_plan = 0 AND u.created_at BETWEEN ? AND ?;
+        WHERE profile_have_caloric_plan = 0 AND u.created_at BETWEEN ? AND ?; 
         """
         if not initial_date and not last_date:
-            rows = cursor.execute(query, ( first_user_date, 'GETDATE()', first_user_date, 'GETDATE()' )).fetchall()
+            rows = cursor.execute(query_without_dates, ( first_user_date, first_user_date)).fetchall()
+            return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[1][0]}
         else:
-            rows = cursor.execute(query, ( initial_date, last_date, initial_date, last_date )).fetchall()
-        print(rows)
-        return 1
+            rows = cursor.execute(query_with_dates, ( initial_date, last_date, initial_date, last_date )).fetchall()
+            return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[1][0]} 

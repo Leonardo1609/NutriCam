@@ -1,6 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect } from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { useSelector } from "react-redux";
 import { AlertMessage } from "../components/AlertMessage";

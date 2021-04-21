@@ -5,7 +5,6 @@ import {
 	TouchableWithoutFeedback,
 	Text,
 	Keyboard,
-	Button,
 } from "react-native";
 import { InputForm } from "../../components/InputForm";
 import { useForm } from "../../hooks/useForm";
@@ -22,10 +21,10 @@ export const LoginForm = () => {
 	const { messageWarning } = useSelector((state) => state.ui);
 
 	const initialValues = {
-		email: "leonardo246@gmail.com",
-		password: "23456789",
+		email: "leonardocornejoruiz@gmail.com",
+		password: "12345678",
 	};
-	//
+
 	// const initialValues = {
 	// 	email: "",
 	// 	password: "",

@@ -72,10 +72,10 @@ export const saveIcon = async (iconName) => {
 	await AsyncStorage.setItem("icon", JSON.stringify(icon));
 };
 
-export const totalCaloriesConsumed = (foods) => {
+export const totalCaloriesConsumed = (foods = []) => {
 	const reducer = (acc, cur) => acc + cur.calories;
 
-	if (foods.length) {
+	if (foods.length > 0) {
 		return foods.reduce(reducer, 0);
 	}
 

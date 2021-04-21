@@ -74,7 +74,11 @@ export const UserConfigurationMainScreen = () => {
 
 			<TouchableOpacity activeOpacity={0.5} onPress={logout}>
 				<View style={styles.logoutContainer}>
-					<Text style={styles.routeText}>Cerrar sesión</Text>
+					<Text
+						style={{ ...styles.routeText, ...styles.routeTextExit }}
+					>
+						Cerrar sesión
+					</Text>
 				</View>
 			</TouchableOpacity>
 		</View>
@@ -101,5 +105,8 @@ const styles = StyleSheet.create({
 		backgroundColor: "red",
 		borderBottomWidth: 1,
 		borderBottomColor: "black",
+	},
+	routeTextExit: {
+		color: "white",
 	},
 });

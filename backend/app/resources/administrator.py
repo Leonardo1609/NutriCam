@@ -13,8 +13,17 @@ class Statistics( Resource ):
         try:
             user_id = get_jwt_identity()
             if not Administration.is_administrator( user_id ):
-                return { 'msg': 'No cumnple con los privilegios' }, 400
-            resp = Administration.users_quantity_with_and_without_caloric_plan(  )
+                return { 'msg': 'No cumple con los privilegios' }, 400
+            resp = Administration.users_quantity_with_and_without_caloric_plan( data['initial_date'], data['last_date'] )
             return { 'quantity_users': resp }
+        except:
+            return { 'msg': 'Ha ocurrido un error' }, 500
+
+class FirstDate( Resource ):
+    @jwt_required()
+    def get( self ):
+        try:
+            first_date = Administration.first_user_created_at_date()
+            return { 'first_date': str(first_date) }
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500

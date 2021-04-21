@@ -2,6 +2,7 @@ import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { HomeScreen } from "../screens/AuthenticatedScreens/HomeScreen";
 import { colors } from "../consts/colors";
+import { StatisticsScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/StatisticsScreen";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -21,7 +22,7 @@ export const AdministrationNavigator = () => {
 		>
 			<Tab.Screen
 				name="Statistics"
-				component={HomeScreen}
+				component={StatisticsScreen}
 				options={{
 					tabBarLabel: "Estadísticas",
 				}}
@@ -32,9 +33,9 @@ export const AdministrationNavigator = () => {
 				options={{ tabBarLabel: "Reseñas" }}
 			/>
 			<Tab.Screen
-				name="Calculator"
+				name="Users"
 				component={HomeScreen}
-				options={{ tabBarLabel: "Calculadora" }}
+				options={{ tabBarLabel: "Usuarios" }}
 			/>
 		</Tab.Navigator>
 	);

@@ -9,6 +9,7 @@ import { reviewRatingReducer } from "../reducers/reviewRatingReducer";
 import { restorePasswordProccesReducer } from "../reducers/restorePasswordProcessReducer";
 import { scheduleReducer } from "../reducers/scheduleReducer";
 import { foodRecognitionReducer } from "../reducers/foodRecognitionReducer";
+import {administratorReducer} from "../reducers/administratorReducer";
 
 const rootReducer = combineReducers({
 	createAccountProcess: createAccountProcessReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
 	restorePasswordProcess: restorePasswordProccesReducer,
 	schedule: scheduleReducer,
 	foodRecognition: foodRecognitionReducer,
+	administrator: administratorReducer
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
