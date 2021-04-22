@@ -18,13 +18,13 @@ export const useFilterDate = (label, minDate = null) => {
 	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 	const [dateToShow, setDateToShow] = useState(null);
 	const [dateToSend, setDateToSend] = useState(null);
-	const [dateToPicker, setDateToPicker] = useState();
+	const [dateToPicker, setDateToPicker] = useState(new Date());
 
 	const confirmDate = (date) => {
 		setShowDateTimePicker(false);
-		setDateToPicker(date);
 		setDateToShow(moment(date).format("L"));
 		setDateToSend(formatDate(date));
+		setDateToPicker(date);
 	};
 
 	const FilterDatePicker = () => (
@@ -50,11 +50,13 @@ export const useFilterDate = (label, minDate = null) => {
 				</TouchableNativeFeedback>
 			</View>
 			<DateTimePickerModal
+				mode="date"
 				value={dateToPicker}
 				isVisible={showDateTimePicker}
 				onConfirm={confirmDate}
 				onCancel={setShowDateTimePicker.bind(this, false)}
 				minimumDate={minDate}
+				locale="es_ES"
 				maximumDate={new Date()}
 			/>
 		</View>

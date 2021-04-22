@@ -68,7 +68,6 @@ export const AuthenticatedNavigator = () => {
 
 	const getReminder = async (day_food_id, meal_time) => {
 		const reminder = await AsyncStorage.getItem(`reminder ${day_food_id}`);
-
 		if (!reminder && day_food_id && meal_time) {
 			const identifier = await setReminder(day_food_id, meal_time);
 			await AsyncStorage.setItem(
