@@ -270,6 +270,14 @@ export const AuthenticatedNavigator = () => {
 					<Tab.Screen
 						name="Yo"
 						component={UserConfigurationNavigator}
+						listeners={({ navigation, route }) => ({
+							tabPress: (e) => {
+								if (route.state) {
+									e.preventDefault();
+									navigation.navigate("MyAccount");
+								}
+							},
+						})}
 					/>
 				</Tab.Navigator>
 			</NavigationContainer>

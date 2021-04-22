@@ -62,7 +62,9 @@ class Administration:
         """
         if not initial_date and not last_date:
             rows = cursor.execute(query_without_dates, ( first_user_date, first_user_date)).fetchall()
-            return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[1][0]}
+            if len(rows) > 1:
+                return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[1][0]}
+            return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[0][0]}
         else:
             rows = cursor.execute(query_with_dates, ( initial_date, last_date, initial_date, last_date )).fetchall()
             return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[1][0]} 
