@@ -19,7 +19,7 @@ export const startGetUsersQuantity = (initialDate = null, lastDate = null) => {
 				last_date: lastDate,
 			};
 
-			const { data } = await clientAxios.get("/statistics", dataToSend);
+			const { data } = await clientAxios.post("/statistics", dataToSend);
 
 			const usersQuantity = {
 				withCaloricPlan: data.quantity_users.users_with_caloric_plan,

@@ -8,7 +8,7 @@ class Statistics( Resource ):
     parser.add_argument('last_date', type=str)
 
     @jwt_required()
-    def get( self ):
+    def post( self ):
         data = self.parser.parse_args()
         try:
             user_id = get_jwt_identity()

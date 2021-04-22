@@ -17,10 +17,15 @@ import { MainButton } from "./MainButton";
 import { userDataValidation } from "../validations/userDataValidation";
 import { useSelector } from "react-redux";
 import { ErrorText } from "./ErrorText";
+import {
+	activityLevels,
+	formatDate,
+	genres,
+	parserDateToLocale,
+} from "../helpers/helpers";
 
 import moment from "moment";
 import "moment/locale/es";
-import { activityLevels, genres, parserDateToLocale } from "../helpers/helpers";
 moment.locale("es");
 
 const errorColor = (error) => (error ? "red" : "black");
@@ -59,7 +64,8 @@ export const EnterUserDataForm = ({ submitFn, buttonText, ...props }) => {
 
 	const confirmDate = (date) => {
 		setShowDateTimePicker(false);
-		setBirthdayToSave(JSON.stringify(date).slice(1, 11));
+		// setBirthdayToSave(JSON.stringify(date).slice(1, 11));
+		setBirthdayToShow(formatDate(date));
 		setBirthdayToShow(moment(date).format("L"));
 		setBirthdayToPicker(date);
 	};

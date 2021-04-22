@@ -67,4 +67,6 @@ class Administration:
             return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[0][0]}
         else:
             rows = cursor.execute(query_with_dates, ( initial_date, last_date, initial_date, last_date )).fetchall()
-            return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[1][0]} 
+            if len(rows) > 1:
+                return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[1][0]}
+            return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[0][0]} 
