@@ -60,6 +60,7 @@ class Administration:
         INNER JOIN users u ON u.user_id = p.user_id 
         WHERE profile_have_caloric_plan = 0 AND u.created_at BETWEEN ? AND ?; 
         """
+
         if not initial_date and not last_date:
             rows = cursor.execute(query_without_dates, ( first_user_date, first_user_date)).fetchall()
             if len(rows) > 1:

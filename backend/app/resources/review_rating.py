@@ -2,6 +2,7 @@ from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..models.review_rating import ReviewRating
 from ..models.user import User
+from ..models.administrator import Administration
 
 class ReviewRatingCrud( Resource ):
     parser = reqparse.RequestParser()
@@ -58,4 +59,38 @@ class ReviewRatingCrud( Resource ):
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500
 
+class QuantityPerRating( Resource ):
+    parser = reqparse.RequestParser() 
+    parser.add_argument('initial_date', type=str)
+    parser.add_argument('last_date', type=str)
 
+    @jwt_required()
+    def post( self ):
+        data = self.parser.parse_args()
+        try:
+            user_id = get_jwt_identity() 
+            if not Administration.is_administrator( user_id ):
+                return { 'msg': 'No cumple con los privilegios' }, 400
+            reviews_ratings_per_rating = ReviewRating.quantity_reviews_ratings_per_rating( **data )
+            return { 'quantity_reviews_ratings_per_rating': reviews_ratings_per_rating },200
+        except:
+            return { "msg" : 'Ha ocurrido un error' }, 500
+
+
+class ReviewsRatings( Resource ):
+    parser = reqparse.RequestParser() 
+    parser.add_argument( 'rating', type=int )
+    parser.add_argument('initial_date', type=str)
+    parser.add_argument('last_date', type=str)
+
+    @jwt_required()
+    def post( self ):
+        data = self.parser.parse_args()
+        try:
+            user_id = get_jwt_identity() 
+            if not Administration.is_administrator( user_id ):
+                return { 'msg': 'No cumple con los privilegios' }, 400
+            reviews_ratings = ReviewRating.reviews_per_rating( **data )
+            return { 'reviews_ratings': reviews_ratings }, 200
+        except:
+            return { "msg" : 'Ha ocurrido un error' }, 500
