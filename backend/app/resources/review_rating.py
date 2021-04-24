@@ -94,3 +94,16 @@ class ReviewsRatings( Resource ):
             return { 'reviews_ratings': reviews_ratings }, 200
         except:
             return { "msg" : 'Ha ocurrido un error' }, 500
+
+class FirstReviewDate( Resource ):
+    @jwt_required()
+    def get( self ):
+        try:
+            user_id = get_jwt_identity() 
+            if not Administration.is_administrator( user_id ):
+                return { 'msg': 'No cumple con los privilegios' }, 400
+            date = ReviewRating.first_review_date()
+            return { 'first_review_date': str(date) }, 200
+        except:
+            return { "msg" : 'Ha ocurrido un error' }, 500
+

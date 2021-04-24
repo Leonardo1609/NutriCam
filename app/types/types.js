@@ -42,5 +42,8 @@ export const types = {
 	setPosibleOptions: "[FoodRecognition] Set Posible Options",
 
 	setFirstDate: "[Administrator] Set First Date",
+	setFirstReviewDate: "[Administrator] Set First Review Date",
 	setQuantityUsers: "[Administrator] Set Quantity Users",
+	setQuantityReviewsPerRating:
+		"[Administrator] Set Quantity Reviews Per Rating",
 };

@@ -31,10 +31,60 @@ export const startGetUsersQuantity = (initialDate = null, lastDate = null) => {
 			};
 			dispatch(setUsersQuantity(usersQuantity));
 		} catch (e) {
+			console.log(e.response);
+		}
+	};
+};
+
+export const startGetReviewsPerRating = (initialDate, lastDate) => {
+	return async (dispatch) => {
+		try {
+			const dataToSend = {
+				initial_date: initialDate,
+				last_date: lastDate,
+			};
+
+			const { data } = await clientAxios.post(
+				"/quantity-rating",
+				dataToSend
+			);
+			let reviewsPerRating = [];
+			for (let i = 1; i <= 5; i++) {
+				const ratingQuantity = data.quantity_reviews_ratings_per_rating.find(
+					(item) => item.rating === i
+				);
+
+				if (ratingQuantity) {
+					reviewsPerRating.push(ratingQuantity);
+				} else {
+					reviewsPerRating.push({
+						rating: i,
+						quantity: 0,
+					});
+				}
+			}
+			dispatch(setQuantityReviewsPerRating(reviewsPerRating));
+		} catch (e) {
+			console.log(e.response);
+		}
+	};
+};
+
+export const startGetFirstReviewDate = () => {
+	return async (dispatch) => {
+		try {
+			const { data } = await clientAxios.get("/first-review-date");
+			dispatch(setFirstReviewDate(data.first_review_date));
+		} catch (e) {
 			console.log(e);
 		}
 	};
 };
+
+export const setQuantityReviewsPerRating = (data) => ({
+	type: types.setQuantityReviewsPerRating,
+	payload: data,
+});
 
 export const setUsersQuantity = (usersQuantity) => ({
 	type: types.setQuantityUsers,
@@ -43,5 +93,10 @@ export const setUsersQuantity = (usersQuantity) => ({
 
 export const setFirstDate = (date) => ({
 	type: types.setFirstDate,
+	payload: date,
+});
+
+export const setFirstReviewDate = (date) => ({
+	type: types.setFirstReviewDate,
 	payload: date,
 });

@@ -139,3 +139,13 @@ class ReviewRating :
             rows = cursor.execute( query, ( initial_date, last_date, rating ) ).fetchall()
         reviews_ratings = [ cls.review_rating_to_json( *row ) for row in rows ]
         return reviews_ratings
+
+    @classmethod
+    def first_review_date( cls ):
+        query = """
+   	SELECT TOP 1 review_rating_updated_date 
+        FROM review_rating 
+        ORDER BY review_rating_updated_date ASC
+        """
+        date = cursor.execute( query ).fetchone()[0]
+        return date

@@ -1,5 +1,5 @@
 from flask_restful import Api
-from .resources.review_rating import ReviewRatingCrud, QuantityPerRating, ReviewsRatings
+from .resources.review_rating import ReviewRatingCrud, QuantityPerRating, ReviewsRatings, FirstReviewDate
 from .resources.schedule import R_Schedule, R_GetSchedule
 from .resources.administrator import Statistics, FirstDate
 from .resources.expert_recomendation import R_ExpertRecommendation
@@ -45,3 +45,4 @@ api.add_resource( Statistics, '/statistics' )
 api.add_resource( FirstDate, '/first-date' )
 api.add_resource( QuantityPerRating, '/quantity-rating' )
 api.add_resource( ReviewsRatings, '/reviews-per-rating' )
+api.add_resource( FirstReviewDate, '/first-review-date' )
