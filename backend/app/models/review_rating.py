@@ -134,7 +134,7 @@ class ReviewRating :
             FROM review_rating rr
             INNER JOIN profile p ON rr.profile_id = p.profile_id
             INNER JOIN users u ON u.user_id = p.user_id
-            WHERE review_rating_updated_date BETWEEN ? AND ? AND rating = ?;
+            WHERE rr.review_rating_updated_date BETWEEN ? AND ? AND rr.rating = ?;
             """
             rows = cursor.execute( query, ( initial_date, last_date, rating ) ).fetchall()
         reviews_ratings = [ cls.review_rating_to_json( *row ) for row in rows ]

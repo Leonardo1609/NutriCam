@@ -3,8 +3,10 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../consts/colors";
+import { useNavigation } from "@react-navigation/native";
 
 export const ReviewBars = () => {
+	const navigation = useNavigation();
 	const { quantityReviewsPerRating } = useSelector(
 		(state) => state.administrator
 	);
@@ -32,13 +34,21 @@ export const ReviewBars = () => {
 			: 0 + "%";
 	};
 
+	const navToAllReviews = (stars) => {
+		navigation.navigate("AllReviews", { stars });
+	};
+
 	return (
 		<View style={styles.barsContainer}>
 			{quantityReviewsPerRating.length
 				? quantityReviewsPerRating.map((item) => (
-						<View key={item.rating} style={styles.row}>
-							<View style={styles.quantityBarContainer}>
-								<TouchableOpacity activeOpacity={0.6}>
+						<TouchableOpacity
+							onPress={() => navToAllReviews(item.rating)}
+							key={item.rating}
+							activeOpacity={0.6}
+						>
+							<View style={styles.row}>
+								<View style={styles.quantityBarContainer}>
 									<>
 										<View
 											style={{
@@ -57,12 +67,12 @@ export const ReviewBars = () => {
 											</Text>
 										</View>
 									</>
-								</TouchableOpacity>
+								</View>
+								<View style={styles.starsContainer}>
+									{setStars(item.rating).map((item) => item)}
+								</View>
 							</View>
-							<View style={styles.starsContainer}>
-								{setStars(item.rating).map((item) => item)}
-							</View>
-						</View>
+						</TouchableOpacity>
 				  ))
 				: null}
 		</View>

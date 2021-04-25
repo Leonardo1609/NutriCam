@@ -3,7 +3,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { HomeScreen } from "../screens/AuthenticatedScreens/HomeScreen";
 import { colors } from "../consts/colors";
 import { StatisticsScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/StatisticsScreen";
-import { ManageReviewsScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/ManageReviewsScreen";
+import { ManageReviewNavigator } from "./ManageReviewNavigator";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -30,7 +30,7 @@ export const AdministrationNavigator = () => {
 			/>
 			<Tab.Screen
 				name="Reviews"
-				component={ManageReviewsScreen}
+				component={ManageReviewNavigator}
 				options={{ tabBarLabel: "Reseñas" }}
 			/>
 			<Tab.Screen

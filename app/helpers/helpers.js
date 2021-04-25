@@ -43,6 +43,15 @@ export const activityLevels = new Map([
 	[4, "Intensa"],
 ]);
 
+export const filterReviews = [
+	"Todos los reviews",
+	"1 estrellas",
+	"2 estrellas",
+	"3 estrellas",
+	"4 estrellas",
+	"5 estrellas",
+];
+
 export const genres = new Map([
 	["M", "Masculino"],
 	["F", "Femenino"],

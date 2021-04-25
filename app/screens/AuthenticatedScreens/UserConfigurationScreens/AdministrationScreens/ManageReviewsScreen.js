@@ -3,16 +3,19 @@ import { StyleSheet, View, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	startGetFirstReviewDate,
-	startGetReviewsPerRating,
+	startGetQuantityReviewsPerRating,
 } from "../../../../actions/administratorActions";
 import { formatDate, parserDateToLocale } from "../../../../helpers/helpers";
 import { useFilterDate } from "../../../../hooks/useFilterDate";
-import { Ionicons } from "@expo/vector-icons";
 import { ReviewBars } from "../../../../components/ReviewBars";
 import { MainButton } from "../../../../components/MainButton";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "../../../../consts/colors";
 
 export const ManageReviewsScreen = () => {
-	const { dateFirstReview, quantityReviewsPerRating } = useSelector(
+	const navigation = useNavigation();
+	const { quantityReviewsPerRating, dateFirstReview } = useSelector(
 		(state) => state.administrator
 	);
 
@@ -38,20 +41,41 @@ export const ManageReviewsScreen = () => {
 	}, []);
 
 	useEffect(() => {
-		dispatch(startGetReviewsPerRating());
+		dispatch(startGetQuantityReviewsPerRating());
 	}, []);
 
 	useEffect(() => {
 		if (initialDate && !lastDate)
 			dispatch(
-				startGetReviewsPerRating(initialDate, formatDate(new Date()))
+				startGetQuantityReviewsPerRating(
+					initialDate,
+					formatDate(new Date())
+				)
 			);
 		if (!initialDate && lastDate)
-			dispatch(startGetReviewsPerRating(dateFirstReview, lastDate));
+			dispatch(
+				startGetQuantityReviewsPerRating(dateFirstReview, lastDate)
+			);
 		if (initialDate && lastDate)
-			dispatch(startGetReviewsPerRating(initialDate, lastDate));
-		if (!initialDate && !lastDate) dispatch(startGetReviewsPerRating());
+			dispatch(startGetQuantityReviewsPerRating(initialDate, lastDate));
+		if (!initialDate && !lastDate)
+			dispatch(startGetQuantityReviewsPerRating());
 	}, [initialDate, lastDate]);
+
+	const navToAllReviews = () => {
+		navigation.navigate("AllReviews", { stars: 0 });
+	};
+
+	const setAverage = () => {
+		const reducer = (acc, curr) => acc + curr.quantity;
+		const totalRatings = quantityReviewsPerRating.reduce(reducer, 0);
+		let weightRatings = 0;
+		quantityReviewsPerRating.forEach((item) => {
+			weightRatings += item.rating * item.quantity;
+		});
+
+		return weightRatings / totalRatings;
+	};
 
 	return (
 		<View style={styles.screen}>
@@ -63,10 +87,19 @@ export const ManageReviewsScreen = () => {
 					<LastDatePicker />
 				</View>
 			</View>
+			<View style={styles.averageContainer}>
+				<Text style={styles.averageText}>
+					Promedio: {setAverage()}{" "}
+				</Text>
+				<Ionicons name="ios-star" color={colors.green} size={36} />
+			</View>
 			<View style={styles.reviewBarsContainer}>
 				<ReviewBars />
 			</View>
-			<MainButton containerStyle={styles.buttonContainer}>
+			<MainButton
+				onPress={navToAllReviews}
+				containerStyle={styles.buttonContainer}
+			>
 				Ver todas las reseñas
 			</MainButton>
 		</View>
@@ -92,5 +125,15 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		marginVertical: 20,
+	},
+	averageContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginTop: 20,
+		justifyContent: "center",
+	},
+	averageText: {
+		fontSize: 24,
+		fontWeight: "bold",
 	},
 });

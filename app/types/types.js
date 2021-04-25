@@ -46,4 +46,5 @@ export const types = {
 	setQuantityUsers: "[Administrator] Set Quantity Users",
 	setQuantityReviewsPerRating:
 		"[Administrator] Set Quantity Reviews Per Rating",
+	setReviewsPerRating: "[Administrator] Set Reviews Per Rating",
 };
