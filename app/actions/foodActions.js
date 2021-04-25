@@ -1,4 +1,5 @@
 import { clientAxios } from "../axios/clientAxios";
+import { errorMessageLogoutAction } from "../helpers/helpers";
 import { types } from "../types/types";
 import { setMessageSuccess, setMessageWarning } from "./uiActions";
 
@@ -9,6 +10,7 @@ export const startSearchFood = (foodInput) => {
 			dispatch(setFoodsFound(data.foods_found, foodInput));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -32,6 +34,7 @@ export const startGetFoodMeasureUnits = (foodId) => {
 			dispatch(setMeasureUnits(data.measure_units));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -51,7 +54,8 @@ export const startGetFoodInformation = (
 
 			if (fn) fn();
 		} catch (e) {
-			console.log('startGetOwnFoodInformation', e.response);
+			console.log("startGetOwnFoodInformation", e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -64,6 +68,7 @@ export const startGetOwnFoodInformation = (foodId, fn = null) => {
 			if (fn) fn();
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -75,6 +80,7 @@ export const getOwnFoods = () => {
 			dispatch(setOwnFoods(data.own_foods));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -92,11 +98,15 @@ export const startCreateFood = (foodInfo, fn = null) => {
 				dispatch(setMessageSuccess(null));
 			}, 2000);
 		} catch (e) {
-			dispatch(setMessageWarning(e.response.data.msg));
-			setTimeout(() => {
-				dispatch(setMessageWarning(null));
-			}, 2000);
 			console.log(e.response);
+			if (e.response.status === 401) {
+				errorMessageLogoutAction(e.response, dispatch);
+			} else {
+				dispatch(setMessageWarning(e.response.data.msg));
+				setTimeout(() => {
+					dispatch(setMessageWarning(null));
+				}, 2000);
+			}
 		}
 	};
 };
@@ -115,11 +125,15 @@ export const startUpdateOwnFood = (foodId, foodInfo, fn = null) => {
 				dispatch(setMessageSuccess(null));
 			}, 2000);
 		} catch (e) {
-			dispatch(setMessageWarning(e.response.data.msg));
-			setTimeout(() => {
-				dispatch(setMessageWarning(null));
-			}, 2000);
 			console.log(e.response);
+			if (e.response.status === 401) {
+				errorMessageLogoutAction(e.response, dispatch);
+			} else {
+				dispatch(setMessageWarning(e.response.data.msg));
+				setTimeout(() => {
+					dispatch(setMessageWarning(null));
+				}, 2000);
+			}
 		}
 	};
 };
@@ -135,11 +149,15 @@ export const startRemoveOwnfood = (foodId, fn = null) => {
 				dispatch(setMessageSuccess(null));
 			}, 2000);
 		} catch (e) {
-			dispatch(setMessageWarning(e.response.data.msg));
-			setTimeout(() => {
-				dispatch(setMessageWarning(null));
-			}, 2000);
 			console.log(e.response);
+			if (e.response.status === 401) {
+				errorMessageLogoutAction(e.response, dispatch);
+			} else {
+				dispatch(setMessageWarning(e.response.data.msg));
+				setTimeout(() => {
+					dispatch(setMessageWarning(null));
+				}, 2000);
+			}
 		}
 	};
 };

@@ -1,6 +1,7 @@
 import { types } from "../types/types";
 import { clientAxios } from "../axios/clientAxios";
 import { setActiveFoodToRegist } from "./foodActions";
+import { errorMessageLogoutAction } from "../helpers/helpers";
 
 export const startGetFoodRegisters = () => {
 	return async (dispatch, getState) => {
@@ -12,9 +13,7 @@ export const startGetFoodRegisters = () => {
 			dispatch(setFoodRegisters(data.food_registers));
 		} catch (e) {
 			console.log(e.response);
-			dispatch({
-				type: types.logout,
-			});
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -51,6 +50,7 @@ export const startRegistFood = (
 			if (fn) fn();
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -63,6 +63,7 @@ export const startDeleteFoodRegister = (foodRegisterId) => {
 			dispatch(deleteFoodRegister(foodRegisterId));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -74,6 +75,7 @@ export const startGetWeeklyCalories = (date) => {
 			dispatch(setWeeklyCalories(data.weekly_calories));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -88,6 +90,7 @@ export const startGetNutritionSummary = () => {
 			dispatch(setNutritionSummary(data.summary));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };

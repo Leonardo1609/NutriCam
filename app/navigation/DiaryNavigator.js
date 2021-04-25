@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { HomeScreen } from "../screens/AuthenticatedScreens/HomeScreen";
 import { SearchFoodScreen } from "../screens/AuthenticatedScreens/SearchFoodScreen";
@@ -12,14 +13,25 @@ import { RegisterModal } from "../components/RegisterModal";
 import { PosibleOptionsScreen } from "../screens/AuthenticatedScreens/PosibleOptionsScreen";
 import { MotivationalMessageModal } from "../components/MotivationalMessageModal";
 import { DiarySummaryScreen } from "../screens/AuthenticatedScreens/DiarySummaryScreen";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const Stack = createStackNavigator();
 
 export const DiaryNavigator = () => {
 	const { activeFoodToRegist } = useSelector((state) => state.food);
+	const { loadingRecognition } = useSelector(
+		(state) => state.foodRecognition
+	);
 
 	return (
 		<>
+			<Spinner
+				color={colors.green}
+				visible={loadingRecognition}
+				textContent="Procesando..."
+				textStyle={styles.loadingText}
+				overlayColor="rgba(0,0,0, 0.6)"
+			/>
 			<MotivationalMessageModal />
 			<RegisterModal />
 			<Stack.Navigator
@@ -81,3 +93,12 @@ export const DiaryNavigator = () => {
 		</>
 	);
 };
+
+const styles = StyleSheet.create({
+	loadingText: {
+		color: colors.green,
+		fontSize: 30,
+		fontFamily: "poppins-bold",
+		textAlign: "center",
+	},
+});

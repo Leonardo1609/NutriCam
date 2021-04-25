@@ -1,6 +1,7 @@
 import { types } from "../types/types";
 import { clientAxios } from "../axios/clientAxios";
 import { setMessageSuccess } from "./uiActions";
+import { errorMessageLogoutAction } from "../helpers/helpers";
 
 export const startGetReviewRating = () => {
 	return async (dispatch) => {
@@ -9,6 +10,7 @@ export const startGetReviewRating = () => {
 			dispatch(setReviewRating(data.review_rating));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -38,6 +40,7 @@ export const startPostReviewRating = (rating, review) => {
 			}, 2000);
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -68,6 +71,7 @@ export const startModifyReviewRating = (review_rating_id, rating, review) => {
 			}, 2000);
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -83,6 +87,7 @@ export const startDeleteReviewRating = () => {
 			}, 2000);
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };

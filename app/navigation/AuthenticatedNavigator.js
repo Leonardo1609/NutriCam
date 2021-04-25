@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Alert, Platform, Text } from "react-native";
+import { Alert, Platform, Text, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors } from "../consts/colors";
@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { startGetSchedule } from "../actions/scheduleActions";
 import { setShowRegisterModal } from "../actions/uiActions";
 import { getPartOfHour, reminderMessages } from "../helpers/helpers";
+import FlashMessage from "react-native-flash-message";
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => {
@@ -158,7 +159,7 @@ export const AuthenticatedNavigator = () => {
 	}, []);
 
 	useEffect(() => {
-		if (schedule.length) {
+		if (schedule && schedule.length > 0) {
 			schedule.forEach(({ day_food_id, meal_time }) => {
 				getReminder(day_food_id, meal_time);
 			});
@@ -280,6 +281,15 @@ export const AuthenticatedNavigator = () => {
 					/>
 				</Tab.Navigator>
 			</NavigationContainer>
+			<FlashMessage position="top" />
 		</>
 	);
 };
+
+const styles = StyleSheet.create({
+	flashMessageTextStyle: {
+		color: "white",
+		fontSize: 18,
+		fontFamily: "poppins",
+	},
+});

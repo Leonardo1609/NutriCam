@@ -58,18 +58,32 @@ export const UserConfigurationMainScreen = () => {
 				</TouchableOpacity>
 			))}
 			{userInformation?.user?.user_role === 1 && (
-				<TouchableOpacity
-					activeOpacity={0.5}
-					onPress={() => {
-						navigateFn("AdministrationPanel");
-					}}
-				>
-					<View style={styles.routeContainer}>
-						<Text style={styles.routeText}>
-							Panel de Administrador
-						</Text>
-					</View>
-				</TouchableOpacity>
+				<>
+					<TouchableOpacity
+						activeOpacity={0.5}
+						onPress={() => {
+							navigateFn("Calculator");
+						}}
+					>
+						<View style={styles.routeContainer}>
+							<Text style={styles.routeText}>
+								Calculadora Nutricional
+							</Text>
+						</View>
+					</TouchableOpacity>
+					<TouchableOpacity
+						activeOpacity={0.5}
+						onPress={() => {
+							navigateFn("AdministrationPanel");
+						}}
+					>
+						<View style={styles.routeContainer}>
+							<Text style={styles.routeText}>
+								Panel de Administrador
+							</Text>
+						</View>
+					</TouchableOpacity>
+				</>
 			)}
 
 			<TouchableOpacity activeOpacity={0.5} onPress={logout}>

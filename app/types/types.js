@@ -40,6 +40,7 @@ export const types = {
 
 	setFoodImage: "[FoodRecognition] Set Food Image",
 	setPosibleOptions: "[FoodRecognition] Set Posible Options",
+	setLoadingRecognition: "[FoodRecognition] Set Loading Recognition",
 
 	setFirstDate: "[Administrator] Set First Date",
 	setFirstReviewDate: "[Administrator] Set First Review Date",

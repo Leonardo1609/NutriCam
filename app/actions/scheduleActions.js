@@ -1,4 +1,5 @@
 import { clientAxios } from "../axios/clientAxios";
+import { errorMessageLogoutAction } from "../helpers/helpers";
 import { types } from "../types/types";
 import { setMessageSuccess } from "./uiActions";
 
@@ -17,6 +18,7 @@ export const startConfigSchedule = (scheduleToSend) => {
 			dispatch(setSchedule(data.schedule));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -34,6 +36,7 @@ export const startUpdateSchedule = (scheduleToSend) => {
 			}, 4000);
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -45,6 +48,7 @@ export const startGetSchedule = () => {
 			dispatch(setSchedule(data.schedule));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };

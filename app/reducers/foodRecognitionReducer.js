@@ -3,6 +3,7 @@ import { types } from "../types/types";
 const initialState = {
 	image: null,
 	posibleOptions: [],
+	loadingRecognition: false,
 };
 export const foodRecognitionReducer = (
 	state = initialState,
@@ -18,6 +19,11 @@ export const foodRecognitionReducer = (
 			return {
 				...state,
 				posibleOptions: payload,
+			};
+		case types.setLoadingRecognition:
+			return {
+				...state,
+				loadingRecognition: payload,
 			};
 		default:
 			return state;

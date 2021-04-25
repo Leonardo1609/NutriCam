@@ -4,6 +4,7 @@ from config import config
 
 config_class = config['development']
 
+
 app = create_app( config_class )
 
 manager = Manager( app )

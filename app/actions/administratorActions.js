@@ -1,4 +1,5 @@
 import { clientAxios } from "../axios/clientAxios";
+import { errorMessageLogoutAction } from "../helpers/helpers";
 import { types } from "../types/types";
 
 export const startGetDateFirstUserCreated = () => {
@@ -7,7 +8,8 @@ export const startGetDateFirstUserCreated = () => {
 			const { data } = await clientAxios.get("/first-date");
 			dispatch(setFirstDate(data.first_date));
 		} catch (e) {
-			console.log(e);
+			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -32,6 +34,7 @@ export const startGetUsersQuantity = (initialDate = null, lastDate = null) => {
 			dispatch(setUsersQuantity(usersQuantity));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -68,6 +71,7 @@ export const startGetQuantityReviewsPerRating = (initialDate, lastDate) => {
 			dispatch(setQuantityReviewsPerRating(reviewsPerRating));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -93,6 +97,7 @@ export const startGetReviewsPerRating = (
 			dispatch(setReviewsPerRating(data.reviews_ratings));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };
@@ -104,6 +109,7 @@ export const startGetFirstReviewDate = () => {
 			dispatch(setFirstReviewDate(data.first_review_date));
 		} catch (e) {
 			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
 		}
 	};
 };

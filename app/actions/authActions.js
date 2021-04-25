@@ -8,6 +8,7 @@ import { clientAxios } from "../axios/clientAxios";
 import { tokenAuth } from "../axios/tokenAuth";
 import { types } from "../types/types";
 import { setFoodRegisters } from "./nutritionSummaryActions";
+import { errorMessageLogoutAction } from "../helpers/helpers";
 
 export const logoutUser = () => {
 	return async (dispatch) => {
@@ -35,7 +36,7 @@ export const getUser = (loading = true) => {
 			dispatch(setUserInformation(data));
 			loading && dispatch(loadingUserInfo(false));
 		} catch (e) {
-			console.log("getUser", e.response);
+			console.log(e.response);
 			dispatch(logoutUser());
 			dispatch(loadingUserInfo(false));
 		}
@@ -63,7 +64,7 @@ export const startCreateUser = () => {
 			dispatch(getUser());
 			dispatch(authenticateUserCreated());
 		} catch (e) {
-			console.log("startCreateUser", e.response);
+			console.log(e.response);
 		}
 	};
 };
@@ -82,7 +83,7 @@ export const startLoginUser = (email, password) => {
 			dispatch(authenticateUserLogged());
 		} catch (e) {
 			dispatch(setMessageWarning(e.response.data.msg));
-			console.log("startLoginUser", e.response);
+			console.log(e.response);
 		}
 	};
 };
@@ -115,11 +116,15 @@ export const startUpdateProfileData = (
 				dispatch(setMessageSuccess(null));
 			}, 2000);
 		} catch (e) {
-			dispatch(setMessageWarning(e.response.data.msg));
-			setTimeout(() => {
-				dispatch(setMessageWarning(null));
-			}, 2000);
 			console.log(e.response);
+			if (e.response.status === 401) {
+				errorMessageLogoutAction(e.response, dispatch);
+			} else {
+				dispatch(setMessageWarning(e.response.data.msg));
+				setTimeout(() => {
+					dispatch(setMessageWarning(null));
+				}, 2000);
+			}
 		}
 	};
 };
@@ -139,11 +144,15 @@ export const startChangeEmail = (email, newEmail, password) => {
 				dispatch(setMessageSuccess(null));
 			}, 2000);
 		} catch (e) {
-			dispatch(setMessageWarning(e.response.data.msg));
-			setTimeout(() => {
-				dispatch(setMessageWarning(null));
-			}, 2000);
 			console.log(e.response);
+			if (e.response.status === 401) {
+				errorMessageLogoutAction(e.response, dispatch);
+			} else {
+				dispatch(setMessageWarning(e.response.data.msg));
+				setTimeout(() => {
+					dispatch(setMessageWarning(null));
+				}, 2000);
+			}
 		}
 	};
 };
@@ -159,11 +168,15 @@ export const startUnsubscribeNutritionalPlan = (fn = null) => {
 				dispatch(setMessageWarning(null));
 			}, 2000);
 		} catch (e) {
-			dispatch(setMessageWarning(e.response.data.msg));
-			setTimeout(() => {
-				dispatch(setMessageWarning(null));
-			}, 2000);
 			console.log(e.response);
+			if (e.response.status === 401) {
+				errorMessageLogoutAction(e.response, dispatch);
+			} else {
+				dispatch(setMessageWarning(e.response.data.msg));
+				setTimeout(() => {
+					dispatch(setMessageWarning(null));
+				}, 2000);
+			}
 		}
 	};
 };
@@ -187,11 +200,16 @@ export const startChangePassword = (password, newPassword) => {
 				dispatch(setMessageSuccess(null));
 			}, 5000);
 		} catch (e) {
-			dispatch(setMessageWarning(e.response.data.msg));
-			setTimeout(() => {
-				dispatch(setMessageWarning(null));
-			}, 2000);
-			console.log(e.response);
+			console.log(e.response.status);
+			if (e.response.status === 401) {
+				console.log("here");
+				errorMessageLogoutAction(e.response, dispatch);
+			} else {
+				dispatch(setMessageWarning(e.response.data.msg));
+				setTimeout(() => {
+					dispatch(setMessageWarning(null));
+				}, 2000);
+			}
 		}
 	};
 };

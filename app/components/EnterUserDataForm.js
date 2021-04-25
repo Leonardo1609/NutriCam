@@ -65,7 +65,7 @@ export const EnterUserDataForm = ({ submitFn, buttonText, ...props }) => {
 	const confirmDate = (date) => {
 		setShowDateTimePicker(false);
 		// setBirthdayToSave(JSON.stringify(date).slice(1, 11));
-		setBirthdayToShow(formatDate(date));
+		setBirthdayToSave(formatDate(date));
 		setBirthdayToShow(moment(date).format("L"));
 		setBirthdayToPicker(date);
 	};

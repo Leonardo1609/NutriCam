@@ -1,5 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { showMessage } from "react-native-flash-message";
 import { colors } from "../consts/colors";
+import { types } from "../types/types";
 
 export const daysFirstLetter = ["L", "M", "M", "J", "V", "S", "D"];
 
@@ -156,4 +158,18 @@ export const getPartOfHour = (hoursAndMinuts, part) => {
 		const minuts = Number(hoursAndMinuts.slice(3, 6));
 		return minuts;
 	}
+};
+
+export const errorMessageLogoutAction = (err, dispatch) => {
+	if (err.status === 401)
+		showMessage({
+			message: "Sesión expirada",
+			description: err.data.msg,
+			type: "danger",
+			duration: 5000,
+			textStyle: { color: "white", fontFamily: "poppins-bold" },
+			onPress: () => {
+				dispatch({ type: types.logout });
+			},
+		});
 };

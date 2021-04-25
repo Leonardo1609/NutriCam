@@ -17,6 +17,7 @@ import { ScheduleManagement } from "../screens/AuthenticatedScreens/UserConfigur
 import { ChangePasswordFormScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/ChangePasswordFormScreen";
 import { MyDataScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MyDataScreen";
 import { AdministrationNavigator } from "./AdministrationNavigator";
+import { CalculatorNavigator } from "./CalculatorNavigator";
 
 const Stack = createStackNavigator();
 
@@ -131,6 +132,13 @@ export const UserConfigurationNavigator = () => {
 					title: "Panel de Administrador",
 				}}
 				component={AdministrationNavigator}
+			/>
+			<Stack.Screen
+				name="Calculator"
+				options={{
+					title: "Calculadora nutricional",
+				}}
+				component={CalculatorNavigator}
 			/>
 		</Stack.Navigator>
 	);

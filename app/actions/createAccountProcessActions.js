@@ -28,6 +28,7 @@ export const getHealthyInformation = () => {
 			birthdate,
 			activityLevel,
 		} = userDataBeforeToRegist;
+
 		const dataToSend = {
 			profile_genre: genre,
 			profile_height: height,
@@ -35,10 +36,9 @@ export const getHealthyInformation = () => {
 			profile_birthdate: birthdate,
 			profile_activity_level: activityLevel,
 		};
-
 		try {
-			const resp = await clientAxios.post("/information", dataToSend);
-			dispatch(showHealthyInformation(resp.data.information));
+			const { data } = await clientAxios.post("/information", dataToSend);
+			dispatch(showHealthyInformation(data.information));
 		} catch (e) {
 			console.log(e.response);
 		}
