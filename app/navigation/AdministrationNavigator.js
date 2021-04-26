@@ -4,6 +4,7 @@ import { HomeScreen } from "../screens/AuthenticatedScreens/HomeScreen";
 import { colors } from "../consts/colors";
 import { StatisticsScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/StatisticsScreen";
 import { ManageReviewNavigator } from "./ManageReviewNavigator";
+import { UsersProgressNavigator } from "./UsersProgressNavigator";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -35,7 +36,7 @@ export const AdministrationNavigator = () => {
 			/>
 			<Tab.Screen
 				name="Users"
-				component={HomeScreen}
+				component={UsersProgressNavigator}
 				options={{ tabBarLabel: "Usuarios" }}
 			/>
 		</Tab.Navigator>

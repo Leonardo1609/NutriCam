@@ -1,10 +1,54 @@
 from flask_restful import Api
-from .resources.review_rating import ReviewRatingCrud, QuantityPerRating, ReviewsRatings, FirstReviewDate
 from .resources.schedule import R_Schedule, R_GetSchedule
-from .resources.administrator import Statistics, FirstDate
 from .resources.expert_recomendation import R_ExpertRecommendation
-from .resources.user import RegisterUser, UserProfile, LoginUser, ProfileInformation, UserExists, ChangeEmail, ChangePassword, UnsubscribeCaloricPlan, UpdateProfile, SendRecoveryCode, SuccessCode, RestorePassword, YesterdayFullfiled, WeekFullfield
-from .resources.food import FoodSearch, FoodInformation, CreateFood, RegistFood, DeleteFoodRegist, FoodRegistersPerDay, NutritionSummaryPerDay, WeeklyCalories, OwnFoods, UpdateOwnFood, RemoveOwnFood, FoodMeasureUnits, OwnFoodInformation, ProcessImageToRecognition, FoodIdByName
+from .resources.review_rating import (
+    ReviewsRatings,
+    FirstReviewDate,
+    ReviewRatingCrud,
+    QuantityPerRating,
+)
+from .resources.administrator import (
+    FirstDate, 
+    Statistics, 
+    UserInformationPrivate, 
+    UserFoodRegistersPerDay, 
+    UserImprovementStatistics, 
+    UserNutritionSummaryPerDay,
+    UserImprovementInformation
+)
+from .resources.user import (
+    LoginUser, 
+    UserExists, 
+    SuccessCode,
+    UserProfile, 
+    ChangeEmail, 
+    RegisterUser, 
+    WeekFullfield,
+    UpdateProfile,
+    ChangePassword, 
+    RestorePassword,
+    SendRecoveryCode,
+    YesterdayFullfiled,
+    ProfileInformation, 
+    UnsubscribeCaloricPlan
+)
+from .resources.food import (
+    OwnFoods,
+    CreateFood,
+    RegistFood,
+    FoodSearch, 
+    FoodIdByName,
+    UpdateOwnFood,
+    RemoveOwnFood,
+    WeeklyCalories, 
+    FoodInformation, 
+    FoodMeasureUnits,
+    DeleteFoodRegist,
+    OwnFoodInformation,
+    FoodRegistersPerDay, 
+    NutritionSummaryPerDay,
+    ProcessImageToRecognition,
+)
 
 api = Api( prefix='/api' )
 
@@ -46,3 +90,8 @@ api.add_resource( FirstDate, '/first-date' )
 api.add_resource( QuantityPerRating, '/quantity-rating' )
 api.add_resource( ReviewsRatings, '/reviews-per-rating' )
 api.add_resource( FirstReviewDate, '/first-review-date' )
+api.add_resource( UserImprovementStatistics, '/user-improvement-statistics' )
+api.add_resource( UserImprovementInformation, '/user-improvement-information' )
+api.add_resource( UserInformationPrivate, '/user-information-private/<int:user_id>' )
+api.add_resource( UserFoodRegistersPerDay, '/user-registers-per-day/<int:user_id>/<string:day>' )
+api.add_resource( UserNutritionSummaryPerDay, '/user-nutrition-summary/<int:user_id>/<string:day>' )

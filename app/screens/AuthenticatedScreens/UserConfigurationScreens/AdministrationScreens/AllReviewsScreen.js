@@ -3,7 +3,10 @@ import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
-import { startGetReviewsPerRating } from "../../../../actions/administratorActions";
+import {
+	setReviewsPerRating,
+	startGetReviewsPerRating,
+} from "../../../../actions/administratorActions";
 import { MainButton } from "../../../../components/MainButton";
 import {
 	filterReviews,
@@ -28,7 +31,7 @@ export const AllReviewsScreen = ({ route }) => {
 		(state) => state.administrator
 	);
 
-	const [filterStars, setFilterStars] = useState();
+	const [filterStars, setFilterStars] = useState(null);
 
 	const {
 		dateToSend: initialDate,
@@ -45,6 +48,11 @@ export const AllReviewsScreen = ({ route }) => {
 		"Hasta:",
 		dateFirstReview && parserDateToLocale(dateFirstReview)
 	);
+
+	const goBack = () => {
+		dispatch(setReviewsPerRating([]));
+		navigation.goBack();
+	};
 
 	const pickerStyle = () => ({
 		inputAndroid: {
@@ -66,13 +74,10 @@ export const AllReviewsScreen = ({ route }) => {
 	});
 
 	useEffect(() => {
-		dispatch(startGetReviewsPerRating());
+		setFilterStars(stars);
 	}, []);
 
 	useEffect(() => {
-		if (!filterStars && !initialDate && !lastDate) {
-			dispatch(startGetReviewsPerRating());
-		}
 		if (filterStars && !initialDate && !lastDate) {
 			dispatch(startGetReviewsPerRating(null, null, filterStars));
 		}
@@ -86,6 +91,7 @@ export const AllReviewsScreen = ({ route }) => {
 				)
 			);
 		}
+
 		if (filterStars && !initialDate && lastDate) {
 			dispatch(
 				startGetReviewsPerRating(dateFirstReview, lastDate, filterStars)
@@ -96,14 +102,14 @@ export const AllReviewsScreen = ({ route }) => {
 				startGetReviewsPerRating(initialDate, lastDate, filterStars)
 			);
 		}
-		if (!filterStars && initialDate && lastDate) {
+		if (filterStars === 0 && initialDate && lastDate) {
 			dispatch(startGetReviewsPerRating(initialDate, lastDate, null));
 		}
-	}, [initialDate, lastDate, filterStars]);
 
-	useEffect(() => {
-		setFilterStars(stars);
-	}, []);
+		if (filterStars === 0 && !initialDate && !lastDate) {
+			dispatch(startGetReviewsPerRating());
+		}
+	}, [initialDate, lastDate, filterStars]);
 
 	return (
 		<View style={styles.screen}>
@@ -131,7 +137,7 @@ export const AllReviewsScreen = ({ route }) => {
 					/>
 				</View>
 				<View>
-					{reviewsPerRating.length ? (
+					{reviewsPerRating && reviewsPerRating.length > 0 ? (
 						<ScrollView style={styles.reviewListContainer}>
 							{reviewsPerRating.map((reviewRating) => (
 								<View
@@ -191,7 +197,7 @@ export const AllReviewsScreen = ({ route }) => {
 				</View>
 				<MainButton
 					containerStyle={styles.goBackButtoncontainer}
-					onPress={() => navigation.goBack()}
+					onPress={goBack}
 				>
 					Volver
 				</MainButton>

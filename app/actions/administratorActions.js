@@ -2,6 +2,18 @@ import { clientAxios } from "../axios/clientAxios";
 import { errorMessageLogoutAction } from "../helpers/helpers";
 import { types } from "../types/types";
 
+export const startGetFirstReviewDate = () => {
+	return async (dispatch) => {
+		try {
+			const { data } = await clientAxios.get("/first-review-date");
+			dispatch(setFirstReviewDate(data.first_review_date));
+		} catch (e) {
+			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
+		}
+	};
+};
+
 export const startGetDateFirstUserCreated = () => {
 	return async (dispatch) => {
 		try {
@@ -13,6 +25,7 @@ export const startGetDateFirstUserCreated = () => {
 		}
 	};
 };
+
 export const startGetUsersQuantity = (initialDate = null, lastDate = null) => {
 	return async (dispatch) => {
 		try {
@@ -102,11 +115,15 @@ export const startGetReviewsPerRating = (
 	};
 };
 
-export const startGetFirstReviewDate = () => {
+export const startGetQuantityUsersImprovement = () => {
 	return async (dispatch) => {
 		try {
-			const { data } = await clientAxios.get("/first-review-date");
-			dispatch(setFirstReviewDate(data.first_review_date));
+			const { data } = await clientAxios.get(
+				"/user-improvement-statistics"
+			);
+			dispatch(
+				setQuantityUsersImprovement(data.quantity_users_improvement)
+			);
 		} catch (e) {
 			console.log(e.response);
 			errorMessageLogoutAction(e.response, dispatch);
@@ -137,4 +154,9 @@ export const setFirstReviewDate = (date) => ({
 export const setReviewsPerRating = (reviewsPerRating) => ({
 	type: types.setReviewsPerRating,
 	payload: reviewsPerRating,
+});
+
+export const setQuantityUsersImprovement = (quantityUsersImprovement) => ({
+	type: types.setQuantityUsersImprovement,
+	payload: quantityUsersImprovement,
 });

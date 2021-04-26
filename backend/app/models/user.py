@@ -226,6 +226,7 @@ class User:
 
     @classmethod
     def get_user_by_id( cls, user_id ):
+        print(user_id)
         """
         Returns the user found according with the user_id parameter
         """
