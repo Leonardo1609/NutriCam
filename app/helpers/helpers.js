@@ -15,6 +15,13 @@ export const reminderMessages = [
 	`${aComer} Tu cena te espera`,
 ];
 
+export const improvementFilters = new Map([
+	["search", "Por búsqueda"],
+	["improvement", "IMC mejorado"],
+	["mantained", "IMC mantenido"],
+	["worsen", "IMC empeorado"],
+]);
+
 export const icons = [
 	{
 		iconName: "cerveza",
@@ -161,7 +168,7 @@ export const getPartOfHour = (hoursAndMinuts, part) => {
 };
 
 export const errorMessageLogoutAction = (err, dispatch) => {
-	if (err.status === 401)
+	if (err && err?.status === 401)
 		showMessage({
 			message: "Sesión expirada",
 			description: err.data.msg,

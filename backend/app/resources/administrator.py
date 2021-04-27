@@ -45,6 +45,7 @@ class UserImprovementStatistics( Resource ):
 class UserImprovementInformation( Resource ):
     parser = reqparse.RequestParser()
     parser.add_argument('case', type=str)
+    parser.add_argument('input_search', type=str)
 
     @jwt_required()
     def post(self):
@@ -53,7 +54,7 @@ class UserImprovementInformation( Resource ):
             user_id = get_jwt_identity()
             if not Administration.is_administrator( user_id ):
                 return { 'msg': 'No cumple con los privilegios' }, 400
-            results = Administration.get_users_improvement(data['case'])
+            results = Administration.get_users_improvement(data['case'], data['input_search'])
             return { "users_improvement": results }
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500

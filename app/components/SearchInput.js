@@ -16,6 +16,7 @@ export const SearchInput = () => {
 		}
 	}, 1000);
 
+	// Si el usuario se sale del componente, que el debounce que realize una petición se cancele
 	useEffect(() => {
 		return () => {
 			handleChange.cancel();

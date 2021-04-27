@@ -41,7 +41,6 @@ export const HomeScreen = ({ navigation }) => {
 	const [showDateTimePicker, setShowDateTimePicker] = useState(false);
 
 	const filterFoodsPerDayFoodId = (foods = [], filterId) => {
-
 		return foods.filter((food) => food.day_food_id === filterId);
 	};
 

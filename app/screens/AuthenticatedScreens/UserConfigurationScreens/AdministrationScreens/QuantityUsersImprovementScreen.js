@@ -15,23 +15,9 @@ export const QuantityUsersImprovementScreen = () => {
 		(state) => state.administrator
 	);
 
-	//
-	// <BarChart
-	// 	data={data}
-	// 	withInnerLines={false}
-	// 	fromZero={true}
-	// 	chartConfig={{
-	// 		backgroundColor: "white",
-	// 		backgroundGradientFrom: "white",
-	// 		backgroundGradientTo: "white",
-	// 		color: (opacity = 1) => colors.green,
-	// 		fillShadowGradient: colors.green,
-	// 		fillShadowGradientOpacity: 1,
-	// 	}}
-	// 	height={250}
-	// 	width={Dimensions.get("window").width * 0.8}
-	// 	showValuesOnTopOfBars={true}
-	// />
+	const goToUsersImprovement = () => {
+		navigation.navigate("UsersImprovement");
+	};
 
 	useEffect(() => {
 		dispatch(startGetQuantityUsersImprovement());
@@ -96,7 +82,10 @@ export const QuantityUsersImprovementScreen = () => {
 							{quantityUsersImprovement.quantity_users_worsen}
 						</Text>
 					</View>
-					<MainButton containerStyle={styles.buttonContainer}>
+					<MainButton
+						containerStyle={styles.buttonContainer}
+						onPress={goToUsersImprovement}
+					>
 						Ver usuarios
 					</MainButton>
 				</>

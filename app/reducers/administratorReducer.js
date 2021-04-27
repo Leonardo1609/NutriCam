@@ -10,7 +10,9 @@ const initialState = {
 	dateFirstReview: null,
 	quantityReviewsPerRating: [],
 	reviewsPerRating: [],
-	quantityUsersImprovement: null
+	quantityUsersImprovement: null,
+	usersImprovement: [],
+	userPrivateInformation: null,
 };
 
 export const administratorReducer = (
@@ -43,11 +45,21 @@ export const administratorReducer = (
 				...state,
 				dateFirstReview: payload,
 			};
-		case types.setQuantityUsersImprovement: 
+		case types.setQuantityUsersImprovement:
 			return {
 				...state,
-				quantityUsersImprovement: payload
-			}
+				quantityUsersImprovement: payload,
+			};
+		case types.setUsersImprovement:
+			return {
+				...state,
+				usersImprovement: payload,
+			};
+		case types.setUserPrivateInformation:
+			return {
+				...state,
+				userPrivateInformation: payload,
+			};
 		default:
 			return state;
 	}

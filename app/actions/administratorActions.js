@@ -115,6 +115,29 @@ export const startGetReviewsPerRating = (
 	};
 };
 
+export const startGetUsersImprovement = (
+	scenario = null,
+	inputSearch = null
+) => {
+	return async (dispatch) => {
+		try {
+			const dataToSend = {
+				case: scenario,
+				input_search: inputSearch,
+			};
+			const { data } = await clientAxios.post(
+				"/user-improvement-information",
+				dataToSend
+			);
+
+			dispatch(setUsersImprovement(data.users_improvement));
+		} catch (e) {
+			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
+		}
+	};
+};
+
 export const startGetQuantityUsersImprovement = () => {
 	return async (dispatch) => {
 		try {
@@ -124,6 +147,22 @@ export const startGetQuantityUsersImprovement = () => {
 			dispatch(
 				setQuantityUsersImprovement(data.quantity_users_improvement)
 			);
+		} catch (e) {
+			console.log(e.response);
+			errorMessageLogoutAction(e.response, dispatch);
+		}
+	};
+};
+
+export const startGetUserPrivateInformation = (user_id, fn = null) => {
+	return async (dispatch) => {
+		try {
+			const { data } = await clientAxios(
+				`/user-information-private/${user_id}`
+			);
+			dispatch(setUserPrivateInformation(data));
+
+			if (fn) fn();
 		} catch (e) {
 			console.log(e.response);
 			errorMessageLogoutAction(e.response, dispatch);
@@ -159,4 +198,14 @@ export const setReviewsPerRating = (reviewsPerRating) => ({
 export const setQuantityUsersImprovement = (quantityUsersImprovement) => ({
 	type: types.setQuantityUsersImprovement,
 	payload: quantityUsersImprovement,
+});
+
+export const setUsersImprovement = (usersImprovement) => ({
+	type: types.setUsersImprovement,
+	payload: usersImprovement,
+});
+
+export const setUserPrivateInformation = (userInformation) => ({
+	type: types.setUserPrivateInformation,
+	payload: userInformation,
 });

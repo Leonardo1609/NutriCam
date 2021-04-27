@@ -110,20 +110,27 @@ class Administration:
     
     @classmethod
     def format_users_improvement( cls, rows ):
-        print(rows)
-        return [ {  'user_id': user_id, 'user_name': user_name, 'w_level_name': w_level_name, 'profile_previous_imc': float(profile_previous_imc), 'profile_current_imc': float(profile_current_imc) } for user_id, user_name, w_level_name, profile_previous_imc, profile_current_imc in rows ]
+        return [ {  'user_id': user_id, 'user_name': user_name, 'user_email': user_email, 'w_level_id': w_level_id, 'w_level_name': w_level_name, 'profile_previous_imc': float(profile_previous_imc), 'profile_current_imc': float(profile_current_imc) } for user_id, user_name, user_email, w_level_id, w_level_name, profile_previous_imc, profile_current_imc in rows ]
 
     @classmethod
-    def get_users_improvement( cls, case = None ):
+    def get_users_improvement( cls, case = None, input_search = None ):
         all_users_query = """
-        SELECT u.user_id, u.user_name, wl.w_level_name, p.profile_previous_imc, p.profile_current_imc
+        SELECT u.user_id, u.user_name, u.user_email, wl.w_level_id, wl.w_level_name, p.profile_previous_imc, p.profile_current_imc
         FROM profile p
         INNER JOIN users u ON u.user_id = p.user_id
         INNER JOIN weight_level wl ON p.w_level_id = wl.w_level_id;
         """
 
+        search_users_query = f"""
+        SELECT u.user_id, u.user_name, u.user_email, wl.w_level_id, wl.w_level_name, p.profile_previous_imc, p.profile_current_imc
+        FROM profile p
+        INNER JOIN users u ON u.user_id = p.user_id
+        INNER JOIN weight_level wl ON p.w_level_id = wl.w_level_id
+        WHERE u.user_name LIKE '%{ input_search }%' OR u.user_email LIKE '%{ input_search }%';
+        """
+
         users_mantained_query = """
-        SELECT u.user_id, u.user_name, wl.w_level_name, p.profile_previous_imc, p.profile_current_imc
+        SELECT u.user_id, u.user_name, u.user_email, wl.w_level_id, wl.w_level_name, p.profile_previous_imc, p.profile_current_imc
         FROM profile p
         INNER JOIN users u ON u.user_id = p.user_id
         INNER JOIN weight_level wl ON p.w_level_id = wl.w_level_id
@@ -132,7 +139,7 @@ class Administration:
         """
 
         users_improvement_query = """
-        SELECT u.user_id, u.user_name, wl.w_level_name, p.profile_previous_imc, p.profile_current_imc
+        SELECT u.user_id, u.user_name, u.user_email, wl.w_level_id, wl.w_level_name, p.profile_previous_imc, p.profile_current_imc
         FROM profile p
         INNER JOIN users u ON u.user_id = p.user_id
         INNER JOIN weight_level wl ON p.w_level_id = wl.w_level_id
@@ -143,7 +150,7 @@ class Administration:
         """
 
         users_worsen_query = """
-        SELECT u.user_id, u.user_name, wl.w_level_name, p.profile_previous_imc, p.profile_current_imc
+        SELECT u.user_id, u.user_name, u.user_email, wl.w_level_id, wl.w_level_name, p.profile_previous_imc, p.profile_current_imc
         FROM profile p
         INNER JOIN users u ON u.user_id = p.user_id
         INNER JOIN weight_level wl ON p.w_level_id = wl.w_level_id
@@ -151,15 +158,18 @@ class Administration:
         OR ((p.w_level_id >= 3) AND ((p.profile_previous_imc < p.profile_current_imc) OR (p.profile_previous_imc <= 24.9)));
         """
 
-        if not case:
+        if not case and not input_search:
             rows = cursor.execute( all_users_query ).fetchall()
             return cls.format_users_improvement( rows )
-        if case == 'improvement':
+        if not case and input_search:
+            rows = cursor.execute( search_users_query).fetchall()
+            return cls.format_users_improvement( rows )
+        if case == 'improvement' and not input_search:
             rows = cursor.execute( users_improvement_query ).fetchall()
             return cls.format_users_improvement( rows )
-        if case == 'worsen':
+        if case == 'worsen' and not input_search:
             rows = cursor.execute( users_worsen_query ).fetchall()
             return cls.format_users_improvement( rows )
-        if case == 'mantained':
+        if case == 'mantained' and not input_search:
             rows = cursor.execute( users_mantained_query ).fetchall()
             return cls.format_users_improvement( rows )
