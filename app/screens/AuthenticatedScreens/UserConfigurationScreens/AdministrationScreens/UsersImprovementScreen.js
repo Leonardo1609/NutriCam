@@ -77,7 +77,7 @@ export const UsersImprovementScreen = () => {
 					</View>
 					<View style={styles.cardRow}>
 						<Text style={styles.previousIMC}>
-							IMC previo: {item.profile_previous_imc}{" "}
+							IMC previo: {item.profile_previous_imc || "--"}{" "}
 						</Text>
 						<Text style={styles.currentIMC}>
 							IMC actual: {item.profile_current_imc}

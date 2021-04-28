@@ -120,7 +120,7 @@ export const HomeScreen = ({ navigation }) => {
 							onConfirm={confirmDate}
 							onCancel={setShowDateTimePicker.bind(this, false)}
 							locale="es_ES"
-							headerTextIOS="Elige tu fecha de nacimiento"
+							headerTextIOS="Escoge la fecha"
 						/>
 					</View>
 					<View style={styles.row}>

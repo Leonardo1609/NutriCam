@@ -52,4 +52,12 @@ export const types = {
 		"[Administrator] Set Quantity Users Improvement",
 	setUsersImprovement: "[Administrator] Set Users Improvement",
 	setUserPrivateInformation: "[Administrator] Set User Private Information",
+
+	setDateOfUserRegister:
+		"[AdministratorSpecificUser] Set Date Of User Register",
+	setDateOfUserSummary:
+		"[AdministratorSpecificUser] Set Date Of User Summary",
+	setFoodUserRegisters: "[AdministratorSpecificUser] Set Food User Registers",
+	setNutritionUserSummary:
+		"[AdministratorSpecificUser] Set Nutrition User Summary",
 };

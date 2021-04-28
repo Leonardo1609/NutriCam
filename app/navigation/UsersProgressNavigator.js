@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { QuantityUsersImprovementScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/QuantityUsersImprovementScreen";
 import { UsersImprovementScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/UsersImprovementScreen";
 import { UserPrivateInformationScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/UserPrivateInformationScreen";
+import { UserRegistersScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/UserRegistersScreen";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,10 @@ export const UsersProgressNavigator = () => {
 			<Stack.Screen
 				name="UserPrivateInformation"
 				component={UserPrivateInformationScreen}
+			/>
+			<Stack.Screen
+				name="UserRegisters"
+				component={UserRegistersScreen}
 			/>
 		</Stack.Navigator>
 	);

@@ -154,11 +154,11 @@ export const startGetQuantityUsersImprovement = () => {
 	};
 };
 
-export const startGetUserPrivateInformation = (user_id, fn = null) => {
+export const startGetUserPrivateInformation = (userId, fn = null) => {
 	return async (dispatch) => {
 		try {
 			const { data } = await clientAxios(
-				`/user-information-private/${user_id}`
+				`/user-information-private/${userId}`
 			);
 			dispatch(setUserPrivateInformation(data));
 

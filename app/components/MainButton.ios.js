@@ -2,11 +2,23 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { colors } from "../consts/colors";
 
-export const MainButton = (props) => {
+export const MainButton = ({
+	containerStyle,
+	buttonStyle,
+	onPress,
+	textStyle,
+	...rest
+}) => {
 	return (
-		<TouchableOpacity style={styles.button} onPress={props.onPress}>
-			<Text style={styles.buttonText}>{props.children}</Text>
-		</TouchableOpacity>
+		<View style={{ ...styles.buttonContainer, ...containerStyle }}>
+			<TouchableOpacity activeOpacity={0.8} onPress={props.onPress}>
+				<View style={{ ...styles.button, ...buttonStyle }}>
+					<Text style={{ ...styles.buttonText, ...textStyle }}>
+						{rest.children}
+					</Text>
+				</View>
+			</TouchableOpacity>
+		</View>
 	);
 };
 

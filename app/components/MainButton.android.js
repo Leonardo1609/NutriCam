@@ -13,6 +13,7 @@ export const MainButton = ({
 	containerStyle,
 	buttonStyle,
 	onPress,
+	textStyle,
 	...rest
 }) => {
 	let ButtonComponent = TouchableOpacity;
@@ -25,7 +26,9 @@ export const MainButton = ({
 		<View style={{ ...styles.buttonContainer, ...containerStyle }}>
 			<ButtonComponent activeOpacity={0.8} onPress={onPress}>
 				<View style={{ ...styles.button, ...buttonStyle }}>
-					<Text style={styles.buttonText}>{rest.children}</Text>
+					<Text style={{ ...styles.buttonText, ...textStyle }}>
+						{rest.children}
+					</Text>
 				</View>
 			</ButtonComponent>
 		</View>
