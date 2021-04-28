@@ -24,6 +24,10 @@ export const UserPrivateInformationScreen = () => {
 		navigation.navigate("UserRegisters");
 	};
 
+	const goToUserSummary = () => {
+		navigation.navigate("UserSummary");
+	}
+
 	return (
 		<View style={styles.screen}>
 			<ScrollView>
@@ -140,6 +144,7 @@ export const UserPrivateInformationScreen = () => {
 					containerStyle={styles.buttonContainer}
 					buttonStyle={styles.buttonStyle}
 					buttonTextStyle={styles.buttonTextStyle}
+		onPress={goToUserSummary}
 				>
 					Ver Resumen Diario
 				</MainButton>

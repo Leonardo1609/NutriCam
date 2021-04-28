@@ -85,9 +85,7 @@ export const UserRegistersScreen = ({ navigation }) => {
 
 	useEffect(() => {
 		if (userPrivateInformation?.user)
-			dispatch(
-				startGetUserRegistersPerDay(userPrivateInformation.user.user_id)
-			);
+			dispatch(startGetUserRegistersPerDay());
 	}, [dateOfUserRegister, userPrivateInformation]);
 
 	return (
@@ -127,6 +125,13 @@ export const UserRegistersScreen = ({ navigation }) => {
 							locale="es_ES"
 							headerTextIOS="Escoge la fecha"
 						/>
+					</View>
+
+					<View style={styles.totalConsumedContainer}>
+						<Text style={styles.totalConsumedText}>
+							Total Consumido:{" "}
+							{totalCaloriesConsumed(foodUserRegisters)}
+						</Text>
 					</View>
 					<View style={{ flex: 1 }}>
 						<ScrollView>
@@ -254,6 +259,14 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "center",
 		alignItems: "center",
+	},
+	totalConsumedContainer: {
+		marginVertical: 8,
+	},
+	totalConsumedText: {
+		textAlign: "center",
+		fontFamily: "poppins-bold",
+		fontSize: 18,
 	},
 	dateText: {
 		fontSize: 20,

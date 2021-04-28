@@ -11,12 +11,11 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { formatDate, parserDateToLocale } from "../../helpers/helpers";
 import { setTargetMessage } from "../../helpers/helpers";
+import { useNavigation } from "@react-navigation/native";
 
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
-
-import { useNavigation } from "@react-navigation/native";
 
 export const DiarySummaryScreen = () => {
 	const navigation = useNavigation();

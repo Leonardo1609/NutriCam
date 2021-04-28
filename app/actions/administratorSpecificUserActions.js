@@ -6,8 +6,10 @@ export const startGetUserRegistersPerDay = (userId) => {
 	return async (dispatch, getState) => {
 		try {
 			const { dateOfUserRegister } = getState().administratorSpecificUser;
+			const { userPrivateInformation } = getState().administrator;
+
 			const { data } = await clientAxios.get(
-				`/user-registers-per-day/${userId}/${dateOfUserRegister}`
+				`/user-registers-per-day/${userPrivateInformation.user.user_id}/${dateOfUserRegister}`
 			);
 
 			dispatch(setFoodUserRegisters(data.food_registers));
@@ -18,12 +20,13 @@ export const startGetUserRegistersPerDay = (userId) => {
 	};
 };
 
-export const startGetUserSummaryPerDay = (userId) => {
+export const startGetUserSummaryPerDay = () => {
 	return async (dispatch, getState) => {
 		try {
 			const { dateOfUserSummary } = getState().administratorSpecificUser;
+			const { userPrivateInformation } = getState().administrator;
 			const { data } = await clientAxios.get(
-				`/user-nutrition-summary/${userId}/${dateOfUserSummary}`
+				`/user-nutrition-summary/${userPrivateInformation.user.user_id}/${dateOfUserSummary}`
 			);
 			dispatch(setNutritionUserSummary(data.summary));
 		} catch (e) {

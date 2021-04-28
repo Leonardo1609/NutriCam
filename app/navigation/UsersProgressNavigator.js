@@ -4,6 +4,7 @@ import { QuantityUsersImprovementScreen } from "../screens/AuthenticatedScreens/
 import { UsersImprovementScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/UsersImprovementScreen";
 import { UserPrivateInformationScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/UserPrivateInformationScreen";
 import { UserRegistersScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/UserRegistersScreen";
+import { UserNutritionSummaryScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/AdministrationScreens/UserNutritionSummaryScreen";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,10 @@ export const UsersProgressNavigator = () => {
 			<Stack.Screen
 				name="UserRegisters"
 				component={UserRegistersScreen}
+			/>
+			<Stack.Screen
+				name="UserSummary"
+				component={UserNutritionSummaryScreen}
 			/>
 		</Stack.Navigator>
 	);
