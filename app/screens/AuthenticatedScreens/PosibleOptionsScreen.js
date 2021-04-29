@@ -57,6 +57,16 @@ export const PosibleOptionsScreen = () => {
 					))}
 				</View>
 			</View>
+			<View style={styles.messageContainer}>
+				<Text style={styles.tryAgainMessage}>
+					Si no encontró su comida entre las opciones inténtelo
+					nuevamente.
+				</Text>
+				<Text style={styles.importantMessage}>
+					Nota: Una imagen con buena luminosidad y calidad ofrece un
+					mejor reconocimiento.
+				</Text>
+			</View>
 		</View>
 	);
 };
@@ -74,13 +84,16 @@ export const styles = StyleSheet.create({
 	imageContainer: {
 		width: "100%",
 		height: "30%",
+		maxHeight: 180,
 	},
 	optionsContainer: {
 		paddingHorizontal: "10%",
-		paddingVertical: 20,
+		paddingTop: 20,
+		paddingBottom: 10,
 	},
 	optionsList: {
-		marginVertical: 15,
+		// // marginVertical: 0,
+		// backgroundColor: "red",
 	},
 	posibleOptionsTitle: {
 		fontFamily: "poppins-bold",
@@ -97,5 +110,19 @@ export const styles = StyleSheet.create({
 	foodName: {
 		fontFamily: "poppins",
 		fontSize: 18,
+	},
+	tryAgainMessage: {
+		fontFamily: "poppins",
+		fontSize: 16,
+		textAlign: "justify",
+	},
+	importantMessage: {
+		fontFamily: "poppins-bold",
+		fontSize: 14,
+		color: "red",
+		textAlign: "justify",
+	},
+	messageContainer: {
+		paddingHorizontal: "10%",
 	},
 });

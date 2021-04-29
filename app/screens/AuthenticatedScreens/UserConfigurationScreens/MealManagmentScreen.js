@@ -47,11 +47,17 @@ export const MealManagementScreen = () => {
 			{messageSuccess && (
 				<AlertMessage type="success" message={messageSuccess} />
 			)}
-			<FlatList
-				keyExtractor={(item) => item.food_id.toString()}
-				data={ownFoods}
-				renderItem={renderFoods}
-			/>
+			{ownFoods.length > 0 ? (
+				<FlatList
+					keyExtractor={(item) => item.food_id.toString()}
+					data={ownFoods}
+					renderItem={renderFoods}
+				/>
+			) : (
+				<Text style={styles.createYourFoodsMessage}>
+					Comience a crear sus propias comidas 🍛
+				</Text>
+			)}
 		</View>
 	);
 };
@@ -73,5 +79,10 @@ const styles = StyleSheet.create({
 	foodName: {
 		fontFamily: "poppins",
 		fontSize: 18,
+	},
+	createYourFoodsMessage: {
+		fontFamily: "poppins",
+		fontSize: 20,
+		textAlign: "center",
 	},
 });

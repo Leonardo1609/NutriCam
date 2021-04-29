@@ -47,7 +47,7 @@ class User:
         """
         Returns the imc, fixed to 2 decimals, according to the height and weight (in meters) of the user
         """
-        return float("{:.2f}".format(actual_weight / ( height / 100 ) ** 2))
+        return float("{:.1f}".format(actual_weight / ( height / 100 ) ** 2))
 
     @classmethod
     def calculate_age( cls, birthdate ):
@@ -226,7 +226,6 @@ class User:
 
     @classmethod
     def get_user_by_id( cls, user_id ):
-        print(user_id)
         """
         Returns the user found according with the user_id parameter
         """
@@ -262,12 +261,13 @@ class User:
         profile_ideal_weight = cls.ideal_weight( profile_height, profile_genre )
         profile_caloric_plan = cls.cals_per_day( profile_actual_weight, profile_height, profile_birthdate, profile_genre, profile_activity_level )
         diseases = Disease.get_diseases_by_w_level_id( w_level[0] )
+
         return {
-                'profile_imc': profile_imc,
-                'w_level_name': w_level[1],
-                'posible_diseases': diseases,
-                'profile_ideal_weight': profile_ideal_weight,
-                'profile_caloric_plan': profile_caloric_plan,
+            'profile_imc': profile_imc,
+            'w_level_name': w_level[1],
+            'posible_diseases': diseases,
+            'profile_ideal_weight': profile_ideal_weight,
+            'profile_caloric_plan': profile_caloric_plan,
         }
 
     @classmethod

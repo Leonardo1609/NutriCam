@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { colors } from "../consts/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { UserConfigurationMainScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/UserConfigurationHomeScreen";
-import { GeneralConfigurationScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/GeneralConfigurationScreen";
+import { ChangeEmailPasswordScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/ChangeEmailPasswordScreen";
 import { EquivalenceScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/EquivalenceScreen";
 import { MealManagementScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MealManagmentScreen";
 import { MealFormScreen } from "../screens/AuthenticatedScreens/UserConfigurationScreens/MealFormScreen";
@@ -58,11 +58,11 @@ export const UserConfigurationNavigator = () => {
 				component={MyDataScreen}
 			/>
 			<Stack.Screen
-				name="GeneralConfiguration"
+				name="ChangePasswordEmail"
 				options={{
-					title: "Ajustes Generales",
+					title: "Cambiar correo / contraseña",
 				}}
-				component={GeneralConfigurationScreen}
+				component={ChangeEmailPasswordScreen}
 			/>
 			<Stack.Screen
 				name="ChangeEmail"

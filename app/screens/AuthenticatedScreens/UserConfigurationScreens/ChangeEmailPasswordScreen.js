@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { askForUnsubscribeAlert } from "../../../consts/consts";
 
-export const GeneralConfigurationScreen = () => {
+export const ChangeEmailPasswordScreen = () => {
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
 	const { userInformation } = useSelector((state) => state.auth);
@@ -41,22 +41,6 @@ export const GeneralConfigurationScreen = () => {
 
 	return (
 		<View style={styles.screen}>
-			<View style={styles.filtersContainer}>
-				<View style={styles.filterContainer}>
-					<Text style={styles.switchText}>Activar recordatorios</Text>
-					<View style={styles.switchContainer}>
-						<Switch trackColor={colors.green} value={true} />
-					</View>
-				</View>
-				<View style={styles.filterContainer}>
-					<Text style={styles.switchText}>
-						Activar recomendaciones
-					</Text>
-					<View style={styles.switchContainer}>
-						<Switch trackColor={colors.green} value={true} />
-					</View>
-				</View>
-			</View>
 			<View style={styles.buttonsContainer}>
 				<MainButton
 					containerStyle={styles.buttonContainer}
@@ -90,26 +74,9 @@ const styles = StyleSheet.create({
 		backgroundColor: "white",
 		paddingHorizontal: "10%",
 	},
-	filtersContainer: {
-		flex: 1,
-		justifyContent: "center",
-	},
 	buttonsContainer: {
 		flex: 1,
 		justifyContent: "center",
-	},
-	filterContainer: {
-		flexDirection: "row",
-		alignItems: "center",
-		marginVertical: 10,
-	},
-	switchContainer: {
-		flex: 1,
-		alignItems: "flex-end",
-	},
-	switchText: {
-		fontSize: 18,
-		fontFamily: "poppins-bold",
 	},
 	buttonContainer: {
 		marginVertical: 10,

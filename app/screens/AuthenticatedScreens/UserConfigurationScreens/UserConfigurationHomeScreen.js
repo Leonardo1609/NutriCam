@@ -15,8 +15,8 @@ export const UserConfigurationMainScreen = () => {
 			component: "MyData",
 		},
 		{
-			name: "Ajustes Generales",
-			component: "GeneralConfiguration",
+			name: "Cambiar correo / contraseña",
+			component: "ChangePasswordEmail",
 		},
 		{
 			name: "Reseñar / Calificar aplicación",

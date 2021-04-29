@@ -110,7 +110,7 @@ class Administration:
     
     @classmethod
     def format_users_improvement( cls, rows ):
-        return [ {  'user_id': user_id, 'user_name': user_name, 'user_email': user_email, 'w_level_id': w_level_id, 'w_level_name': w_level_name, 'profile_previous_imc': float(profile_previous_imc), 'profile_current_imc': float(profile_current_imc) } for user_id, user_name, user_email, w_level_id, w_level_name, profile_previous_imc, profile_current_imc in rows ]
+        return [ {  'user_id': user_id, 'user_name': user_name, 'user_email': user_email, 'w_level_id': w_level_id, 'w_level_name': w_level_name, 'profile_previous_imc': float(profile_previous_imc) if profile_previous_imc else None, 'profile_current_imc': float(profile_current_imc) } for user_id, user_name, user_email, w_level_id, w_level_name, profile_previous_imc, profile_current_imc in rows ]
 
     @classmethod
     def get_users_improvement( cls, case = None, input_search = None ):
