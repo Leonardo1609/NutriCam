@@ -16,3 +16,4 @@ tensorboard==2.4.1
 tensorboard-plugin-wit==1.8.0
 tensorflow==2.5.0rc0
 pyodbc==4.0.30
+python-dotenv==0.17.1
