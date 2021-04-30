@@ -103,7 +103,9 @@ class FirstReviewDate( Resource ):
             if not Administration.is_administrator( user_id ):
                 return { 'msg': 'No cumple con los privilegios' }, 400
             date = ReviewRating.first_review_date()
-            return { 'first_review_date': str(date) }, 200
+            if date:
+                return { 'first_review_date': str(date) }, 200
+            return { 'first_review_date': None }, 200
         except:
             return { "msg" : 'Ha ocurrido un error' }, 500
 

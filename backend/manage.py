@@ -2,8 +2,7 @@ from app import create_app, api
 from flask_script import Manager, Server
 from config import config
 
-config_class = config['default']
-
+config_class = config['production']
 
 app = create_app( config_class )
 

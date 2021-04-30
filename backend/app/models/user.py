@@ -73,7 +73,6 @@ class User:
             "max": float('{:.1f}'.format(max_ideal_weight))
         }
 
-
     @classmethod
     def cals_per_day( cls, actual_weight, w_level_id, height, birthdate, genre, activity_level ):
         """
@@ -102,8 +101,10 @@ class User:
                 elif genre == 'F':
                     GER = 8.7 * actual_weight + 829
         elif w_level_id == 3:
+            #Livingston
             if genre == 'M':
                 GER = 293 * (actual_weight ** 0.4330) - 5.92 * age
+            #Frankenfield
             elif genre == 'F':
                 GER = actual_weight * 10 + height * 3 - age * 5 + 1 * 207 + 454
         elif w_level_id >= 4:

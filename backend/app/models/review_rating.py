@@ -147,5 +147,7 @@ class ReviewRating :
         FROM review_rating 
         ORDER BY review_rating_updated_date ASC
         """
-        date = cursor.execute( query ).fetchone()[0]
-        return date
+        date = cursor.execute( query ).fetchone()
+        if date:
+            return date[0]
+        return None
