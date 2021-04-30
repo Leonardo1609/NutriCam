@@ -8,7 +8,7 @@ import {
 	setDateOfUserSummary,
 	startGetUserSummaryPerDay,
 } from "../../../../actions/administratorSpecificUserActions";
-import { formatDate } from "../../../../helpers/helpers";
+import { formatDate, parserDateToLocale } from "../../../../helpers/helpers";
 import { useNavigation } from "@react-navigation/native";
 
 import moment from "moment";
@@ -70,13 +70,9 @@ export const UserNutritionSummaryScreen = () => {
 						<DateTimePickerModal
 							mode="date"
 							date={summaryDay}
-							minimumDate={
-								new Date(
-									Date.parse(
-										userPrivateInformation.user.created_at
-									)
-								)
-							}
+							minimumDate={parserDateToLocale(
+								userPrivateInformation.user?.created_at
+							)}
 							maximumDate={new Date()}
 							isVisible={showDateTimePicker}
 							onConfirm={confirmDate}

@@ -86,7 +86,6 @@ export const toTwoDecimals = (number) => {
 
 export const saveIcon = async (iconName) => {
 	const icon = icons.find((icon) => icon.iconName === iconName);
-	console.log(icon);
 	await AsyncStorage.setItem("icon", JSON.stringify(icon));
 };
 

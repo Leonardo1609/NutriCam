@@ -12,6 +12,7 @@ export const types = {
 	messageWarning: "[Ui] Set Message Warning",
 	messageSuccess: "[Ui] Set Message Success",
 	showRegisterModal: "[Ui] Show Register Modal",
+	setLoadingSendingMessage: "[Ui] Show Loading Sending Mesage",
 
 	setFoodRegisters: "[Nutrition Summary] Set Food Registers",
 	setWeeklyCalories: "[Nutrition Summary] Set Weekly Calories",

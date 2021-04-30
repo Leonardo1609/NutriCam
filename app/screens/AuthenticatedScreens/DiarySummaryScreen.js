@@ -87,9 +87,9 @@ export const DiarySummaryScreen = () => {
 				<DateTimePickerModal
 					mode="date"
 					date={summaryDay}
-					minimumDate={
-						new Date(Date.parse(userInformation.user.created_at))
-					}
+					minimumDate={parserDateToLocale(
+						userInformation.user?.created_at
+					)}
 					maximumDate={new Date()}
 					isVisible={showDateTimePicker}
 					onConfirm={confirmDate}

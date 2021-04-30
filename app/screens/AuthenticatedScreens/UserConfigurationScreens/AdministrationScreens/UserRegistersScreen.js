@@ -11,7 +11,11 @@ import { Ionicons } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { DayFood } from "../../../../components/DayFood";
 import { MainButton } from "../../../../components/MainButton";
-import { formatDate, totalCaloriesConsumed } from "../../../../helpers/helpers";
+import {
+	formatDate,
+	parserDateToLocale,
+	totalCaloriesConsumed,
+} from "../../../../helpers/helpers";
 import {
 	setDateOfUserRegister,
 	startGetUserRegistersPerDay,
@@ -111,13 +115,9 @@ export const UserRegistersScreen = ({ navigation }) => {
 						<DateTimePickerModal
 							mode="date"
 							date={registerDay}
-							minimumDate={
-								new Date(
-									Date.parse(
-										userPrivateInformation?.user?.created_at
-									)
-								)
-							}
+							minimumDate={parserDateToLocale(
+								userPrivateInformation.user?.created_at
+							)}
 							maximumDate={new Date()}
 							isVisible={showDateTimePicker}
 							onConfirm={confirmDate}

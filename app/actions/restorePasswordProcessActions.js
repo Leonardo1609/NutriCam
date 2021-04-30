@@ -1,24 +1,35 @@
 import { clientAxios } from "../axios/clientAxios";
 import { types } from "../types/types";
-import { setMessageSuccess, setMessageWarning } from "./uiActions";
+import {
+	setLoadingRegister,
+	setMessageSuccess,
+	setMessageWarning,
+} from "./uiActions";
 
 export const startSendEmailToRestorePassword = (email, fn = null) => {
 	return async (dispatch) => {
 		try {
+			dispatch(setLoadingRegister(true));
 			const { data } = await clientAxios.post(`/recovery-code/${email}`);
 
 			dispatch(setEmailSended(email));
 
 			dispatch(setMessageSuccess(data.msg));
-
 			if (fn) fn();
+
+			dispatch(setLoadingRegister(false));
 
 			setTimeout(() => {
 				dispatch(setMessageSuccess(null));
 			}, 5000);
 		} catch (e) {
 			console.log(e.response);
+
+			dispatch(setLoadingRegister(false));
 			dispatch(setMessageWarning(e.response.data.msg));
+			setTimeout(() => {
+				dispatch(setMessageWarning(null));
+			}, 5000);
 		}
 	};
 };

@@ -9,7 +9,7 @@ def getCaloriesOfDay( input_day, date_calories ):
 
 class Food:
     @classmethod
-    def food_json( cls, food_id, food_name, food_calories, food_fats, food_carbohydrates, food_proteins , measure_unit_id, measure_name, listed_food):
+    def food_json( cls, food_id, food_name, food_calories, food_fats, food_carbohydrates, food_proteins , measure_unit_id, measure_name, listed_food, creator_id):
         return {
             'food_id': food_id,
             'food_name': food_name,
@@ -19,7 +19,8 @@ class Food:
             'food_proteins': food_proteins,
             'measure_unit_id': measure_unit_id,
             'measure_name': measure_name,
-            'listed_food': listed_food
+            'listed_food': listed_food,
+            'creator_id': creator_id
         }
         
     @classmethod
@@ -76,7 +77,7 @@ class Food:
     @classmethod
     def get_own_food_information( cls, food_id ):
         query="""
-        SELECT f.food_id, f.food_name, fmu.food_calories, fmu.food_fats, fmu.food_carbohydrates, fmu.food_proteins, mu.measure_unit_id, mu.measure_name, f.listed_food
+        SELECT f.food_id, f.food_name, fmu.food_calories, fmu.food_fats, fmu.food_carbohydrates, fmu.food_proteins, mu.measure_unit_id, mu.measure_name, f.listed_food, f.creator_id
         FROM food_measure_unit fmu
         INNER JOIN measure_unit mu ON mu.measure_unit_id = fmu.food_measure_unit_id
         INNER JOIN food f ON f.food_id = fmu.food_id
@@ -88,7 +89,7 @@ class Food:
     @classmethod
     def get_food_information( cls, food_id, measure_unit_id ):
         query = """
-        SELECT f.food_id, f.food_name, fmu.food_calories, fmu.food_fats, fmu.food_carbohydrates, fmu.food_proteins, mu.measure_unit_id, mu.measure_name, f.listed_food
+        SELECT f.food_id, f.food_name, fmu.food_calories, fmu.food_fats, fmu.food_carbohydrates, fmu.food_proteins, mu.measure_unit_id, mu.measure_name, f.listed_food, f.creator_id
         FROM food_measure_unit fmu
         INNER JOIN measure_unit mu ON mu.measure_unit_id = fmu.food_measure_unit_id
         INNER JOIN food f ON f.food_id = fmu.food_id

@@ -209,6 +209,7 @@ export const EnterUserDataForm = ({ submitFn, buttonText, ...props }) => {
 							</View>
 							<View style={styles.inputContainer}>
 								<TextInput
+									maxLength={3}
 									style={{
 										...styles.input,
 										borderBottomColor: errorColor(
@@ -270,6 +271,7 @@ export const EnterUserDataForm = ({ submitFn, buttonText, ...props }) => {
 							</View>
 							<View style={styles.inputContainer}>
 								<TextInput
+									maxLength={4}
 									style={{
 										...styles.input,
 										borderBottomColor: errorColor(

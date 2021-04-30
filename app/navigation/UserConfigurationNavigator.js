@@ -60,7 +60,7 @@ export const UserConfigurationNavigator = () => {
 			<Stack.Screen
 				name="ChangePasswordEmail"
 				options={{
-					title: "Cambiar correo / contraseña",
+					title: "Ajustes",
 				}}
 				component={ChangeEmailPasswordScreen}
 			/>

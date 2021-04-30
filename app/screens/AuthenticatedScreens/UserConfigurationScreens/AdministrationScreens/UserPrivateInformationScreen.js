@@ -26,7 +26,7 @@ export const UserPrivateInformationScreen = () => {
 
 	const goToUserSummary = () => {
 		navigation.navigate("UserSummary");
-	}
+	};
 
 	return (
 		<View style={styles.screen}>
@@ -67,11 +67,24 @@ export const UserPrivateInformationScreen = () => {
 							</Text>
 						</View>
 						<View style={styles.rowContainer}>
-							<Text style={styles.subtitle}>Peso ideal: </Text>
+							<Text style={styles.subtitle}>
+								Peso mínimo ideal:{" "}
+							</Text>
 							<Text style={styles.result}>
 								{
 									userPrivateInformation.profile
-										.profile_actual_weight
+										.profile_min_ideal_weight
+								}
+							</Text>
+						</View>
+						<View style={styles.rowContainer}>
+							<Text style={styles.subtitle}>
+								Peso mínimo ideal:{" "}
+							</Text>
+							<Text style={styles.result}>
+								{
+									userPrivateInformation.profile
+										.profile_max_ideal_weight
 								}
 							</Text>
 						</View>
@@ -100,10 +113,8 @@ export const UserPrivateInformationScreen = () => {
 						<View style={styles.rowContainer}>
 							<Text style={styles.subtitle}>IMC previo: </Text>
 							<Text style={styles.result}>
-								{
-									userPrivateInformation.profile
-										.profile_previous_imc
-								}
+								{userPrivateInformation.profile
+									.profile_previous_imc || "--"}
 							</Text>
 						</View>
 						<View style={styles.rowContainer}>
@@ -144,7 +155,7 @@ export const UserPrivateInformationScreen = () => {
 					containerStyle={styles.buttonContainer}
 					buttonStyle={styles.buttonStyle}
 					buttonTextStyle={styles.buttonTextStyle}
-		onPress={goToUserSummary}
+					onPress={goToUserSummary}
 				>
 					Ver Resumen Diario
 				</MainButton>

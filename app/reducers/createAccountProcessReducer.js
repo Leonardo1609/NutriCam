@@ -14,7 +14,7 @@ const initiliaState = {
 	informationToShow: {
 		posibleDiseases: [],
 		profileCaloricPlan: 0,
-		profileIdealWeight: 0,
+		profileIdealWeight: "",
 		profileIMC: 0,
 		weightLevelName: "",
 	},

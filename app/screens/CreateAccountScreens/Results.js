@@ -63,10 +63,10 @@ export const Results = () => {
 				<View style={styles.section}>
 					<View style={styles.bo}>
 						<Text style={styles.subtitle}>
-							Tu peso ideal es de:
+							Su rango de peso ideal es:
 						</Text>
 						<BoxMessage>
-							{information.profileIdealWeight} kg
+							{information.profileIdealWeight}
 						</BoxMessage>
 					</View>
 				</View>

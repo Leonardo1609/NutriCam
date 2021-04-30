@@ -38,6 +38,7 @@ export const FoodRegistrationScreen = ({ route }) => {
 		registFoodValidation,
 		registFood
 	);
+
 	const { dayIdToRegist, quantity, measureUnit } = formValues;
 
 	const [icon, setIcon] = useState(null);
@@ -69,19 +70,6 @@ export const FoodRegistrationScreen = ({ route }) => {
 			fontWeight: "bold",
 		},
 	});
-
-	// const formatTotal = (quantity) => {
-	// 	if (activeFoodToRegist.measure_unit_id === 1) {
-	// 		// 100g
-	// 		return `${quantity}00g`;
-	// 	} else if (activeFoodToRegist.measure_unit_id === 2) {
-	// 		// unidad
-	// 		return `${quantity} ${quantity > 1 ? "unidades" : "unidad"}`;
-	// 	} else {
-	// 		// porción
-	// 		return `${quantity} ${quantity > 1 ? "porciones" : "porción"}`;
-	// 	}
-	// };
 
 	const equivalence = () => {
 		return Math.ceil(
@@ -209,6 +197,13 @@ export const FoodRegistrationScreen = ({ route }) => {
 								) : null}
 							</View>
 						</View>
+						{activeFoodToRegist.measure_unit_id === 3 &&
+							activeFoodToRegist.creator_id === 1 && (
+								<Text style={styles.unitMessage}>
+									*Esta unidad considera un plato con un
+									contenido aproximado de 500gr
+								</Text>
+							)}
 						<View style={styles.nutritionalInformationContainer}>
 							<Text style={styles.nutritionalInformationTitle}>
 								Información Nutricional
@@ -384,5 +379,11 @@ const styles = StyleSheet.create({
 		width: "100%",
 		height: "100%",
 		resizeMode: "contain",
+	},
+	unitMessage: {
+		fontSize: 14,
+		fontFamily: "poppins-bold",
+		color: "red",
+		textAlign: 'justify'
 	},
 });

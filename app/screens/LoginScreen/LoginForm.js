@@ -21,14 +21,9 @@ export const LoginForm = () => {
 	const { messageWarning } = useSelector((state) => state.ui);
 
 	const initialValues = {
-		email: "leonardocornejoruiz@gmail.com",
-		password: "12345678",
+		email: "",
+		password: "",
 	};
-
-	// const initialValues = {
-	// 	email: "",
-	// 	password: "",
-	// };
 
 	const { formValues, errors, handleChange, handleSubmit } = useForm(
 		initialValues,

@@ -19,3 +19,8 @@ export const setShowRegisterModal = (bool) => ({
 	type: types.showRegisterModal,
 	payload: bool,
 });
+
+export const setLoadingRegister = (bool) => ({
+	type: types.setLoadingSendingMessage,
+	payload: bool,
+});

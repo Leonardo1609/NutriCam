@@ -36,7 +36,6 @@ export const getHealthyInformation = () => {
 			profile_birthdate: birthdate,
 			profile_activity_level: activityLevel,
 		};
-		console.log( dataToSend )
 		try {
 			const { data } = await clientAxios.post("/information", dataToSend);
 			dispatch(showHealthyInformation(data.information));

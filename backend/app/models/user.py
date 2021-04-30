@@ -23,14 +23,15 @@ class User:
         }
 
     @classmethod
-    def profile_json( cls, profile_id, user_id,w_level_id, profile_genre, profile_height, profile_actual_weight, profile_ideal_weight, profile_birthdate, profile_activity_level, profile_current_imc, profile_previous_imc, profile_have_caloric_plan, profile_caloric_plan, profile_initial_date_caloric_plan, profile_cancel_date_caloric_plan ):
+    def profile_json( cls, profile_id, user_id,w_level_id, profile_genre, profile_height, profile_actual_weight, profile_min_ideal_weight, profile_max_ideal_weight, profile_birthdate, profile_activity_level, profile_current_imc, profile_previous_imc, profile_have_caloric_plan, profile_caloric_plan, profile_initial_date_caloric_plan, profile_cancel_date_caloric_plan ):
         return { 
             'profile_id': profile_id, 
             'user_id': user_id, 
             'profile_genre': profile_genre, 
             'profile_height': profile_height, 
             'profile_actual_weight': float(profile_actual_weight) if profile_actual_weight else None, 
-            'profile_ideal_weight': float(profile_ideal_weight) if profile_ideal_weight else None, 
+            'profile_min_ideal_weight': float(profile_min_ideal_weight) if profile_min_ideal_weight else None, 
+            'profile_max_ideal_weight': float(profile_max_ideal_weight) if profile_max_ideal_weight else None, 
             'profile_birthdate': str(profile_birthdate) if profile_birthdate else None, 
             'profile_activity_level': profile_activity_level,
             'profile_current_imc': float(profile_current_imc) if profile_current_imc else None,
@@ -59,25 +60,61 @@ class User:
         return today.year - int(year) - ( ( today.month, today.day ) < ( int(month), int(day) ) )
 
     @classmethod
-    def ideal_weight( cls, height, genre ):
+    def ideal_weight( cls, height ):
         """
         Returns the ideal weight of the user according to his genre and height (in meters)
         """
-        variation = 21 if genre == 'F' else 23
-        return math.ceil(( height / 100 ) ** 2 * variation)
+        # variation = 21 if genre == 'F' else 23
+        # return math.ceil(( height / 100 ) ** 2 * variation)
+        min_ideal_weight = 18.5 * ( height / 100 ) ** 2
+        max_ideal_weight = 24.9 * ( height / 100 ) ** 2
+        return { 
+            "min": float('{:.1f}'.format(min_ideal_weight)),
+            "max": float('{:.1f}'.format(max_ideal_weight))
+        }
+
 
     @classmethod
-    def cals_per_day( cls, actual_weight, height, birthdate, genre, activity_level ):
+    def cals_per_day( cls, actual_weight, w_level_id, height, birthdate, genre, activity_level ):
         """
         Returns how many calories the user have to consume per day
         """
-        GER = 0;
-        if genre == 'M':
-            GER = 66.5 + 13.75 * actual_weight + 5 * height - 6.79 * cls.calculate_age( birthdate )
-        elif genre == 'F':
-            GER = 655 + 9.56 * actual_weight + 1.85 * height - 4.68 * cls.calculate_age( birthdate )
+        # GER = 0;
+        # if genre == 'M':
+        #     GER = 66.5 + 13.75 * actual_weight + 5 * height - 6.79 * cls.calculate_age( birthdate )
+        # elif genre == 'F':
+        #     GER = 655 + 9.56 * actual_weight + 1.85 * height - 4.68 * cls.calculate_age( birthdate )
         
-        return math.ceil(GER * cls.activity_level_factor( activity_level, genre ))
+        # return math.ceil(GER * cls.activity_level_factor( activity_level, genre ))
+        age = cls.calculate_age( birthdate )
+        activity_level_factor = cls.activity_level_factor( activity_level, genre )
+        GER = 0; 
+        # FAO/WHO/UNU
+        if w_level_id == 1 or w_level_id == 2:
+            if age >= 18 and age <= 30:
+                if genre == 'M':
+                    GER = 15.3 * actual_weight + 679
+                elif genre == 'F':
+                    GER = 14.7 * actual_weight + 496
+            elif age > 30:
+                if genre == 'M':
+                    GER = 11.6 * actual_weight + 879
+                elif genre == 'F':
+                    GER = 8.7 * actual_weight + 829
+        elif w_level_id == 3:
+            if genre == 'M':
+                GER = 293 * (actual_weight ** 0.4330) - 5.92 * age
+            elif genre == 'F':
+                GER = actual_weight * 10 + height * 3 - age * 5 + 1 * 207 + 454
+        elif w_level_id >= 4:
+            if genre == 'M':
+                # Bernstein
+                GER = 11.02 * actual_weight + 10.23 * height - 5.8 * age - 1032
+            elif genre == 'F':
+                # Owen
+                GER = actual_weight * 7.18 + 795
+        GER *= activity_level_factor
+        return math.ceil(GER)
 
     @classmethod
     def activity_level_factor( cls, activity_level, genre ):
@@ -91,7 +128,7 @@ class User:
             if activity_level == 2:
                 return 1.55
             if activity_level == 3:
-                return 1.78
+                return 1.8
             if activity_level == 4:
                 return 2.10
 
@@ -120,13 +157,13 @@ class User:
         # If the user want to have a caloric plan he have to insert the following data
         if profile_genre and profile_height and profile_actual_weight and profile_activity_level: 
             profile_initial_date_caloric_plan = date.today()
-            profile_ideal_weight = self.ideal_weight( profile_height, profile_genre )
+            profile_ideal_weight = self.ideal_weight( profile_height )
             profile_current_imc = self.calculate_imc( profile_height, profile_actual_weight )
             w_level_id = WeightLevel.get_weight_level_by_imc( profile_current_imc )[0]
-            profile_caloric_plan = self.cals_per_day( profile_actual_weight, profile_height, profile_birthdate, profile_genre, profile_activity_level )
-            query_profile = "INSERT INTO profile VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+            profile_caloric_plan = self.cals_per_day( profile_actual_weight, w_level_id, profile_height, profile_birthdate, profile_genre, profile_activity_level )
+            query_profile = "INSERT INTO profile VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
             profile_have_caloric_plan = 1
-            cursor.execute( query_profile, ( user_id, w_level_id, profile_genre, profile_height, profile_actual_weight, profile_ideal_weight, profile_birthdate, profile_activity_level, profile_current_imc, None, profile_have_caloric_plan,  profile_caloric_plan, profile_initial_date_caloric_plan, None ) )
+            cursor.execute( query_profile, ( user_id, w_level_id, profile_genre, profile_height, profile_actual_weight, profile_ideal_weight['min'], profile_ideal_weight['max'], profile_birthdate, profile_activity_level, profile_current_imc, None, profile_have_caloric_plan,  profile_caloric_plan, profile_initial_date_caloric_plan, None ) )
         # if the user doesn't want to have a plan...
         else:
             query_profile = "INSERT INTO profile ( user_id, profile_have_caloric_plan ) VALUES ( ?, ? )"
@@ -138,16 +175,17 @@ class User:
     @classmethod
     def update_profile_data( cls, profile_id, profile_genre, profile_height, profile_actual_weight, profile_activity_level, profile_birthdate ): 
         profile_initial_date_caloric_plan = date.today()
-        profile_ideal_weight = cls.ideal_weight( profile_height, profile_genre )
+        # profile_ideal_weight = cls.ideal_weight( profile_height, profile_genre )
+        profile_ideal_weight = cls.ideal_weight( profile_height )
         profile_current_imc = cls.calculate_imc( profile_height, profile_actual_weight )
         w_level_id = WeightLevel.get_weight_level_by_imc( profile_current_imc )[0]
-        profile_caloric_plan = cls.cals_per_day( profile_actual_weight, profile_height, profile_birthdate, profile_genre, profile_activity_level )
+        profile_caloric_plan = cls.cals_per_day( profile_actual_weight, w_level_id, profile_height, profile_birthdate, profile_genre, profile_activity_level )
         query = """
         UPDATE profile
-        SET w_level_id = ?, profile_genre = ?, profile_height = ?, profile_actual_weight = ?, profile_ideal_weight = ?, profile_birthdate = ?, profile_activity_level = ?, profile_previous_imc = (SELECT profile_current_imc FROM profile WHERE profile_id = ?), profile_current_imc = ?, profile_have_caloric_plan = 1, profile_caloric_plan = ?, profile_initial_date_caloric_plan = ?, profile_cancel_date_caloric_plan = NULL
+        SET w_level_id = ?, profile_genre = ?, profile_height = ?, profile_actual_weight = ?, profile_min_ideal_weight = ?, profile_max_ideal_weight = ?, profile_birthdate = ?, profile_activity_level = ?, profile_previous_imc = (SELECT profile_current_imc FROM profile WHERE profile_id = ?), profile_current_imc = ?, profile_have_caloric_plan = 1, profile_caloric_plan = ?, profile_initial_date_caloric_plan = ?, profile_cancel_date_caloric_plan = NULL
         WHERE profile_id = ?
         """
-        cursor.execute( query, ( w_level_id, profile_genre, profile_height, profile_actual_weight, profile_ideal_weight, profile_birthdate, profile_activity_level, profile_id, profile_current_imc, profile_caloric_plan, profile_initial_date_caloric_plan, profile_id) )
+        cursor.execute( query, ( w_level_id, profile_genre, profile_height, profile_actual_weight, profile_ideal_weight['min'], profile_ideal_weight['max'], profile_birthdate, profile_activity_level, profile_id, profile_current_imc, profile_caloric_plan, profile_initial_date_caloric_plan, profile_id) )
         cursor.commit()
         return "Datos actualizados"
         
@@ -156,7 +194,7 @@ class User:
         profile_cancel_date_caloric_plan = date.today()
         unsubscribe_query = """
         UPDATE profile
-        SET w_level_id = NULL, profile_genre = NULL, profile_height = NULL, profile_actual_weight = NULL, profile_ideal_weight = NULL, profile_birthdate = NULL, profile_activity_level = NULL, profile_current_imc = NULL, profile_previous_imc = NULL, profile_have_caloric_plan = 0, profile_caloric_plan = NULL, profile_initial_date_caloric_plan = NULL, profile_cancel_date_caloric_plan = ?
+        SET w_level_id = NULL, profile_genre = NULL, profile_height = NULL, profile_actual_weight = NULL, profile_min_ideal_weight = NULL, profile_birthdate = NULL, profile_activity_level = NULL, profile_current_imc = NULL, profile_previous_imc = NULL, profile_have_caloric_plan = 0, profile_caloric_plan = NULL, profile_initial_date_caloric_plan = NULL, profile_cancel_date_caloric_plan = ?
         WHERE profile_id = ?
         """
         cursor.execute(unsubscribe_query, ( profile_cancel_date_caloric_plan, profile_id ))
@@ -258,15 +296,15 @@ class User:
         """
         profile_imc = cls.calculate_imc( profile_height, profile_actual_weight )
         w_level = WeightLevel.get_weight_level_by_imc( profile_imc )
-        profile_ideal_weight = cls.ideal_weight( profile_height, profile_genre )
-        profile_caloric_plan = cls.cals_per_day( profile_actual_weight, profile_height, profile_birthdate, profile_genre, profile_activity_level )
+        profile_ideal_weight = cls.ideal_weight( profile_height )
+        profile_caloric_plan = cls.cals_per_day( profile_actual_weight, w_level[0], profile_height, profile_birthdate, profile_genre, profile_activity_level )
         diseases = Disease.get_diseases_by_w_level_id( w_level[0] )
 
         return {
             'profile_imc': profile_imc,
             'w_level_name': w_level[1],
             'posible_diseases': diseases,
-            'profile_ideal_weight': profile_ideal_weight,
+            'profile_ideal_weight': f"{profile_ideal_weight['min']} - { profile_ideal_weight['max'] } kg",
             'profile_caloric_plan': profile_caloric_plan,
         }
 
@@ -274,7 +312,7 @@ class User:
     def generate_code_to_restore( cls, email, code ):
         query = """
         UPDATE users
-        SET recovery_code = ?, code_expiration_time = DATEADD (hour, 0,getdate())
+        SET recovery_code = ?, code_expiration_time = DATEADD (hour, 1,getdate())
         WHERE user_email = ?;
         """ 
         cursor.execute( query, ( code, email ) )

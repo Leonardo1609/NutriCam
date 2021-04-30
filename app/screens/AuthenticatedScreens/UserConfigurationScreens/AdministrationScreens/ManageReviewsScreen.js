@@ -74,7 +74,7 @@ export const ManageReviewsScreen = () => {
 			weightRatings += item.rating * item.quantity;
 		});
 
-		return parseFloat(weightRatings / totalRatings).toFixed(2);
+		return totalRatings ? parseFloat(weightRatings / totalRatings).toFixed(2) : 0;
 	};
 
 	return (

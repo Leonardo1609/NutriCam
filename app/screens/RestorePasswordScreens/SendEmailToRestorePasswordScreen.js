@@ -14,11 +14,16 @@ import { sendEmailValidation } from "../../validations/sendEmailValidation";
 import { startSendEmailToRestorePassword } from "../../actions/restorePasswordProcessActions";
 import { useNavigation } from "@react-navigation/native";
 import { setMessageWarning } from "../../actions/uiActions";
+import Spinner from "react-native-loading-spinner-overlay";
+import { colors } from "../../consts/colors";
 
 export const SendEmailToRestorePasswordScreen = () => {
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
-	const { messageWarning } = useSelector((state) => state.ui);
+	const { messageWarning, loadingSendingMessage } = useSelector(
+		(state) => state.ui
+	);
+
 	const initialValues = {
 		email: "",
 	};
@@ -47,24 +52,33 @@ export const SendEmailToRestorePasswordScreen = () => {
 	};
 
 	return (
-		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-			<View style={styles.screen}>
-				<InputForm
-					label="Correo"
-					inputStyle={errors["email"] && styles.errorInput}
-					onChangeText={handleEmail}
-					value={email}
-				/>
-				<ErrorText>{errors["email"]}</ErrorText>
-				{messageWarning && <ErrorText>{messageWarning}</ErrorText>}
-				<MainButton
-					containerStyle={styles.buttonContainer}
-					onPress={handleSubmit}
-				>
-					Enviar
-				</MainButton>
-			</View>
-		</TouchableWithoutFeedback>
+		<>
+			<Spinner
+				visible={loadingSendingMessage}
+				textContent="Enviando Correo..."
+				textStyle={styles.loadingText}
+				color={colors.green}
+				overlayColor="rgba(0,0,0, 0.6)"
+			/>
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+				<View style={styles.screen}>
+					<InputForm
+						label="Correo"
+						inputStyle={errors["email"] && styles.errorInput}
+						onChangeText={handleEmail}
+						value={email}
+					/>
+					<ErrorText>{errors["email"]}</ErrorText>
+					{messageWarning && <ErrorText>{messageWarning}</ErrorText>}
+					<MainButton
+						containerStyle={styles.buttonContainer}
+						onPress={handleSubmit}
+					>
+						Enviar
+					</MainButton>
+				</View>
+			</TouchableWithoutFeedback>
+		</>
 	);
 };
 
@@ -80,5 +94,11 @@ const styles = StyleSheet.create({
 	},
 	errorInput: {
 		borderBottomColor: "red",
+	},
+	loadingText: {
+		color: colors.green,
+		fontSize: 30,
+		fontFamily: "poppins-bold",
+		textAlign: "center",
 	},
 });
