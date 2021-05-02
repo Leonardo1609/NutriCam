@@ -8,7 +8,7 @@ import { clientAxios } from "../axios/clientAxios";
 import { tokenAuth } from "../axios/tokenAuth";
 import { types } from "../types/types";
 import { setFoodRegisters } from "./nutritionSummaryActions";
-import { errorMessageLogoutAction } from "../helpers/helpers";
+import { errorMessageLogoutAction, formatDate } from "../helpers/helpers";
 
 export const logoutUser = () => {
 	return async (dispatch) => {
@@ -57,6 +57,7 @@ export const startCreateUser = () => {
 			profile_actual_weight: dataToRegist.actualWeigth,
 			profile_birthdate: dataToRegist.birthdate,
 			profile_activity_level: dataToRegist.activityLevel,
+			created_at: formatDate(new Date()),
 		};
 
 		try {
@@ -111,6 +112,7 @@ export const startUpdateProfileData = (
 				profile_actual_weight,
 				profile_birthdate,
 				profile_activity_level,
+				profile_initial_date_caloric_plan: formatDate(new Date()),
 			};
 
 			const { data } = await clientAxios.put(
@@ -167,8 +169,14 @@ export const startChangeEmail = (email, newEmail, password) => {
 
 export const startUnsubscribeNutritionalPlan = (fn = null) => {
 	return async (dispatch) => {
+		const dataToSend = {
+			profile_cancel_date_caloric_plan: formatDate(new Date()),
+		};
 		try {
-			const { data } = await clientAxios.put("/unsubscribe-caloric-plan");
+			const { data } = await clientAxios.put(
+				"/unsubscribe-caloric-plan",
+				dataToSend
+			);
 			dispatch(getUser());
 			dispatch(setMessageSuccess(data.msg));
 			if (fn) fn();

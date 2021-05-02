@@ -71,7 +71,7 @@ export const MotivationalMessageModal = () => {
 						await AsyncStorage.getItem("scheduledWeekday")
 					);
 
-					console.log("scheduleWeekday in diary", scheduledWeekday);
+					// console.log("scheduleWeekday in diary", scheduledWeekday);
 
 					if (
 						(today >

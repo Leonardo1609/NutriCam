@@ -27,10 +27,6 @@ export const UserConfigurationMainScreen = () => {
 			component: "MealManagement",
 		},
 		{
-			name: "Administrar Horario",
-			component: "ScheduleManagement",
-		},
-		{
 			name: "Alimento de Equivalencia",
 			component: "Equivalence",
 		},
@@ -57,6 +53,20 @@ export const UserConfigurationMainScreen = () => {
 					</View>
 				</TouchableOpacity>
 			))}
+			{userInformation.profile.profile_have_caloric_plan && (
+				<TouchableOpacity
+					activeOpacity={0.5}
+					onPress={() => {
+						navigateFn("ScheduleManagement");
+					}}
+				>
+					<View style={styles.routeContainer}>
+						<Text style={styles.routeText}>
+							Administrar Horario
+						</Text>
+					</View>
+				</TouchableOpacity>
+			)}
 			{userInformation?.user?.user_role === 1 && (
 				<>
 					<TouchableOpacity

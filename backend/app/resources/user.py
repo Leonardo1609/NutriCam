@@ -22,6 +22,11 @@ class RegisterUser( Resource ):
         required=True,
         help='El campo contraseña es requerido'
     )
+    parser.add_argument('created_at',
+        type=str,
+        required=True,
+        help='El campo creación es requerido'
+    )
     parser.add_argument('profile_genre', 
         type=str
     )
@@ -46,7 +51,7 @@ class RegisterUser( Resource ):
             if User.get_user_by_email( user.user_email ):
                 return { 'msg': 'El correo ya se encuentra en uso' }, 400
 
-            user_id = user.create_user_and_profile( profile_genre = data['profile_genre'], profile_height = data['profile_height'], profile_actual_weight = data['profile_actual_weight'], profile_activity_level = data['profile_activity_level'], profile_birthdate = data['profile_birthdate'] )
+            user_id = user.create_user_and_profile( created_at = data['created_at'], profile_genre = data['profile_genre'], profile_height = data['profile_height'], profile_actual_weight = data['profile_actual_weight'], profile_activity_level = data['profile_activity_level'], profile_birthdate = data['profile_birthdate'] )
             access_token = create_access_token( identity = int( user_id ) )
             return { 'access_token': access_token }, 201
         except:
@@ -54,6 +59,9 @@ class RegisterUser( Resource ):
 
 class UpdateProfile( Resource ):
     parser = reqparse.RequestParser()
+    parser.add_argument('profile_initial_date_caloric_plan', 
+        type = str
+    )
     parser.add_argument('profile_genre', 
         type=str
     )
@@ -76,7 +84,7 @@ class UpdateProfile( Resource ):
         try:
             user_id = get_jwt_identity()
             profile_id = User.get_profile_id_by_user_id( user_id )
-            message = User.update_profile_data( profile_id, data['profile_genre'], data['profile_height'], data['profile_actual_weight'], data['profile_activity_level'], data['profile_birthdate'] )
+            message = User.update_profile_data( data['profile_initial_date_caloric_plan'], profile_id, data['profile_genre'], data['profile_height'], data['profile_actual_weight'], data['profile_activity_level'], data['profile_birthdate'] )
             return { 'msg': message }
                  
         except:
@@ -130,12 +138,19 @@ class UserExists( Resource ):
             return { 'msg': 'Ha ocurrido un error' }, 500
 
 class UnsubscribeCaloricPlan( Resource ):
+    parser = reqparse.RequestParser()
+    parser.add_argument('profile_cancel_date_caloric_plan', 
+        type=str, 
+        required=True, 
+        help="El campo día de cancelación de plan calórico es requerido"
+    )
     @jwt_required()
     def put(self):
+        data = self.parser.parse_args()
         try:
             user_id = get_jwt_identity()
             profile_id = User.get_profile_id_by_user_id( user_id )
-            message = User.unsubscribe_caloric_plan( profile_id )
+            message = User.unsubscribe_caloric_plan( data['profile_cancel_date_caloric_plan'], profile_id )
             return { 'msg': message }
         except:
             return { 'msg': 'Ha ocurrido un error' }

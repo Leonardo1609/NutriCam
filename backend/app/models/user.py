@@ -87,7 +87,7 @@ class User:
         # return math.ceil(GER * cls.activity_level_factor( activity_level, genre ))
         age = cls.calculate_age( birthdate )
         activity_level_factor = cls.activity_level_factor( activity_level, genre )
-        GER = 0; 
+        GER = 0 
         # FAO/WHO/UNU
         if w_level_id == 1 or w_level_id == 2:
             if age >= 18 and age <= 30:
@@ -143,21 +143,21 @@ class User:
             if activity_level == 4:
                 return 1.82
     
-    def create_user_and_profile( self, profile_genre = None, profile_height = None, profile_actual_weight = None, profile_activity_level = None, profile_birthdate = None ):
+    def create_user_and_profile( self, created_at, profile_genre = None, profile_height = None, profile_actual_weight = None, profile_activity_level = None, profile_birthdate = None):
         """
         Create the user and the profile related with that user
         """
-        query_user = "INSERT INTO users ( user_name, user_email, user_pass, role_id ) VALUES (?, ?, ?, ?)" 
+        query_user = "INSERT INTO users ( user_name, user_email, user_pass, role_id, created_at ) VALUES (?, ?, ?, ?, ?)" 
         hashed_pass = generate_password_hash( self.user_pass )
 
-        cursor.execute( query_user, ( self.user_name, self.user_email, hashed_pass, self.role_id ) )
+        cursor.execute( query_user, ( self.user_name, self.user_email, hashed_pass, self.role_id, created_at ) )
 
         # get the id of the user inserted recently
         user_id = cursor.execute( "SELECT @@IDENTITY AS ID" ).fetchone()[0]
 
         # If the user want to have a caloric plan he have to insert the following data
         if profile_genre and profile_height and profile_actual_weight and profile_activity_level: 
-            profile_initial_date_caloric_plan = date.today()
+            profile_initial_date_caloric_plan = created_at
             profile_ideal_weight = self.ideal_weight( profile_height )
             profile_current_imc = self.calculate_imc( profile_height, profile_actual_weight )
             w_level_id = WeightLevel.get_weight_level_by_imc( profile_current_imc )[0]
@@ -174,8 +174,7 @@ class User:
         return user_id
 
     @classmethod
-    def update_profile_data( cls, profile_id, profile_genre, profile_height, profile_actual_weight, profile_activity_level, profile_birthdate ): 
-        profile_initial_date_caloric_plan = date.today()
+    def update_profile_data( cls, profile_initial_date_caloric_plan, profile_id, profile_genre, profile_height, profile_actual_weight, profile_activity_level, profile_birthdate ): 
         # profile_ideal_weight = cls.ideal_weight( profile_height, profile_genre )
         profile_ideal_weight = cls.ideal_weight( profile_height )
         profile_current_imc = cls.calculate_imc( profile_height, profile_actual_weight )
@@ -191,11 +190,10 @@ class User:
         return "Datos actualizados"
         
     @classmethod
-    def unsubscribe_caloric_plan( cls, profile_id ):
-        profile_cancel_date_caloric_plan = date.today()
+    def unsubscribe_caloric_plan( cls, profile_cancel_date_caloric_plan, profile_id ):
         unsubscribe_query = """
         UPDATE profile
-        SET w_level_id = NULL, profile_genre = NULL, profile_height = NULL, profile_actual_weight = NULL, profile_min_ideal_weight = NULL, profile_birthdate = NULL, profile_activity_level = NULL, profile_current_imc = NULL, profile_previous_imc = NULL, profile_have_caloric_plan = 0, profile_caloric_plan = NULL, profile_initial_date_caloric_plan = NULL, profile_cancel_date_caloric_plan = ?
+        SET w_level_id = NULL, profile_genre = NULL, profile_height = NULL, profile_actual_weight = NULL, profile_min_ideal_weight = NULL, profile_max_ideal_weight = NULL, profile_birthdate = NULL, profile_activity_level = NULL, profile_current_imc = NULL, profile_previous_imc = NULL, profile_have_caloric_plan = 0, profile_caloric_plan = NULL, profile_initial_date_caloric_plan = NULL, profile_cancel_date_caloric_plan = ?
         WHERE profile_id = ?
         """
         cursor.execute(unsubscribe_query, ( profile_cancel_date_caloric_plan, profile_id ))
@@ -313,7 +311,7 @@ class User:
     def generate_code_to_restore( cls, email, code ):
         query = """
         UPDATE users
-        SET recovery_code = ?, code_expiration_time = DATEADD (hour, 1,getdate())
+        SET recovery_code = ?, code_expiration_time = DATEADD (hour, 1, getdate())
         WHERE user_email = ?;
         """ 
         cursor.execute( query, ( code, email ) )

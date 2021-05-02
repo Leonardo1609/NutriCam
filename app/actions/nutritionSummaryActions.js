@@ -69,6 +69,7 @@ export const startDeleteFoodRegister = (foodRegisterId) => {
 };
 
 export const startGetWeeklyCalories = (date) => {
+	console.log('this date', date)
 	return async (dispatch) => {
 		try {
 			const { data } = await clientAxios.get(`/weekly-summary/${date}`);

@@ -222,9 +222,7 @@ class Food:
         input_year, input_month, input_day = input_date.split('-')
 
         input_month = input_month if int(input_month) / 10 >= 1 else input_month[1]
-        print( input_month )
         input_day = input_day if int(input_day) / 10 >= 1 else input_day[1]
-        print( input_day )
 
         day = date(int(input_year), int(input_month), int(input_day))
         monday = day - timedelta( days = ( day.weekday() ) )
