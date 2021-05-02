@@ -7,23 +7,23 @@ const authState = {
 
 export const authReducer = (state = authState, { type, payload }) => {
 	switch (type) {
-		case types.login:
-		case types.createAccount:
-			return {
-				...state,
-				authenticated: true,
-			};
+		// case types.login:
+		// case types.createAccount:
+		// 	return {
+		// 		...state,
+		// 		authenticated: true,
+		// 	};
 		case types.setUserInformation:
 			return {
 				...state,
 				userInformation: payload,
-				authenticated: true
-			}
-		case types.logout: 
+				authenticated: true,
+			};
+		case types.logout:
 			return {
 				userInformation: null,
-				authenticated: false
-			}
+				authenticated: false,
+			};
 		default:
 			return state;
 	}

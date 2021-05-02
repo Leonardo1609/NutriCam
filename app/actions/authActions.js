@@ -34,6 +34,7 @@ export const getUser = (loading = true) => {
 			loading && dispatch(loadingUserInfo(true));
 			const { data } = await clientAxios.get("/user-profile");
 			dispatch(setUserInformation(data));
+			// dispatch(dispatch(authenticateUser()));
 			loading && dispatch(loadingUserInfo(false));
 		} catch (e) {
 			console.log(e.response);
@@ -59,12 +60,15 @@ export const startCreateUser = () => {
 		};
 
 		try {
+			dispatch(loadingUserInfo(true));
 			const { data } = await clientAxios.post("/regist-user", dataToSend);
 			await AsyncStorage.setItem("token", data.access_token);
 			dispatch(getUser());
-			dispatch(authenticateUserCreated());
+			// dispatch(authenticateUserCreated());
+			dispatch(loadingUserInfo(false));
 		} catch (e) {
 			console.log(e.response);
+			dispatch(loadingUserInfo(false));
 		}
 	};
 };
@@ -76,14 +80,18 @@ export const startLoginUser = (email, password) => {
 				user_email: email,
 				user_pass: password,
 			};
+
+			dispatch(loadingUserInfo(true));
 			const { data } = await clientAxios.post("/login", dataToSend);
 			await AsyncStorage.setItem("token", data.access_token);
 			dispatch(setMessageWarning(null));
 			dispatch(getUser());
-			dispatch(authenticateUserLogged());
+			// dispatch(authenticateUserLogged());
+			dispatch(loadingUserInfo(false));
 		} catch (e) {
-			dispatch(setMessageWarning(e.response.data.msg));
 			console.log(e.response);
+			dispatch(setMessageWarning(e.response.data.msg));
+			dispatch(loadingUserInfo(false));
 		}
 	};
 };
@@ -232,13 +240,18 @@ export const userExists = (username, email, fn) => {
 	};
 };
 
-export const authenticateUserCreated = () => ({
+export const authenticateUser = () => ({
 	type: types.createAccount,
 });
 
-export const authenticateUserLogged = () => ({
-	type: types.login,
-});
+// export const authenticateUserCreated = () => ({
+// 	type: types.createAccount,
+// });
+
+// export const authenticateUserLogged = () => ({
+// 	type: types.login,
+// });
+
 export const setUserInformation = (information) => ({
 	type: types.setUserInformation,
 	payload: information,

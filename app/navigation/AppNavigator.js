@@ -12,6 +12,7 @@ import { colors } from "../consts/colors";
 
 export const AppNavigator = () => {
 	let token;
+
 	const dispatch = useDispatch();
 	const { userInformation, authenticated } = useSelector(
 		(state) => state.auth
@@ -20,16 +21,21 @@ export const AppNavigator = () => {
 	const { loading } = useSelector((state) => state.ui);
 
 	useEffect(() => {
+		const setIcon = async () => {
+			const icon = await AsyncStorage.getItem("icon");
+
+			if (!icon) {
+				await saveIcon("pan");
+			}
+		};
+		setIcon();
+	}, []);
+
+	useEffect(() => {
 		const getToken = async () => {
 			token = await AsyncStorage.getItem("token");
 
 			if (token) {
-				const icon = await AsyncStorage.getItem("icon");
-
-				if (!icon) {
-					await saveIcon("pan");
-				}
-
 				dispatch(getUser());
 			}
 		};

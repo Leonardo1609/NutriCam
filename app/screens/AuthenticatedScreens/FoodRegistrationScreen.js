@@ -384,6 +384,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		fontFamily: "poppins-bold",
 		color: "red",
-		textAlign: 'justify'
+		textAlign: "justify",
 	},
 });

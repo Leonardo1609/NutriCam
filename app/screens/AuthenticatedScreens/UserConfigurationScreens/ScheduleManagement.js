@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Text } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { colors } from "../../../consts/colors";
 import { useScheduleInput } from "../../../hooks/useScheduleInput";
@@ -74,6 +74,12 @@ export const ScheduleManagement = () => {
 			<View style={styles.row}>
 				<DinnerInput />
 			</View>
+			<View style={styles.scheduleMessageContainer}>
+				<Text style={styles.scheduleMessage}>
+					Configura tu horario y nosotros te enviaremos recordatorios,
+					para que no olvides registrar tus comidas.
+				</Text>
+			</View>
 			<MainButton
 				containerStyle={styles.buttonContainer}
 				onPress={submit}
@@ -99,5 +105,13 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		marginVertical: 20,
+	},
+	scheduleMessageContainer: {
+		marginVertical: 20,
+	},
+	scheduleMessage: {
+		fontSize: 14,
+		fontFamily: "poppins-bold",
+		textAlign: "center",
 	},
 });

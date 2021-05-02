@@ -50,7 +50,6 @@ export const RegisterModal = () => {
 		}
 		const image = await ImagePicker.launchCameraAsync({
 			allowsEditing: true,
-			aspect: [16, 9],
 			quality: 0.5,
 		});
 

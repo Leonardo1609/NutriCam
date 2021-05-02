@@ -1,12 +1,12 @@
 {
 	"expo": {
-		"name": "app",
+		"name": "NutriCÁM",
 		"slug": "app",
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/images/nutricam-icon.png",
 		"splash": {
-			"image": "./assets/splash.png",
+			"image": "./assets/images/splash-screen.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},
@@ -18,8 +18,10 @@
 			"supportsTablet": true
 		},
 		"android": {
+			"package": "com.pry2020217.nutricam",
+			"versionCode": 1,
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon.png",
+				"foregroundImage": "./assets/images/nutricam-icon.png",
 				"backgroundColor": "#FFFFFF"
 			},
 			"useNextNotificationsApi": true

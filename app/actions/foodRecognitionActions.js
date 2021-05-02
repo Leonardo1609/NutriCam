@@ -2,6 +2,7 @@ import { clientAxios } from "../axios/clientAxios";
 import FormData from "form-data";
 import { types } from "../types/types";
 import { errorMessageLogoutAction } from "../helpers/helpers";
+import axios from "axios";
 
 export const startSendImage = (image, fn) => {
 	return async (dispatch) => {
@@ -19,8 +20,8 @@ export const startSendImage = (image, fn) => {
 			});
 
 			dispatch(setLoadingRecognition(true));
-			const { data } = await clientAxios.post(
-				"/recognize-image",
+			const { data } = await axios.post(
+				"https://recognize-api.azurewebsites.net/",
 				formData,
 				{
 					headers: { "Content-Type": "multipart/form-data" },

@@ -237,6 +237,7 @@ export const MealFormScreen = () => {
 							}}
 							placeholderTextColor={colors.grayPlaceholder}
 							placeholder="0"
+							maxLength={5}
 							value={foodCalories ? foodCalories.toString() : ""}
 							onChangeText={handleCalories}
 							keyboardType="numeric"
@@ -262,6 +263,7 @@ export const MealFormScreen = () => {
 									errors["foodFats"]
 								),
 							}}
+							maxLength={5}
 							placeholderTextColor={colors.grayPlaceholder}
 							placeholder="0"
 							value={foodFats ? foodFats.toString() : ""}
@@ -290,6 +292,7 @@ export const MealFormScreen = () => {
 									errors["foodCarbohydrates"]
 								),
 							}}
+							maxLength={5}
 							placeholderTextColor={colors.grayPlaceholder}
 							placeholder="0"
 							value={
@@ -322,6 +325,7 @@ export const MealFormScreen = () => {
 									errors["foodProteins"]
 								),
 							}}
+							maxLength={5}
 							placeholderTextColor={colors.grayPlaceholder}
 							placeholder="0"
 							value={foodProteins ? foodProteins.toString() : ""}

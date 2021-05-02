@@ -44,7 +44,6 @@ export const ReviewRatingScreen = () => {
 	const { reviewRating } = useSelector((state) => state.reviewRating);
 	const { messageWarning, messageSuccess } = useSelector((state) => state.ui);
 	const { userInformation } = useSelector( (state) => state.auth )
-	console.log(userInformation)
 
 	const [rating, setRating] = useState(0);
 	const [review, setReview] = useState("");
