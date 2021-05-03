@@ -153,6 +153,11 @@ class RegistFood( Resource ):
         required=True,
         help="El campo cantidad de porciones es requerido"
     )
+    parser.add_argument('food_register_day',
+        type=str,
+        required=True,
+        help="El campo día de registro de comida es requerido"
+    )
 
     @jwt_required()
     def post(self):

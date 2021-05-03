@@ -5,7 +5,7 @@ import { colors } from "../consts/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { startDeleteFoodRegister } from "../actions/nutritionSummaryActions";
-import { formatDate } from "../helpers/helpers";
+import { fixedDecimals, formatDate } from "../helpers/helpers";
 
 export const DayFood = ({
 	title,
@@ -63,7 +63,9 @@ export const DayFood = ({
 									)}
 								/>
 							)}
-							<Text style={styles.calories}>{food.calories}</Text>
+							<Text style={styles.calories}>
+								{fixedDecimals(food.calories)}
+							</Text>
 						</View>
 					</View>
 				))

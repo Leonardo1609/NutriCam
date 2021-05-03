@@ -1,7 +1,11 @@
 import React, { useCallback } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useSelector } from "react-redux";
-import { parserDateToLocale, totalCaloriesConsumed } from "../helpers/helpers";
+import {
+	fixedDecimals,
+	parserDateToLocale,
+	totalCaloriesConsumed,
+} from "../helpers/helpers";
 import { colors } from "../consts/colors";
 
 export const CalorieBar = () => {
@@ -13,7 +17,7 @@ export const CalorieBar = () => {
 	const calculateAdvancePercentage = () => {
 		return (
 			(totalCaloriesConsumed(foodRegisters) /
-				userInformation.profile?.profile_caloric_plan) *
+				userInformation?.profile?.profile_caloric_plan) *
 			100
 		);
 	};
@@ -77,13 +81,13 @@ export const CalorieBar = () => {
 				<View>
 					<Text style={styles.descriptionText}>Consumido</Text>
 					<Text style={styles.consumedText}>
-						{totalCaloriesConsumed(foodRegisters)}
+						{fixedDecimals(totalCaloriesConsumed(foodRegisters))}
 					</Text>
 				</View>
 				<View>
 					<Text style={styles.descriptionText}>Restante</Text>
 					<Text style={styles.remainingText}>
-						{calculateRemaining()}
+						{fixedDecimals(calculateRemaining())}
 					</Text>
 				</View>
 			</View>

@@ -256,7 +256,15 @@ class ProfileInformation( Resource ):
             return { 'msg': 'Ha ocurrido un error' }, 500
 
 class SendRecoveryCode( Resource ):
+    parser = reqparse.RequestParser()
+    parser.add_argument( 'current_day_and_hour',
+        type=str,
+        required=True,
+        help="El campo hora actual es requerido"
+    )
     def post(self, email):
+        data = self.parser.parse_args()
+        print(data)
         try:
             user = User.get_user_by_email( email )
 
@@ -268,7 +276,7 @@ class SendRecoveryCode( Resource ):
             }
 
             code = random.randrange(111111, 999999)
-            message = User.generate_code_to_restore( email, code )
+            message = User.generate_code_to_restore( email, code, data['current_day_and_hour'] )
             restore_password_email( user, code )
             return { 'msg': message }
         except: 

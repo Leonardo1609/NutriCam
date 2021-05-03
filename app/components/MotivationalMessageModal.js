@@ -130,7 +130,6 @@ export const MotivationalMessageModal = () => {
 							JSON.stringify(today)
 						);
 					} else {
-						console.log("else");
 						console.log("aún no pasaron 7 días");
 						yesterdayFullfiled();
 					}

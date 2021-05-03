@@ -159,13 +159,13 @@ class Food:
         return "Comida removida"
 
     @classmethod
-    def regist_food( cls, profile_id, day_food_id, food_measure_unit_id, food_id, quantity ):
+    def regist_food( cls, profile_id, day_food_id, food_measure_unit_id, food_id, quantity, food_register_day ):
         query= """
         INSERT INTO food_register 
-        (profile_id, day_food_id, food_measure_unit_id, food_id, quantity) 
-        VALUES (?, ?, ?, ?, ?);
+        (profile_id, day_food_id, food_measure_unit_id, food_id, quantity, food_register_day) 
+        VALUES (?, ?, ?, ?, ?, ?);
         """
-        cursor.execute( query, ( profile_id, day_food_id, food_measure_unit_id, food_id, quantity ) )
+        cursor.execute( query, ( profile_id, day_food_id, food_measure_unit_id, food_id, quantity, food_register_day ) )
 
         food_register_id = cursor.execute( "SELECT @@IDENTITY AS ID" ).fetchone()[0]
         cursor.commit()

@@ -5,12 +5,26 @@ import {
 	setMessageSuccess,
 	setMessageWarning,
 } from "./uiActions";
+import { formatDate, formatHour } from "../helpers/helpers";
 
 export const startSendEmailToRestorePassword = (email, fn = null) => {
 	return async (dispatch) => {
+		const today = new Date();
+		const current_day_and_hour = `${formatDate(today)} ${formatHour(
+			today.getHours(),
+			today.getMinutes()
+		)}`;
+		console.log(current_day_and_hour);
+
 		try {
+			const dataToSend = {
+				current_day_and_hour,
+			};
 			dispatch(setLoadingRegister(true));
-			const { data } = await clientAxios.post(`/recovery-code/${email}`);
+			const { data } = await clientAxios.post(
+				`/recovery-code/${email}`,
+				dataToSend
+			);
 
 			dispatch(setEmailSended(email));
 

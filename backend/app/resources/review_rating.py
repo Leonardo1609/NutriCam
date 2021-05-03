@@ -11,6 +11,11 @@ class ReviewRatingCrud( Resource ):
         required=True,
         help="El campo puntuación es requerido")
     parser.add_argument('review', type=str)
+    parser.add_argument('review_rating_date',
+        type=str,
+        required=True,
+        help="El campo fecha de registro de reseña y puntuación es requerido"
+    )
 
     @jwt_required()
     def get( self ):
@@ -30,7 +35,7 @@ class ReviewRatingCrud( Resource ):
         try:
             user_id = get_jwt_identity()
             profile_id = User.get_profile_id_by_user_id( user_id )
-            review_rating_id = ReviewRating.post_review_and_rating( profile_id, data['rating'], data['review'] )
+            review_rating_id = ReviewRating.post_review_and_rating( data['review_rating_date'], profile_id, data['rating'], data['review'] )
             return {
                 'msg': 'Calificación y reseña enviada',
                 'review_rating_id': int(review_rating_id)
@@ -44,7 +49,7 @@ class ReviewRatingCrud( Resource ):
         try:
             user_id = get_jwt_identity()
             profile_id = User.get_profile_id_by_user_id( user_id )
-            message = ReviewRating.modify_review_and_rating( profile_id, data['rating'], data['review'] )
+            message = ReviewRating.modify_review_and_rating( data['review_rating_date'], profile_id, data['rating'], data['review'] )
             return { 'msg': message }
         except:
             return { 'msg': 'Ha ocurrido un error' }, 500

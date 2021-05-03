@@ -79,7 +79,7 @@ export const UserPrivateInformationScreen = () => {
 						</View>
 						<View style={styles.rowContainer}>
 							<Text style={styles.subtitle}>
-								Peso mínimo ideal:{" "}
+								Peso máximo ideal:{" "}
 							</Text>
 							<Text style={styles.result}>
 								{

@@ -47,6 +47,7 @@ export const getUser = (loading = true) => {
 export const startCreateUser = () => {
 	return async (dispatch, getState) => {
 		const { dataToRegist } = getState().createAccountProcess;
+		console.log(dataToRegist);
 
 		const dataToSend = {
 			user_name: dataToRegist.username,
@@ -218,7 +219,6 @@ export const startChangePassword = (password, newPassword) => {
 		} catch (e) {
 			console.log(e.response.status);
 			if (e.response.status === 401) {
-				console.log("here");
 				errorMessageLogoutAction(e.response, dispatch);
 			} else {
 				dispatch(setMessageWarning(e.response.data.msg));

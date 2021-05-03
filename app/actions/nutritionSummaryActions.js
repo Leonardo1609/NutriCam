@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 import { clientAxios } from "../axios/clientAxios";
 import { setActiveFoodToRegist } from "./foodActions";
-import { errorMessageLogoutAction } from "../helpers/helpers";
+import { errorMessageLogoutAction, formatDate } from "../helpers/helpers";
 
 export const startGetFoodRegisters = () => {
 	return async (dispatch, getState) => {
@@ -33,6 +33,7 @@ export const startRegistFood = (
 			food_measure_unit_id,
 			food_id,
 			quantity: Number(quantity),
+			food_register_day: formatDate( new Date() )
 		};
 
 		try {
@@ -49,6 +50,7 @@ export const startRegistFood = (
 
 			if (fn) fn();
 		} catch (e) {
+			console.log(e)
 			console.log(e.response);
 			errorMessageLogoutAction(e.response, dispatch);
 		}
@@ -69,7 +71,6 @@ export const startDeleteFoodRegister = (foodRegisterId) => {
 };
 
 export const startGetWeeklyCalories = (date) => {
-	console.log('this date', date)
 	return async (dispatch) => {
 		try {
 			const { data } = await clientAxios.get(`/weekly-summary/${date}`);

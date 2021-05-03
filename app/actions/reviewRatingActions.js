@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 import { clientAxios } from "../axios/clientAxios";
 import { setMessageSuccess } from "./uiActions";
-import { errorMessageLogoutAction } from "../helpers/helpers";
+import { errorMessageLogoutAction, formatDate } from "../helpers/helpers";
 
 export const startGetReviewRating = () => {
 	return async (dispatch) => {
@@ -21,6 +21,7 @@ export const startPostReviewRating = (rating, review) => {
 			const reviewRatingToSend = {
 				rating,
 				review,
+				review_rating_date: formatDate(new Date()),
 			};
 
 			const { data } = await clientAxios.post(
@@ -51,6 +52,7 @@ export const startModifyReviewRating = (review_rating_id, rating, review) => {
 			const reviewRatingModifiedToSend = {
 				rating,
 				review,
+				review_rating_date: formatDate(new Date()),
 			};
 
 			const { data } = await clientAxios.put(

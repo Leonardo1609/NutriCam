@@ -12,7 +12,7 @@ import { MainButton } from "../../../components/MainButton";
 import { colors } from "../../../consts/colors";
 import { createFoodValidation } from "../../../validations/createFoodValidation";
 import PickerSelect from "react-native-picker-select";
-import { measureUnitMap } from "../../../helpers/helpers";
+import { fixedDecimals, measureUnitMap } from "../../../helpers/helpers";
 import { AlertMessage } from "../../../components/AlertMessage";
 import { ErrorText } from "../../../components/ErrorText";
 
@@ -238,7 +238,9 @@ export const MealFormScreen = () => {
 							placeholderTextColor={colors.grayPlaceholder}
 							placeholder="0"
 							maxLength={5}
-							value={foodCalories ? foodCalories.toString() : ""}
+							value={
+								foodCalories ? fixedDecimals(foodCalories) : ""
+							}
 							onChangeText={handleCalories}
 							keyboardType="numeric"
 						/>
@@ -266,7 +268,7 @@ export const MealFormScreen = () => {
 							maxLength={5}
 							placeholderTextColor={colors.grayPlaceholder}
 							placeholder="0"
-							value={foodFats ? foodFats.toString() : ""}
+							value={foodFats ? fixedDecimals(foodFats) : ""}
 							onChangeText={handleFats}
 							keyboardType="numeric"
 						/>
@@ -297,7 +299,7 @@ export const MealFormScreen = () => {
 							placeholder="0"
 							value={
 								foodCarbohydrates
-									? foodCarbohydrates.toString()
+									? fixedDecimals(foodCarbohydrates)
 									: ""
 							}
 							onChangeText={handleCarbohydrates}
@@ -328,7 +330,9 @@ export const MealFormScreen = () => {
 							maxLength={5}
 							placeholderTextColor={colors.grayPlaceholder}
 							placeholder="0"
-							value={foodProteins ? foodProteins.toString() : ""}
+							value={
+								foodProteins ? fixedDecimals(foodProteins) : ""
+							}
 							onChangeText={handleProteins}
 							keyboardType="numeric"
 						/>

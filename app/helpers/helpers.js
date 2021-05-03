@@ -179,3 +179,8 @@ export const errorMessageLogoutAction = (err, dispatch) => {
 			},
 		});
 };
+
+export const fixedDecimals = (number) => {
+	const hasDecimals = number % 1 != 0;
+	return parseFloat(number).toFixed(hasDecimals ? 1 : 0);
+};

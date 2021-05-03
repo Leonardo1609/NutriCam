@@ -31,25 +31,25 @@ class ReviewRating :
         return review_rating
 
     @classmethod
-    def post_review_and_rating( cls, profile_id, rating, review = None ):
+    def post_review_and_rating( cls, review_rating_date, profile_id, rating, review = None ):
         query="""
         INSERT INTO review_rating
-        (rating, review, profile_id)
-        VALUES (?, ?, ?)
+        (rating, review, profile_id, review_rating_updated_date)
+        VALUES (?, ?, ?, ?)
         """
-        cursor.execute( query, ( rating, review, profile_id ) )
+        cursor.execute( query, ( rating, review, profile_id, review_rating_date ) )
         review_rating_id = cursor.execute( 'SELECT @@IDENTITY AS ID' ).fetchone()[0]
         cursor.commit()
         return review_rating_id
 
     @classmethod
-    def modify_review_and_rating( cls, profile_id, rating, review = None ):
+    def modify_review_and_rating( cls, review_rating_date, profile_id, rating, review = None ):
         query="""
         UPDATE review_rating
-        SET rating = ?, review = ?
+        SET rating = ?, review = ?, review_rating_updated_date = ?
         WHERE profile_id = ?
         """
-        cursor.execute( query, ( rating, review, profile_id ) )
+        cursor.execute( query, ( rating, review, review_rating_date, profile_id ) )
         cursor.commit()
         return "Calificación y Reseña Actualizada"
 

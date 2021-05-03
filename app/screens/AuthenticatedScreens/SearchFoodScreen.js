@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import {
+	setActiveOwnFood,
 	setFoodsFound,
 	startGetFoodInformation,
 	startGetFoodMeasureUnits,
@@ -33,6 +34,11 @@ export const SearchFoodScreen = ({ route }) => {
 		dispatch(
 			startGetFoodInformation(food.food_id, null, navToRegistFoodScreen)
 		);
+	};
+
+	const navToMealForm = () => {
+		dispatch(setActiveOwnFood(null));
+		navigation.navigate("MealForm");
 	};
 
 	const renderFoods = (food) => {
@@ -101,7 +107,7 @@ export const SearchFoodScreen = ({ route }) => {
 						{foodNotFoundMessage}
 					</Text>
 					<MainButton
-						onPress={() => navigation.navigate("MealForm")}
+						onPress={() => navToMealForm()}
 						containerStyle={styles.buttonContainer}
 					>
 						Crear Comida

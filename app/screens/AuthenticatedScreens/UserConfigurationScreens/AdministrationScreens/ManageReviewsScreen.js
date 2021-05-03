@@ -74,19 +74,23 @@ export const ManageReviewsScreen = () => {
 			weightRatings += item.rating * item.quantity;
 		});
 
-		return totalRatings ? parseFloat(weightRatings / totalRatings).toFixed(2) : 0;
+		return totalRatings
+			? parseFloat(weightRatings / totalRatings).toFixed(2)
+			: 0;
 	};
 
 	return (
 		<View style={styles.screen}>
-			<View style={styles.datesContainer}>
-				<View style={styles.filterDateContainer}>
-					<InitialDatePicker />
+			{dateFirstReview && (
+				<View style={styles.datesContainer}>
+					<View style={styles.filterDateContainer}>
+						<InitialDatePicker />
+					</View>
+					<View style={styles.filterDateContainer}>
+						<LastDatePicker />
+					</View>
 				</View>
-				<View style={styles.filterDateContainer}>
-					<LastDatePicker />
-				</View>
-			</View>
+			)}
 			<View style={styles.averageContainer}>
 				<Text style={styles.averageText}>
 					Promedio: {setAverage()}{" "}

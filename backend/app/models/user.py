@@ -308,13 +308,13 @@ class User:
         }
 
     @classmethod
-    def generate_code_to_restore( cls, email, code ):
+    def generate_code_to_restore( cls, email, code, current_day_and_hour ):
         query = """
         UPDATE users
-        SET recovery_code = ?, code_expiration_time = DATEADD (hour, 1, getdate())
+        SET recovery_code = ?, code_expiration_time = DATEADD (hour, 1, ?)
         WHERE user_email = ?;
         """ 
-        cursor.execute( query, ( code, email ) )
+        cursor.execute( query, ( code, current_day_and_hour, email ) )
         cursor.commit()
         return "El código enviado a su correo expira dentro de 1 hora"
     
