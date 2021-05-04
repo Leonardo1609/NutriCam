@@ -28,48 +28,50 @@ class Administration:
 
     @classmethod
     def users_quantity_with_and_without_caloric_plan( cls, initial_date = None, last_date = None ):
+
         first_user_date_query = """
         SELECT TOP 1 profile_initial_date_caloric_plan
         FROM profile
         WHERE profile_have_caloric_plan = 1
         ORDER BY profile_initial_date_caloric_plan ASC;
         """
+
         first_user_date = cursor.execute( first_user_date_query ).fetchone()[0]
 
         query_without_dates = """
-        SELECT COUNT(*) 
+        SELECT COUNT(*), 1 as filter
         FROM profile p
         INNER JOIN users u ON u.user_id = p.user_id 
         WHERE profile_have_caloric_plan = 1 AND u.created_at BETWEEN ? AND GETDATE() 
         UNION
-        SELECT COUNT(*) 
+        SELECT COUNT(*), 2 as filter
         from profile p
         INNER JOIN users u ON u.user_id = p.user_id 
-        WHERE profile_have_caloric_plan = 0 AND u.created_at BETWEEN ? AND GETDATE();
+        WHERE profile_have_caloric_plan = 0 AND u.created_at BETWEEN ? AND GETDATE()
+        ORDER BY filter;
         """
 
         query_with_dates = """
-        SELECT COUNT(*) 
+        SELECT COUNT(*), 1 as filter
         FROM profile p
         INNER JOIN users u ON u.user_id = p.user_id 
         WHERE profile_have_caloric_plan = 1 AND u.created_at BETWEEN ? AND ?
         UNION
-        SELECT COUNT(*) 
+        SELECT COUNT(*), 2 as filter
         from profile p
         INNER JOIN users u ON u.user_id = p.user_id 
-        WHERE profile_have_caloric_plan = 0 AND u.created_at BETWEEN ? AND ?; 
+        WHERE profile_have_caloric_plan = 0 AND u.created_at BETWEEN ? AND ?
+        ORDER BY filter;
         """
+
+        rows = []
 
         if not initial_date and not last_date:
             rows = cursor.execute(query_without_dates, ( first_user_date, first_user_date)).fetchall()
-            if len(rows) > 1:
-                return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[1][0]}
-            return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[0][0]}
         else:
             rows = cursor.execute(query_with_dates, ( initial_date, last_date, initial_date, last_date )).fetchall()
-            if len(rows) > 1:
-                return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[1][0]}
-            return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[0][0]} 
+
+        return {'users_with_caloric_plan': rows[0][0], 'users_without_caloric_plan': rows[1][0]} 
 
     @classmethod
     def get_quantity_users_improvement(cls):
