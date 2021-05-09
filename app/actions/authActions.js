@@ -3,16 +3,19 @@ import {
 	loadingUserInfo,
 	setMessageSuccess,
 	setMessageWarning,
+	loadingLoginUser,
 } from "./uiActions";
 import { clientAxios } from "../axios/clientAxios";
 import { tokenAuth } from "../axios/tokenAuth";
 import { types } from "../types/types";
 import { setFoodRegisters } from "./nutritionSummaryActions";
 import { errorMessageLogoutAction, formatDate } from "../helpers/helpers";
+import { cancelAllScheduledNotificationsAsync } from "expo-notifications";
 
 export const logoutUser = () => {
 	return async (dispatch) => {
 		await AsyncStorage.removeItem("token");
+		await cancelAllScheduledNotificationsAsync();
 		dispatch(setFoodRegisters([]));
 		dispatch({
 			type: types.logout,
@@ -34,7 +37,6 @@ export const getUser = (loading = true) => {
 			loading && dispatch(loadingUserInfo(true));
 			const { data } = await clientAxios.get("/user-profile");
 			dispatch(setUserInformation(data));
-			// dispatch(dispatch(authenticateUser()));
 			loading && dispatch(loadingUserInfo(false));
 		} catch (e) {
 			console.log(e.response);
@@ -47,11 +49,10 @@ export const getUser = (loading = true) => {
 export const startCreateUser = () => {
 	return async (dispatch, getState) => {
 		const { dataToRegist } = getState().createAccountProcess;
-		console.log(dataToRegist);
 
 		const dataToSend = {
 			user_name: dataToRegist.username,
-			user_email: dataToRegist.email,
+			user_email: dataToRegist.email.trim(),
 			user_pass: dataToRegist.password,
 			profile_genre: dataToRegist.genre,
 			profile_height: dataToRegist.height,
@@ -66,7 +67,6 @@ export const startCreateUser = () => {
 			const { data } = await clientAxios.post("/regist-user", dataToSend);
 			await AsyncStorage.setItem("token", data.access_token);
 			dispatch(getUser());
-			// dispatch(authenticateUserCreated());
 			dispatch(loadingUserInfo(false));
 		} catch (e) {
 			console.log(e.response);
@@ -79,21 +79,20 @@ export const startLoginUser = (email, password) => {
 	return async (dispatch) => {
 		try {
 			const dataToSend = {
-				user_email: email,
+				user_email: email.trim(),
 				user_pass: password,
 			};
 
-			dispatch(loadingUserInfo(true));
+			dispatch(loadingLoginUser(true));
 			const { data } = await clientAxios.post("/login", dataToSend);
 			await AsyncStorage.setItem("token", data.access_token);
 			dispatch(setMessageWarning(null));
 			dispatch(getUser());
-			// dispatch(authenticateUserLogged());
-			dispatch(loadingUserInfo(false));
+			dispatch(loadingLoginUser(false));
 		} catch (e) {
 			console.log(e.response);
 			dispatch(setMessageWarning(e.response.data.msg));
-			dispatch(loadingUserInfo(false));
+			dispatch(loadingLoginUser(false));
 		}
 	};
 };
@@ -144,8 +143,8 @@ export const startChangeEmail = (email, newEmail, password) => {
 	return async (dispatch) => {
 		try {
 			const dataToSend = {
-				user_email: email,
-				new_email: newEmail,
+				user_email: email.trim(),
+				new_email: newEmail.trim(),
 				user_pass: password,
 			};
 			const { data } = await clientAxios.put("/change-email", dataToSend);
@@ -203,7 +202,7 @@ export const startChangePassword = (password, newPassword) => {
 		try {
 			const { userInformation } = getState().auth;
 			const dataToSend = {
-				user_email: userInformation?.user.user_email,
+				user_email: userInformation?.user.user_email.trim(),
 				user_pass: password,
 				new_password: newPassword,
 			};
@@ -234,7 +233,7 @@ export const userExists = (username, email, fn) => {
 	return async (dispatch) => {
 		try {
 			const { data } = await clientAxios(
-				`/user-exists/${username}/${email}`
+				`/user-exists/${username}/${email.trim()}`
 			);
 			if (data.msg) {
 				dispatch(setMessageWarning(data.msg));
@@ -251,14 +250,6 @@ export const userExists = (username, email, fn) => {
 export const authenticateUser = () => ({
 	type: types.createAccount,
 });
-
-// export const authenticateUserCreated = () => ({
-// 	type: types.createAccount,
-// });
-
-// export const authenticateUserLogged = () => ({
-// 	type: types.login,
-// });
 
 export const setUserInformation = (information) => ({
 	type: types.setUserInformation,

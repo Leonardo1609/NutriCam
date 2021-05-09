@@ -3,7 +3,7 @@ import { clientAxios } from "../axios/clientAxios";
 
 export const setBasicData = (username, email, password) => ({
 	type: types.setBasicData,
-	payload: { username, email, password },
+	payload: { username, email: email.trim(), password },
 });
 
 export const setHealthyData = (

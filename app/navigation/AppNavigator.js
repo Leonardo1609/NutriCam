@@ -9,6 +9,7 @@ import { saveIcon } from "../helpers/helpers";
 import { getUser } from "../actions/authActions";
 import Spinner from "react-native-loading-spinner-overlay";
 import { colors } from "../consts/colors";
+import { SpinnerLoading } from "../components/SpinnerLoading";
 
 export const AppNavigator = () => {
 	let token;
@@ -45,13 +46,7 @@ export const AppNavigator = () => {
 
 	if (loading)
 		return (
-			<Spinner
-				visible={loading}
-				textContent="Cargando..."
-				textStyle={styles.loadingText}
-				color={colors.green}
-				overlayColor="rgba(0,0,0, 0.6)"
-			/>
+			<SpinnerLoading loadingCondition={loading} message="Cargando..." />
 		);
 
 	if (!loading && authenticated && userInformation?.user)
@@ -59,12 +54,3 @@ export const AppNavigator = () => {
 
 	return <AuthNavigator />;
 };
-
-const styles = StyleSheet.create({
-	loadingText: {
-		color: colors.green,
-		fontSize: 30,
-		fontFamily: "poppins-bold",
-		textAlign: "center",
-	},
-});

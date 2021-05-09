@@ -50,6 +50,14 @@ export const CreateAccountMainForm = () => {
 		dispatch(setMessageWarning(null));
 	}, [email]);
 
+	useEffect(() => {
+		const unsubscribe = navigation.addListener("blur", () => {
+			dispatch(setMessageWarning(null));
+		});
+
+		return () => unsubscribe();
+	}, []);
+
 	return (
 		<TouchableWithoutFeedback
 			onPress={() => {

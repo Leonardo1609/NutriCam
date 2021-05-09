@@ -14,6 +14,7 @@ import { PosibleOptionsScreen } from "../screens/AuthenticatedScreens/PosibleOpt
 import { MotivationalMessageModal } from "../components/MotivationalMessageModal";
 import { DiarySummaryScreen } from "../screens/AuthenticatedScreens/DiarySummaryScreen";
 import Spinner from "react-native-loading-spinner-overlay";
+import { SpinnerLoading } from "../components/SpinnerLoading";
 
 const Stack = createStackNavigator();
 
@@ -25,12 +26,9 @@ export const DiaryNavigator = () => {
 
 	return (
 		<>
-			<Spinner
-				color={colors.green}
-				visible={loadingRecognition}
-				textContent="Procesando..."
-				textStyle={styles.loadingText}
-				overlayColor="rgba(0,0,0, 0.6)"
+			<SpinnerLoading
+				loadingCondition={loadingRecognition}
+				message="Procesando..."
 			/>
 			<MotivationalMessageModal />
 			<RegisterModal />

@@ -14,7 +14,6 @@ export const startSendEmailToRestorePassword = (email, fn = null) => {
 			today.getHours(),
 			today.getMinutes()
 		)}`;
-		console.log(current_day_and_hour);
 
 		try {
 			const dataToSend = {
@@ -22,11 +21,11 @@ export const startSendEmailToRestorePassword = (email, fn = null) => {
 			};
 			dispatch(setLoadingRegister(true));
 			const { data } = await clientAxios.post(
-				`/recovery-code/${email}`,
+				`/recovery-code/${email.trim()}`,
 				dataToSend
 			);
 
-			dispatch(setEmailSended(email));
+			dispatch(setEmailSended(email.trim()));
 
 			dispatch(setMessageSuccess(data.msg));
 			if (fn) fn();
@@ -41,9 +40,6 @@ export const startSendEmailToRestorePassword = (email, fn = null) => {
 
 			dispatch(setLoadingRegister(false));
 			dispatch(setMessageWarning(e.response.data.msg));
-			setTimeout(() => {
-				dispatch(setMessageWarning(null));
-			}, 5000);
 		}
 	};
 };
@@ -55,7 +51,7 @@ export const startSendRecoveryCode = (email, code, fn) => {
 				recovery_code: code,
 			};
 			const { data } = await clientAxios.post(
-				`/success-code/${email}`,
+				`/success-code/${email.trim()}`,
 				dataToSend
 			);
 
@@ -81,7 +77,7 @@ export const startNewPassword = (email, newPassword, fn) => {
 				new_password: newPassword,
 			};
 			const { data } = await clientAxios.put(
-				`/restore-password/${email}`,
+				`/restore-password/${email.trim()}`,
 				dataToSend
 			);
 
@@ -101,5 +97,5 @@ export const startNewPassword = (email, newPassword, fn) => {
 
 export const setEmailSended = (email) => ({
 	type: types.emailSended,
-	payload: email,
+	payload: email.trim(),
 });

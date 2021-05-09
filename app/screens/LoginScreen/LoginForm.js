@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	StyleSheet,
 	View,
@@ -14,11 +14,15 @@ import { ErrorText } from "../../components/ErrorText";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoginUser } from "../../actions/authActions";
 import { useNavigation } from "@react-navigation/native";
+import { SpinnerLoading } from "../../components/SpinnerLoading";
+import { setMessageWarning } from "../../actions/uiActions";
 
 export const LoginForm = () => {
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
-	const { messageWarning } = useSelector((state) => state.ui);
+	const { messageWarning, loadingLoginUser } = useSelector(
+		(state) => state.ui
+	);
 
 	const initialValues = {
 		email: "",
@@ -39,7 +43,16 @@ export const LoginForm = () => {
 
 	const goToSendEmailToRestorePassword = () => {
 		navigation.navigate("SendEmailToRestorePassword");
+		dispatch(setMessageWarning(null));
 	};
+
+	useEffect(() => {
+		const unsubscription = navigation.addListener("blur", () => {
+			dispatch(setMessageWarning(null));
+		});
+
+		return () => unsubscription();
+	}, []);
 
 	return (
 		<TouchableWithoutFeedback
@@ -47,41 +60,51 @@ export const LoginForm = () => {
 				Keyboard.dismiss();
 			}}
 		>
-			<View style={styles.screen}>
-				<InputForm
-					label="Correo"
-					onChangeText={(value) => handleChange(value, "email")}
-					value={email}
-					autoCapitalize="none"
-					containerStyle={styles.inputContainer}
-					inputStyle={errors["email"] && styles.errorInput}
+			<>
+				<SpinnerLoading
+					loadingCondition={loadingLoginUser}
+					message={"Cargando..."}
 				/>
-				{errors["email"] && <ErrorText>{errors.email}</ErrorText>}
-				<InputForm
-					label="Contraseña"
-					onChangeText={(value) => handleChange(value, "password")}
-					value={password}
-					autoCapitalize="none"
-					secureTextEntry={true}
-					containerStyle={styles.inputContainer}
-					inputStyle={errors["password"] && styles.errorInput}
-				/>
-				{errors["password"] && <ErrorText>{errors.password}</ErrorText>}
-				{messageWarning && <ErrorText>{messageWarning}</ErrorText>}
-				<MainButton
-					containerStyle={styles.buttonContainer}
-					onPress={handleSubmit}
-				>
-					Ingresar
-				</MainButton>
-				<TouchableWithoutFeedback
-					onPress={goToSendEmailToRestorePassword}
-				>
-					<Text style={styles.forgotPasswordText}>
-						¿Olvidaste tu contraseña?
-					</Text>
-				</TouchableWithoutFeedback>
-			</View>
+				<View style={styles.screen}>
+					<InputForm
+						label="Correo"
+						onChangeText={(value) => handleChange(value, "email")}
+						value={email}
+						autoCapitalize="none"
+						containerStyle={styles.inputContainer}
+						inputStyle={errors["email"] && styles.errorInput}
+					/>
+					{errors["email"] && <ErrorText>{errors.email}</ErrorText>}
+					<InputForm
+						label="Contraseña"
+						onChangeText={(value) =>
+							handleChange(value, "password")
+						}
+						value={password}
+						autoCapitalize="none"
+						secureTextEntry={true}
+						containerStyle={styles.inputContainer}
+						inputStyle={errors["password"] && styles.errorInput}
+					/>
+					{errors["password"] && (
+						<ErrorText>{errors.password}</ErrorText>
+					)}
+					{messageWarning && <ErrorText>{messageWarning}</ErrorText>}
+					<MainButton
+						containerStyle={styles.buttonContainer}
+						onPress={handleSubmit}
+					>
+						Ingresar
+					</MainButton>
+					<TouchableWithoutFeedback
+						onPress={goToSendEmailToRestorePassword}
+					>
+						<Text style={styles.forgotPasswordText}>
+							¿Olvidaste tu contraseña?
+						</Text>
+					</TouchableWithoutFeedback>
+				</View>
+			</>
 		</TouchableWithoutFeedback>
 	);
 };

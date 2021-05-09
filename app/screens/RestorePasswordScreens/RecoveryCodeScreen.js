@@ -59,9 +59,10 @@ export const RecoveryCodeScreen = () => {
 	};
 
 	useEffect(() => {
-		return () => {
+		const unsubscribe = navigation.addListener("blur", () => {
 			dispatch(setMessageWarning(null));
-		};
+		});
+		return () => unsubscribe();
 	}, []);
 
 	return (

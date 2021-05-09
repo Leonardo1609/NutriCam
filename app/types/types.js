@@ -9,6 +9,7 @@ export const types = {
 	logout: "[Auth] Logout",
 
 	loadingUserInfo: "[Ui] Loading User Info",
+	loadingLoginUser: "[Ui] Loading Login User",
 	messageWarning: "[Ui] Set Message Warning",
 	messageSuccess: "[Ui] Set Message Success",
 	showRegisterModal: "[Ui] Show Register Modal",

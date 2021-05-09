@@ -2,6 +2,7 @@ import { types } from "../types/types";
 
 const initialState = {
 	loading: false,
+	loadingLoginUser: false,
 	messageWarning: null,
 	messageSuccess: null,
 	showRegisterModal: false,
@@ -14,6 +15,11 @@ export const uiReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				loading: payload,
+			};
+		case types.loadingLoginUser:
+			return {
+				...state,
+				loadingLoginUser: payload,
 			};
 		case types.messageSuccess:
 			return {

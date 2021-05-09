@@ -137,7 +137,7 @@ export const EnterUserDataForm = ({ submitFn, buttonText, ...props }) => {
 
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-			<ScrollView contentContainerStyle={{ flex: 1 }}>
+			<ScrollView>
 				<View style={styles.screen}>
 					<View style={styles.formContainer}>
 						<View style={styles.row}>

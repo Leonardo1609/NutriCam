@@ -2,7 +2,7 @@ import { clientAxios } from "../axios/clientAxios";
 import { errorMessageLogoutAction } from "../helpers/helpers";
 import { types } from "../types/types";
 
-export const startGetUserRegistersPerDay = (userId) => {
+export const startGetUserRegistersPerDay = () => {
 	return async (dispatch, getState) => {
 		try {
 			const { dateOfUserRegister } = getState().administratorSpecificUser;

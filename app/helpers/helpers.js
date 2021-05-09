@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { cancelAllScheduledNotificationsAsync } from "expo-notifications";
 import { showMessage } from "react-native-flash-message";
 import { colors } from "../consts/colors";
 import { types } from "../types/types";
@@ -174,8 +175,9 @@ export const errorMessageLogoutAction = (err, dispatch) => {
 			type: "danger",
 			duration: 5000,
 			textStyle: { color: "white", fontFamily: "poppins-bold" },
-			onPress: () => {
+			onPress: async () => {
 				dispatch({ type: types.logout });
+				await cancelAllScheduledNotificationsAsync();
 			},
 		});
 };

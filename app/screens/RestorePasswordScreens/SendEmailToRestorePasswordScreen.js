@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	Keyboard,
 	StyleSheet,
@@ -45,6 +45,14 @@ export const SendEmailToRestorePasswordScreen = () => {
 			startSendEmailToRestorePassword(email, gotToRecoveryCodeScreen)
 		);
 	}
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener("blur", () => {
+			dispatch(setMessageWarning(null));
+		});
+
+		return () => unsubscribe();
+	}, []);
 
 	const handleEmail = (value) => {
 		dispatch(setMessageWarning(null));

@@ -7,12 +7,6 @@ const authState = {
 
 export const authReducer = (state = authState, { type, payload }) => {
 	switch (type) {
-		// case types.login:
-		// case types.createAccount:
-		// 	return {
-		// 		...state,
-		// 		authenticated: true,
-		// 	};
 		case types.setUserInformation:
 			return {
 				...state,

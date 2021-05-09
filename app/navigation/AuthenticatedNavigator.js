@@ -120,14 +120,14 @@ export const AuthenticatedNavigator = () => {
 	}, []);
 
 	useEffect(() => {
-		const subscribtion = Notifications.addNotificationResponseReceivedListener(
+		const subscription = Notifications.addNotificationResponseReceivedListener(
 			(response) => {
 				console.log(response);
 			}
 		);
 
 		return () => {
-			subscribtion.remove();
+			subscription.remove();
 		};
 	}, []);
 

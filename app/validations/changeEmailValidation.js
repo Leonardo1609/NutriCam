@@ -11,13 +11,13 @@ export const changeEmailValidation = ({ currentEmail, newEmail, password }) => {
 
 	const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 	if (
-		!re.test(currentEmail.toLowerCase()) &&
+		!re.test(currentEmail.trim().toLowerCase()) &&
 		currentEmail.trim().length > 0
 	) {
 		errors["currentEmail"] = "Ingrese un correo válido";
 	}
 
-	if (!re.test(newEmail.toLowerCase()) && newEmail.trim().length > 0) {
+	if (!re.test(newEmail.trim().toLowerCase()) && newEmail.trim().length > 0) {
 		errors["newEmail"] = "Ingrese un correo válido";
 	}
 

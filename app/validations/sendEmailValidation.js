@@ -6,7 +6,7 @@ export const sendEmailValidation = ({ email }) => {
 	}
 
 	const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-	if (!re.test(email.toLowerCase()) && email.trim().length > 0) {
+	if (!re.test(email.trim().toLowerCase()) && email.trim().length > 0) {
 		errors["email"] = "Ingrese un correo válido";
 	}
 

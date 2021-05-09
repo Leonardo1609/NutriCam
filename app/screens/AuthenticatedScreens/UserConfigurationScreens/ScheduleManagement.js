@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Dimensions, Text } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { colors } from "../../../consts/colors";
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
 import { useScheduleInput } from "../../../hooks/useScheduleInput";
 import { MainButton } from "../../../components/MainButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +8,7 @@ import {
 	startUpdateSchedule,
 } from "../../../actions/scheduleActions";
 import { AlertMessage } from "../../../components/AlertMessage";
+import { ScrollView } from "react-native-gesture-handler";
 
 export const ScheduleManagement = () => {
 	const dispatch = useDispatch();
@@ -56,36 +55,39 @@ export const ScheduleManagement = () => {
 
 	return (
 		<View style={styles.screen}>
-			{messageSuccess && (
-				<AlertMessage type="success" message={messageSuccess} />
-			)}
-			<View style={styles.row}>
-				<BreakFastInput />
-			</View>
-			<View style={styles.row}>
-				<MidMorningInput />
-			</View>
-			<View style={styles.row}>
-				<LunchInput />
-			</View>
-			<View style={styles.row}>
-				<MidAfternoonInput />
-			</View>
-			<View style={styles.row}>
-				<DinnerInput />
-			</View>
-			<View style={styles.scheduleMessageContainer}>
-				<Text style={styles.scheduleMessage}>
-					Configura tu horario y nosotros te enviaremos recordatorios,
-					para que no olvides registrar tus comidas.
-				</Text>
-			</View>
-			<MainButton
-				containerStyle={styles.buttonContainer}
-				onPress={submit}
-			>
-				Guardar
-			</MainButton>
+			<ScrollView>
+				{messageSuccess && (
+					<AlertMessage type="success" message={messageSuccess} />
+				)}
+				<View style={styles.row}>
+					<BreakFastInput />
+				</View>
+				<View style={styles.row}>
+					<MidMorningInput />
+				</View>
+				<View style={styles.row}>
+					<LunchInput />
+				</View>
+				<View style={styles.row}>
+					<MidAfternoonInput />
+				</View>
+				<View style={styles.row}>
+					<DinnerInput />
+				</View>
+				<View style={styles.scheduleMessageContainer}>
+					<Text style={styles.scheduleMessage}>
+						Configura tu horario y nosotros te enviaremos
+						recordatorios, para que no olvides registrar tus
+						comidas.
+					</Text>
+				</View>
+				<MainButton
+					containerStyle={styles.buttonContainer}
+					onPress={submit}
+				>
+					Guardar
+				</MainButton>
+			</ScrollView>
 		</View>
 	);
 };

@@ -100,11 +100,11 @@ export const StatisticsScreen = () => {
 					)}
 					<View style={styles.resultsContainer}>
 						<Text style={styles.withCaloricPlanText}>
-							Usuarios con plan nutricional:{" "}
+							Usuarios con plan calórico:{" "}
 							{usersQuantity.withCaloricPlan}
 						</Text>
 						<Text style={styles.withoutCaloricPlanText}>
-							Usuarios sin plan nutricional:{" "}
+							Usuarios sin plan calórico:{" "}
 							{usersQuantity.withoutCaloricPlan}
 						</Text>
 						<Text style={styles.totalText}>

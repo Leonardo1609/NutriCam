@@ -5,6 +5,11 @@ export const loadingUserInfo = (bool) => ({
 	payload: bool,
 });
 
+export const loadingLoginUser = (bool) => ({
+	type: types.loadingLoginUser,
+	payload: bool,
+});
+
 export const setMessageWarning = (message) => ({
 	type: types.messageWarning,
 	payload: message,
