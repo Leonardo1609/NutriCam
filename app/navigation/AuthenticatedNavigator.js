@@ -19,6 +19,51 @@ import { setShowRegisterModal } from "../actions/uiActions";
 import { getPartOfHour, reminderMessages } from "../helpers/helpers";
 import FlashMessage from "react-native-flash-message";
 
+const getRecommendation = async () => {
+	const { data } = await clientAxios("/expert-recommendation");
+	Notifications.scheduleNotificationAsync({
+		content: {
+			title: "Consejo del día:",
+			body: data.recommendation,
+			data: {
+				type: "recommendation",
+			},
+		},
+		trigger: {
+			hour: 10,
+			minute: 0,
+			repeats: true,
+		},
+	});
+};
+
+const setDay = async () => {
+	// await AsyncStorage.removeItem("dayOfDate");
+	let day = await AsyncStorage.getItem("dayOfDate");
+	day = JSON.parse(day);
+
+	if (!day) {
+		await AsyncStorage.setItem(
+			"dayOfDate",
+			JSON.stringify(new Date().getDate())
+		);
+
+		await getRecommendation();
+		await AsyncStorage.setItem(
+			"dayOfDate",
+			JSON.stringify(new Date().getDate() + 1)
+		);
+	} else if (day === new Date().getDate()) {
+		await getRecommendation();
+		await AsyncStorage.setItem(
+			"dayOfDate",
+			JSON.stringify(new Date().getDate() + 1)
+		);
+	} else {
+		console.log("already programmed");
+	}
+};
+
 Notifications.setNotificationHandler({
 	handleNotification: async () => {
 		return {
@@ -37,26 +82,14 @@ export const AuthenticatedNavigator = () => {
 	const { userInformation } = useSelector((state) => state.auth);
 	const { schedule } = useSelector((state) => state.schedule);
 
-	const getRecommendation = async () => {
-		const { data } = await clientAxios("/expert-recommendation");
-		Notifications.scheduleNotificationAsync({
-			content: {
-				title: "Consejo del día:",
-				body: data.recommendation,
-			},
-			trigger: {
-				hour: 10,
-				minute: 0,
-				repeats: true,
-			},
-		});
-	};
-
 	const setReminder = async (day_food_id, meal_time) => {
 		const identifier = await Notifications.scheduleNotificationAsync({
 			content: {
 				title: "Nutri Recordatorio",
 				body: reminderMessages[day_food_id - 1],
+				data: {
+					type: "recommendation",
+				},
 			},
 			trigger: {
 				hour: getPartOfHour(meal_time, "hours"),
@@ -120,9 +153,12 @@ export const AuthenticatedNavigator = () => {
 	}, []);
 
 	useEffect(() => {
-		const subscription = Notifications.addNotificationResponseReceivedListener(
+		const subscription = Notifications.addNotificationReceivedListener(
 			(response) => {
-				console.log(response);
+				if (response.request.content?.data?.type === "recommendation") {
+					setDay();
+				}
+				// console.log(response);
 			}
 		);
 
@@ -132,30 +168,10 @@ export const AuthenticatedNavigator = () => {
 	}, []);
 
 	useEffect(() => {
-		const setDay = async () => {
-			// await AsyncStorage.removeItem("dayOfDate");
-			let day = await AsyncStorage.getItem("dayOfDate");
-			day = JSON.parse(day);
-
-			if (!day) {
-				await AsyncStorage.setItem(
-					"dayOfDate",
-					JSON.stringify(new Date().getDate())
-				);
-			}
-
-			if (day === new Date().getDate()) {
-				await getRecommendation();
-				await AsyncStorage.setItem(
-					"dayOfDate",
-					JSON.stringify(new Date().getDate() + 1)
-				);
-			} else {
-				console.log("already programmed");
-			}
-		};
-
 		setDay();
+		// (async () => {
+		// 	await Notifications.cancelAllScheduledNotificationsAsync();
+		// })();
 	}, []);
 
 	useEffect(() => {

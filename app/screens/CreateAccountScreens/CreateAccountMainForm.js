@@ -22,10 +22,10 @@ export const CreateAccountMainForm = () => {
 	const { messageWarning } = useSelector((state) => state.ui);
 
 	const initialValues = {
-		username: "",
-		email: "",
-		password: "",
-		confirmPassword: "",
+		username: "usuario prueba",
+		email: "usuarioprueba1@gmail.com",
+		password: "12345678",
+		confirmPassword: "12345678",
 	};
 
 	const { formValues, errors, handleChange, handleSubmit, reset } = useForm(

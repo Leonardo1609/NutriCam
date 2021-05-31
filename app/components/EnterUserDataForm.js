@@ -37,10 +37,10 @@ export const EnterUserDataForm = ({ submitFn, buttonText, ...props }) => {
 	const [birthdayToShow, setBirthdayToShow] = useState("");
 	const [birthdayToSave, setBirthdayToSave] = useState("");
 	const [birthdayToPicker, setBirthdayToPicker] = useState(new Date());
-	const [height, setHeight] = useState(0);
-	const [genre, setGenre] = useState("");
-	const [actualWeight, setActualWeight] = useState(0);
-	const [activityLevel, setActivityLevel] = useState(0);
+	const [height, setHeight] = useState(175);
+	const [genre, setGenre] = useState("M");
+	const [actualWeight, setActualWeight] = useState(80);
+	const [activityLevel, setActivityLevel] = useState(1);
 	const [errors, setErrors] = useState({});
 	const [formSubmit, setFormSubmit] = useState(false);
 
@@ -137,8 +137,8 @@ export const EnterUserDataForm = ({ submitFn, buttonText, ...props }) => {
 
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-			<ScrollView>
-				<View style={styles.screen}>
+			<View style={styles.screen}>
+				<ScrollView style={styles.scrollsContainer}>
 					<View style={styles.formContainer}>
 						<View style={styles.row}>
 							<View style={styles.labelContainer}>
@@ -341,8 +341,8 @@ export const EnterUserDataForm = ({ submitFn, buttonText, ...props }) => {
 					>
 						{buttonText}
 					</MainButton>
-				</View>
-			</ScrollView>
+				</ScrollView>
+			</View>
 		</TouchableWithoutFeedback>
 	);
 };
@@ -399,5 +399,8 @@ const styles = StyleSheet.create({
 	},
 	errorContainer: {
 		marginVertical: 8,
+	},
+	scrollsContainer: {
+		width: "100%",
 	},
 });

@@ -7,8 +7,6 @@ import { AuthenticatedNavigator } from "./AuthenticatedNavigator";
 // import { LoadingScreen } from "../screens/LoadingScreen";
 import { saveIcon } from "../helpers/helpers";
 import { getUser } from "../actions/authActions";
-import Spinner from "react-native-loading-spinner-overlay";
-import { colors } from "../consts/colors";
 import { SpinnerLoading } from "../components/SpinnerLoading";
 
 export const AppNavigator = () => {

@@ -45,13 +45,13 @@ export const DiarySummaryScreen = () => {
 		if (
 			nutritionSummary?.total_calories /
 				userInformation?.profile?.profile_caloric_plan <
-			0.8
+			0.9
 		) {
 			return setTargetMessage("unfulfilled");
 		} else if (
 			nutritionSummary?.total_calories /
 				userInformation?.profile?.profile_caloric_plan >
-			1.2
+			1.1
 		) {
 			return setTargetMessage("exceded");
 		} else {
