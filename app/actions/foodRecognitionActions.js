@@ -1,8 +1,9 @@
-import { clientAxios } from "../axios/clientAxios";
 import FormData from "form-data";
-import { types } from "../types/types";
-import { errorMessageLogoutAction } from "../helpers/helpers";
 import axios from "axios";
+import { clientAxios } from "../axios/clientAxios";
+import { errorMessageLogoutAction } from "../helpers/helpers";
+import { recognizeapi_url } from "../environment/environment";
+import { types } from "../types/types";
 
 export const startSendImage = (image, fn) => {
 	return async (dispatch) => {
@@ -20,13 +21,9 @@ export const startSendImage = (image, fn) => {
 			});
 
 			dispatch(setLoadingRecognition(true));
-			const { data } = await axios.post(
-				"https://recognize-api.azurewebsites.net/",
-				formData,
-				{
-					headers: { "Content-Type": "multipart/form-data" },
-				}
-			);
+			const { data } = await axios.post(recognizeapi_url, formData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			});
 			dispatch(setLoadingRecognition(false));
 			dispatch(setFoodImage(image));
 			dispatch(setPosibleOptions(data.recognized_foods));
