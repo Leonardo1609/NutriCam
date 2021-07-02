@@ -250,6 +250,7 @@ class ProfileInformation( Resource ):
     def post( self ):
         try:
             data = self.parser.parse_args()
+            print(data)
             information = User.get_profile_information_before_created( **data )
             return { 'information': information }
         except:
